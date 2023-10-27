@@ -10,7 +10,7 @@
     <script src='nuclide_data.js'></script>
     <script src='main.js' defer></script>
   </head>
-  <body data-saturated=false data-hide-everything=false>
+  <body data-saturated=false data-trends=false data-hide-everything=false>
     <canvas id='stability_band' width='500' height='500'></canvas>
     <div id='credits' data-hidden=true>
       <h1>Element Data</h1>
@@ -60,9 +60,32 @@
       <div id='color_button' class='searchable no_select'>
         Color
       </div>
+      <div id='trends_button' class='searchable no_select' style='display: none'>
+        Trends
+      </div>
     </div>
     <div id='copyright'>
       &copy; Cedric Hotopp
+    </div>
+    <div id='elemental_trends_menu' class='trends_menu' hidden>
+      <h1 class='title'>Elemental Trends</h1>
+      <div class='trend template' data-selected=false>[Trend]</div>
+      <div class='group template'>
+        <p class='title'>[Group]</p>
+        <div class='content'>
+
+        </div>
+      </div>
+    </div>
+    <div id='isotopic_trends_menu' class='trends_menu' hidden>
+      <h1 class='title'>Isotopic Trends</h1>
+      <div class='trend template' data-selected=false>[Trend]</div>
+      <div class='group template'>
+        <p class='title'>[Group]</p>
+        <div class='content'>
+
+        </div>
+      </div>
     </div>
     <div id='bottom_text' data-hidden=true>
       <h3 class='text searchable'></h3>

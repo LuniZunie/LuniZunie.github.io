@@ -273,6 +273,10 @@ body[data-hide-everything=true] :not(#background) {
   filter: brightness(65%);
 }
 
+body[data-trends=true] #top_buttons > #color_button {
+  display: none;
+}
+
 body[data-saturated=false] #top_buttons > #color_button::after {
   content: '\2717';
 
@@ -287,12 +291,209 @@ body[data-saturated=true] #top_buttons > #color_button::after {
   color: green;
 }
 
+body[data-saturated=true] #top_buttons > #trends_button {
+  display: none;
+}
+
+body[data-trends=false] #top_buttons > #trends_button::after {
+  content: '\2717';
+
+  font-size: 0.875em;
+  color: red;
+}
+
+body[data-trends=true] #top_buttons > #trends_button::after {
+  content: '\2713';
+
+  font-size: 0.875em;
+  color: green;
+}
+
 #copyright {
   position: fixed;
   left: 2.5vmin;
   bottom: 2.5vmin;
 
   z-index: 2147483640;
+}
+
+#isotopic_trends_menu {
+  right: 30vw;
+  display: none;
+}
+
+.trends_menu {
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  position: fixed;
+  max-height: calc(100vh - calc(4vmin + 2.68em));
+
+  border: 1px solid #33a;
+  border-radius: 1vmin;
+
+  white-space: nowrap;
+  overflow: auto;
+
+  background: #112;
+
+  z-index: 2147483641;
+
+  transition: opacity 300ms;
+}
+
+.trends_menu * {
+  transition: opacity 300ms;
+}
+
+.trends_menu .template {
+  display: none;
+}
+
+.trends_menu > .title {
+  text-align: center;
+
+  padding: 0px 3ch 0.67em 3ch;
+  margin-bottom: 0px;
+  border-bottom: 1px solid #33a;
+}
+
+.trends_menu .group.divider {
+  border-top: 1px solid #33a;
+  border-bottom: 1px solid #33a;
+}
+
+.trends_menu .group.divider > .title {
+  border-bottom: 1px solid #33a;
+  padding-bottom: 1em;
+  margin-bottom: 0px;
+
+  text-align: center;
+  font-weight: bold;
+}
+
+.trends_menu .group.side > .title {
+  cursor: pointer;
+
+  display: inline-block;
+  width: calc(100% - 2vmin);
+
+  margin: 0px;
+  padding: calc(1vmin + 0.33em) 1vmin calc(1vmin + 0.5em) 1vmin;
+}
+
+.trends_menu .group.side:hover > .title {
+  background: #223;
+}
+
+.trends_menu .group.side > .title::before {
+  content: '\2713';
+  float: left;
+
+  opacity: 0;
+
+  padding-right: 1ch;
+}
+
+.trends_menu .group.side > .title::after {
+  content: '\2C3';
+  float: right;
+
+  color: white;
+
+  font-size: 1.25em;
+
+  padding-left: 1ch;
+  padding-right: 1ch;
+}
+
+.trends_menu .group.side:has(.trend[data-selected=true]) > .title::before {
+  opacity: 1;
+}
+
+.trends_menu .group.side > .content {
+  pointer-events: none;
+
+  display: inline-block;
+  position: fixed;
+  max-height: calc(100vh - calc(4vmin + 2.68em));
+
+  border: 1px solid #33a;
+  border-radius: 1vmin;
+
+  overflow: auto;
+
+  opacity: 0;
+  background: #112;
+
+  transform: translate(0px, 0px);
+}
+
+.trends_menu .group.side:hover > .content {
+  pointer-events: all;
+
+  opacity: 1;
+}
+
+.trends_menu .trend {
+  cursor: pointer;
+
+  min-width: 15vw;
+
+  padding: calc(1vmin + 0.33em) 1vmin calc(1vmin + 0.5em) 1vmin;
+}
+
+.trends_menu .trend:hover {
+  background: #223;
+}
+
+.trends_menu .trend::before {
+  content: '\2713';
+  float: left;
+
+  opacity: 0;
+
+  padding-right: 1ch;
+}
+
+.trends_menu .trend::after {
+  content: '\2713';
+  float: right;
+
+  opacity: 0;
+
+  padding-left: 1ch;
+}
+
+.trends_menu .trend[data-selected=true]::before {
+  opacity: 1;
+}
+
+.trends_menu .trend > .log {
+  pointer-events: none;
+
+  float: right;
+
+  padding-left: 1ch;
+
+  opacity: 0;
+}
+
+.trends_menu .trend > .log::after {
+  content: '\2610';
+
+  padding: 0px 1ch 0px 0.5ch;
+}
+
+.trends_menu .trend > .log[data-selected=true]::after {
+  content: '\2611';
+}
+
+.trends_menu .trend[data-selected=true] > .log {
+  pointer-events: all;
+
+  opacity: 1;
 }
 
 #decay_chain[data-hidden=false] ~ #copyright {

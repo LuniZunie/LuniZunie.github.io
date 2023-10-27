@@ -67,10 +67,10 @@ Number.prototype.toDecimals = function(decimals = Infinity) {
   ).join('')}`;
 };
 Number.prototype.noExponents = function() {
-  var data = String(this).split(/[eE]/);
+  let data = String(this).split(/[eE]/);
   if (data.length == 1) return data[0];
 
-  var z = '',
+  let z = '',
     sign = this < 0 ? '-' : '',
     str = data[0].replace('.', ''),
     mag = Number(data[1]) + 1;
@@ -91,12 +91,60 @@ String.prototype.toUpperCaseWords = function() {
   ).join(' ');
 };
 
+Object.range = function(object, logarithmic) {
+  let values = Object.values(Object.fromEntries(Object.entries(object).filter(
+    ([ key, value ]) => key[0] !== key[0].toLowerCase() && Number.isFinite(value)
+  )));
+
+  const trueMin = Math.min(...values);
+  if (logarithmic) {
+    values = values.map(
+      value => Math.log10(value - trueMin)
+    ).filter(
+      value => Number.isFinite(value)
+    );
+  }
+
+  const min = Math.min(...values);
+  const max = Math.max(...values);
+
+  return Object.fromEntries(Object.entries(object).filter(
+    ([ _, value ]) => Number.isFinite(value) && !(logarithmic && values === 0)
+  ).map(
+    ([ key, value ]) => [ key, ((logarithmic ? Math.log10(value - trueMin) : value) - min) / (max - min) ]
+  ));
+};
+
 Array.prototype.random = function(remove) {
 	if (remove) {
 		const i = Math.floor(Math.random() * this.length);
 		return (this.splice(i, 1))[0];
 	} else
 		return this[Math.floor(Math.random() * this.length)];
+};
+Array.prototype.min = function() {
+  return Math.min(...this);
+};
+Array.prototype.max = function() {
+  return Math.max(...this);
+};
+Array.prototype.sum = function() {
+  return this.reduce(
+    (sum, value) => sum + value,
+  0);
+};
+Array.prototype.avg = function() {
+  return this.reduce(
+    (sum, value) => sum + value,
+  0) / this.length;
+};
+Array.prototype.range = function() {
+  const min = Math.min(...this);
+  const max = Math.max(...this);
+
+  return this.map(
+    value => (value - min) / (max - min)
+  );
 };
 
 Element.prototype.spark = function(particles, size, time) {
@@ -272,6 +320,906 @@ colorButton.onmouseup = function(e) {
     });
 };
 
+const loadedElementColors = {};
+
+const elementalTrends = {
+  'group:divider::1': 7,
+  'group:side:Electrons': 4,
+  '#_Electrons:electrons': function(log) {
+    const elements = Object.fromEntries(pTable.map(
+      element => [ element.symbol, element.electrons_per_shell ? element.electrons_per_shell.sum() : undefined ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  '#_Electron_Shells:electrons': function(log) {
+    const elements = Object.fromEntries(pTable.map(
+      element => [ element.symbol, element.electrons_per_shell?.length ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'Electronegativity:electrons': function(log) {
+    const elements = Object.fromEntries(pTable.map(
+      element => [ element.symbol, element.electronegativity_pauling ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'Electron_Affinity:electrons': function(log) {
+    const elements = Object.fromEntries(pTable.map(
+      element => [ element.symbol, element.electron_affinity ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'group:side:Radius': 3,
+  'Calculated:radius': function(log) {
+    const elements = Object.fromEntries(pTable.map(
+      element => [ element.symbol, element.radius?.calculated ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'Empirical:radius': function(log) {
+    const elements = Object.fromEntries(pTable.map(
+      element => [ element.symbol, element.radius?.empirical ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'Covalent:radius': function(log) {
+    const elements = Object.fromEntries(pTable.map(
+      element => [ element.symbol, element.radius?.covalent ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'group:divider::2': 8,
+  'group:side:Tempature': 4,
+  'Boiling:tempature': function(log) {
+    const elements = Object.fromEntries(pTable.map(
+      element => [ element.symbol, element.boiling_point ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'Critical:tempature': function(log) {
+    const elements = Object.fromEntries(pTable.map(
+      element => [ element.symbol, element.critical_temperature ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'Melting:tempature': function(log) {
+    const elements = Object.fromEntries(pTable.map(
+      element => [ element.symbol, element.melting_point ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'Superconducting:tempature': function(log) {
+    const elements = Object.fromEntries(pTable.map(
+      element => [ element.symbol, element.superconducting_point ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'group:side:Heat': 4,
+  'Specific:heat': function(log) {
+    const elements = Object.fromEntries(pTable.map(
+      element => [ element.symbol, element.heat?.specific ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'Vaporization:heat': function(log) {
+    const elements = Object.fromEntries(pTable.map(
+      element => [ element.symbol, element.heat?.vaporization ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'Fusion:heat': function(log) {
+    const elements = Object.fromEntries(pTable.map(
+      element => [ element.symbol, element.heat?.fusion ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'Molar:heat': function(log) {
+    const elements = Object.fromEntries(pTable.map(
+      element => [ element.symbol, element.heat?.molar ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'group:divider::3': 5,
+  'group:side:Conductivity': 2,
+  'Thermal:conductivity': function(log) {
+    const elements = Object.fromEntries(pTable.map(
+      element => [ element.symbol, element.conductivity?.thermal ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'Electric:conductivity': function(log) {
+    const elements = Object.fromEntries(pTable.map(
+      element => [ element.symbol, element.conductivity?.electric ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'Magnetic_Susceptibility': function(log) {
+    const elements = Object.fromEntries(pTable.map(
+      element => [ element.symbol, element.magnetic_susceptibility?.mass ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+};
+
+const isotopicTrends = {
+  'group:divider::1': 4,
+  'group:side:Isotopes_&_Isomers': 4,
+  'group:divider:#_Isotopes': 2,
+  'All:isotopes': function(log) {
+    const amounts = Object.fromEntries(Object.entries(Nubase2020.nuclides).map(
+      ([ key, element ]) => [ key, Object.values(element).length ]
+    ));
+
+    return Object.range(amounts, log);
+  },
+  'Stable:#_isotopes': function(log) {
+    const amounts = Object.fromEntries(Object.entries(Nubase2020.nuclides).map(
+      ([ key, element ]) => [ key, Object.values(element).filter(
+        isotope => isotope.half_life?.value?.value === 'Stable'
+      ).length ]
+    ));
+
+    return Object.range(amounts, log);
+  },
+  'group:divider:#_Isomers': 2,
+  'All:isomers': function(log) {
+    const amounts = Object.fromEntries(Object.entries(Nubase2020.nuclides).map(
+      ([ key, element ]) => [ key, Object.values(element).map(
+        isotope => Object.values(isotope.isomers ?? {}).length
+      ).sum() ]
+    ));
+
+    return Object.range(amounts, log);
+  },
+  'Stable:isomers': function(log) {
+    const amounts = Object.fromEntries(Object.entries(Nubase2020.nuclides).map(
+      ([ key, element ]) => [ key, Object.values(element).map(
+        isotope => Object.values(isotope.isomers ?? {}).filter(
+          isomer => isomer.half_life?.value?.value === 'Stable'
+        ).length
+      ).sum() ]
+    ));
+
+    return Object.range(amounts, log);
+  },
+  'group:divider::2': 18,
+  'group:side:Mass_Excess': 6,
+  'group:divider:Standard:mass_excess': 3,
+  'Minimum:isotope_mass_excess': function(log, include_extremes) {
+    const massExcesses = Object.fromEntries(Object.entries(Nubase2020.nuclides).map(
+      ([ key, element ]) => [ key, Object.values(element).reduce((min, isotope) => {
+        const proportion = isotope.mass_excess?.proportion ?? -1;
+        const clamped = proportion.clamp(0, 1);
+
+        let isoArray = isotope.mass_excess?.proportion === undefined || !(include_extremes || proportion === clamped) ? [] : [ clamped ];
+        isoArray = isoArray.concat((isotope.isomers ?? []).filter(isomer => {
+          const proportion = isomer.mass_excess?.proportion ?? -1;
+          return ![ null, undefined ].includes(isomer.mass_excess?.proportion) && (include_extremes || proportion === proportion.clamp(0, 1));
+        }).map(
+          isomer => (isomer.mass_excess?.proportion ?? 0).clamp(0, 1)
+        ));
+
+        return Math.min(min, ...isoArray);
+      }, Infinity) ]
+    ));
+
+    return Object.range(massExcesses, log);
+  },
+  'Average:isotope_mass_excess': function(log, include_extremes) {
+    const massExcesses = Object.fromEntries(Object.entries(Nubase2020.nuclides).map(
+      ([ key, element ]) => [ key, Object.values(element).map(isotope => {
+        const proportion = isotope.mass_excess?.proportion ?? -1;
+        const clamped = proportion.clamp(0, 1);
+
+        let isoArray = isotope.mass_excess?.proportion === undefined || !(include_extremes || proportion === clamped) ? [] : [ clamped ];
+        isoArray = isoArray.concat((isotope.isomers ?? []).filter(isomer => {
+          const proportion = isomer.mass_excess?.proportion ?? -1;
+          return ![ null, undefined ].includes(isomer.mass_excess?.proportion) && (include_extremes || proportion === proportion.clamp(0, 1));
+        }).map(
+          isomer => (isomer.mass_excess?.proportion ?? 0).clamp(0, 1)
+        ));
+
+        return isoArray.length ? isoArray : null;
+      }).filter(
+        value => value !== null
+      ).flat(Infinity).avg() || 0 ]
+    ));
+
+    return Object.range(massExcesses, log);
+  },
+  'Maximum:isotope_mass_excess': function(log, include_extremes) {
+    const massExcesses = Object.fromEntries(Object.entries(Nubase2020.nuclides).map(
+      ([ key, element ]) => [ key, Object.values(element).reduce((max, isotope) => {
+        const proportion = isotope.mass_excess?.proportion ?? -1;
+        const clamped = proportion.clamp(0, 1);
+
+        let isoArray = isotope.mass_excess?.proportion === undefined || !(include_extremes || proportion === clamped) ? [] : [ clamped ];
+        isoArray = isoArray.concat((isotope.isomers ?? []).filter(isomer => {
+          const proportion = isomer.mass_excess?.proportion ?? -1;
+          return ![ null, undefined ].includes(isomer.mass_excess?.proportion) && (include_extremes || proportion === proportion.clamp(0, 1));
+        }).map(
+          isomer => (isomer.mass_excess?.proportion ?? 0).clamp(0, 1)
+        ));
+
+        return Math.max(max, ...isoArray);
+      }, -Infinity) ]
+    ));
+
+    return Object.range(massExcesses, log);
+  },
+  'group:divider:Base:mass_excess': 3,
+  'Minimum:isotope_mass_excess_base': function(log, include_extremes) {
+    const massExcesses = Object.fromEntries(Object.entries(Nubase2020.nuclides).map(
+      ([ key, element ]) => [ key, Object.values(element).reduce((min, isotope) => {
+        const proportion = isotope.mass_excess?.logarithmic_proportion ?? -1;
+        const clamped = proportion.clamp(0, 1);
+
+        let isoArray = isotope.mass_excess?.logarithmic_proportion === undefined || !(include_extremes || proportion === clamped) ? [] : [ clamped ];
+        isoArray = isoArray.concat((isotope.isomers ?? []).filter(isomer => {
+          const proportion = isomer.mass_excess?.logarithmic_proportion ?? -1;
+          return ![ null, undefined ].includes(isomer.mass_excess?.logarithmic_proportion) && (include_extremes || proportion === proportion.clamp(0, 1));
+        }).map(
+          isomer => (isomer.mass_excess?.logarithmic_proportion ?? 0).clamp(0, 1)
+        ));
+
+        return Math.min(min, ...isoArray);
+      }, Infinity) ]
+    ));
+
+    return Object.range(massExcesses, log);
+  },
+  'Average:isotope_mass_excess_base': function(log, include_extremes) {
+    const massExcesses = Object.fromEntries(Object.entries(Nubase2020.nuclides).map(
+      ([ key, element ]) => [ key, Object.values(element).map(isotope => {
+        const proportion = isotope.mass_excess?.logarithmic_proportion ?? -1;
+        const clamped = proportion.clamp(0, 1);
+
+        let isoArray = isotope.mass_excess?.logarithmic_proportion === undefined || !(include_extremes || proportion === clamped) ? [] : [ clamped ];
+        isoArray = isoArray.concat((isotope.isomers ?? []).filter(isomer => {
+          const proportion = isomer.mass_excess?.logarithmic_proportion ?? -1;
+          return ![ null, undefined ].includes(isomer.mass_excess?.logarithmic_proportion) && (include_extremes || proportion === proportion.clamp(0, 1));
+        }).map(
+          isomer => (isomer.mass_excess?.logarithmic_proportion ?? 0).clamp(0, 1)
+        ));
+
+        return isoArray.length ? isoArray : null;
+      }).filter(
+        value => value !== null
+      ).flat(Infinity).avg() || 0 ]
+    ));
+
+    return Object.range(massExcesses, log);
+  },
+  'Maximum:isotope_mass_excess_base': function(log, include_extremes) {
+    const massExcesses = Object.fromEntries(Object.entries(Nubase2020.nuclides).map(
+      ([ key, element ]) => [ key, Object.values(element).reduce((max, isotope) => {
+        const proportion = isotope.mass_excess?.logarithmic_proportion ?? -1;
+        const clamped = proportion.clamp(0, 1);
+
+        let isoArray = isotope.mass_excess?.logarithmic_proportion === undefined || !(include_extremes || proportion === clamped) ? [] : [ clamped ];
+        isoArray = isoArray.concat((isotope.isomers ?? []).filter(isomer => {
+          const proportion = isomer.mass_excess?.logarithmic_proportion ?? -1;
+          return ![ null, undefined ].includes(isomer.mass_excess?.logarithmic_proportion) && (include_extremes || proportion === proportion.clamp(0, 1));
+        }).map(
+          isomer => (isomer.mass_excess?.logarithmic_proportion ?? 0).clamp(0, 1)
+        ));
+
+        return Math.max(max, ...isoArray);
+      }, -Infinity) ]
+    ));
+
+    return Object.range(massExcesses, log);
+  },
+  'group:side:Half_Life': 6,
+  'group:divider:Standard:half_life': 3,
+  'Minimum:isotope_half_life': function(log, include_extremes) {
+    const halfLives = Object.fromEntries(Object.entries(Nubase2020.nuclides).map(
+      ([ key, element ]) => [ key, Object.values(element).reduce((min, isotope) => {
+        const proportion = isotope.half_life?.proportion ?? -1;
+        const clamped = proportion.clamp(0, 1);
+
+        let isoArray = isotope.half_life?.proportion === undefined || !(include_extremes || proportion === clamped) ? [] : [ clamped ];
+        isoArray = isoArray.concat((isotope.isomers ?? []).filter(isomer => {
+          const proportion = isomer.half_life?.proportion ?? -1;
+          return ![ null, undefined ].includes(isomer.half_life?.proportion) && (include_extremes || proportion === proportion.clamp(0, 1));
+        }).map(
+          isomer => (isomer.half_life?.proportion ?? 0).clamp(0, 1)
+        ));
+
+        return Math.min(min, ...isoArray);
+      }, Infinity) ]
+    ));
+
+    return Object.range(halfLives, log);
+  },
+  'Average:isotope_half_life': function(log, include_extremes) {
+    const halfLives = Object.fromEntries(Object.entries(Nubase2020.nuclides).map(
+      ([ key, element ]) => [ key, Object.values(element).map(isotope => {
+        const proportion = isotope.half_life?.proportion ?? -1;
+        const clamped = proportion.clamp(0, 1);
+
+        let isoArray = isotope.half_life?.proportion === undefined || !(include_extremes || proportion === clamped) ? [] : [ clamped ];
+        isoArray = isoArray.concat((isotope.isomers ?? []).filter(isomer => {
+          const proportion = isomer.half_life?.proportion ?? -1;
+          return ![ null, undefined ].includes(isomer.half_life?.proportion) && (include_extremes || proportion === proportion.clamp(0, 1));
+        }).map(
+          isomer => (isomer.half_life?.proportion ?? 0).clamp(0, 1)
+        ));
+
+        return isoArray.length ? isoArray : null;
+      }).filter(
+        value => value !== null
+      ).flat(Infinity).avg() || 0 ]
+    ));
+
+    return Object.range(halfLives, log);
+  },
+  'Maximum:isotope_half_life': function(log, include_extremes) {
+    const halfLives = Object.fromEntries(Object.entries(Nubase2020.nuclides).map(
+      ([ key, element ]) => [ key, Object.values(element).reduce((max, isotope) => {
+        const proportion = isotope.half_life?.proportion ?? -1;
+        const clamped = proportion.clamp(0, 1);
+
+        let isoArray = isotope.half_life?.proportion === undefined || !(include_extremes || proportion === clamped) ? [] : [ clamped ];
+        isoArray = isoArray.concat((isotope.isomers ?? []).filter(isomer => {
+          const proportion = isomer.half_life?.proportion ?? -1;
+          return ![ null, undefined ].includes(isomer.half_life?.proportion) && (include_extremes || proportion === proportion.clamp(0, 1));
+        }).map(
+          isomer => (isomer.half_life?.proportion ?? 0).clamp(0, 1)
+        ));
+
+        return Math.max(max, ...isoArray);
+      }, -Infinity) ]
+    ));
+
+    return Object.range(halfLives, log);
+  },
+  'group:divider:Base:half_life': 3,
+  'Minimum:isotope_half_life_base': function(log, include_extremes) {
+    const halfLives = Object.fromEntries(Object.entries(Nubase2020.nuclides).map(
+      ([ key, element ]) => [ key, Object.values(element).reduce((min, isotope) => {
+        const proportion = isotope.half_life?.logarithmic_proportion ?? -1;
+        const clamped = proportion.clamp(0, 1);
+
+        let isoArray = isotope.half_life?.logarithmic_proportion === undefined || !(include_extremes || proportion === clamped) ? [] : [ clamped ];
+        isoArray = isoArray.concat((isotope.isomers ?? []).filter(isomer => {
+          const proportion = isomer.half_life?.logarithmic_proportion ?? -1;
+          return ![ null, undefined ].includes(isomer.half_life?.logarithmic_proportion) && (include_extremes || proportion === proportion.clamp(0, 1));
+        }).map(
+          isomer => (isomer.half_life?.logarithmic_proportion ?? 0).clamp(0, 1)
+        ));
+
+        return Math.min(min, ...isoArray);
+      }, Infinity) ]
+    ));
+
+    return Object.range(halfLives, log);
+  },
+  'Average:isotope_half_life_base': function(log, include_extremes) {
+    const halfLives = Object.fromEntries(Object.entries(Nubase2020.nuclides).map(
+      ([ key, element ]) => [ key, Object.values(element).map(isotope => {
+        const proportion = isotope.half_life?.logarithmic_proportion ?? -1;
+        const clamped = proportion.clamp(0, 1);
+
+        let isoArray = isotope.half_life?.logarithmic_proportion === undefined || !(include_extremes || proportion === clamped) ? [] : [ clamped ];
+        isoArray = isoArray.concat((isotope.isomers ?? []).filter(isomer => {
+          const proportion = isomer.half_life?.logarithmic_proportion ?? -1;
+          return ![ null, undefined ].includes(isomer.half_life?.logarithmic_proportion) && (include_extremes || proportion === proportion.clamp(0, 1));
+        }).map(
+          isomer => (isomer.half_life?.logarithmic_proportion ?? 0).clamp(0, 1)
+        ));
+
+        return isoArray.length ? isoArray : null;
+      }).filter(
+        value => value !== null
+      ).flat(Infinity).avg() || 0 ]
+    ));
+
+    return Object.range(halfLives, log);
+  },
+  'Maximum:isotope_half_life_base': function(log, include_extremes) {
+    const halfLives = Object.fromEntries(Object.entries(Nubase2020.nuclides).map(
+      ([ key, element ]) => [ key, Object.values(element).reduce((max, isotope) => {
+        const proportion = isotope.half_life?.logarithmic_proportion ?? -1;
+        const clamped = proportion.clamp(0, 1);
+
+        let isoArray = isotope.half_life?.logarithmic_proportion === undefined || !(include_extremes || proportion === clamped) ? [] : [ clamped ];
+        isoArray = isoArray.concat((isotope.isomers ?? []).filter(isomer => {
+          const proportion = isomer.half_life?.logarithmic_proportion ?? -1;
+          return ![ null, undefined ].includes(isomer.half_life?.logarithmic_proportion) && (include_extremes || proportion === proportion.clamp(0, 1));
+        }).map(
+          isomer => (isomer.half_life?.logarithmic_proportion ?? 0).clamp(0, 1)
+        ));
+
+        return Math.max(max, ...isoArray);
+      }, -Infinity) ]
+    ));
+
+    return Object.range(halfLives, log);
+  },
+  'group:side:Excitation_Energy': 6,
+  'group:divider:Standard:excitation_energy': 3,
+  'Minimum:isotope_excitation_energy': function(log, include_extremes) {
+    const excitationEnergies = Object.fromEntries(Object.entries(Nubase2020.nuclides).map(
+      ([ key, element ]) => [ key, Object.values(element).reduce((min, isotope) => {
+        const proportion = isotope.excitation_energy?.proportion ?? -1;
+        const clamped = proportion.clamp(0, 1);
+
+        let isoArray = isotope.excitation_energy?.proportion === undefined || !(include_extremes || proportion === clamped) ? [] : [ clamped ];
+        isoArray = isoArray.concat((isotope.isomers ?? []).filter(isomer => {
+          const proportion = isomer.excitation_energy?.proportion ?? -1;
+          return ![ null, undefined ].includes(isomer.excitation_energy?.proportion) && (include_extremes || proportion === proportion.clamp(0, 1));
+        }).map(
+          isomer => (isomer.excitation_energy?.proportion ?? 0).clamp(0, 1)
+        ));
+
+        return Math.min(min, ...isoArray);
+      }, Infinity) ]
+    ));
+
+    return Object.range(excitationEnergies, log);
+  },
+  'Average:isotope_excitation_energy': function(log, include_extremes) {
+    const excitationEnergies = Object.fromEntries(Object.entries(Nubase2020.nuclides).map(
+      ([ key, element ]) => [ key, Object.values(element).map(isotope => {
+        const proportion = isotope.excitation_energy?.proportion ?? -1;
+        const clamped = proportion.clamp(0, 1);
+
+        let isoArray = isotope.excitation_energy?.proportion === undefined || !(include_extremes || proportion === clamped) ? [] : [ clamped ];
+        isoArray = isoArray.concat((isotope.isomers ?? []).filter(isomer => {
+          const proportion = isomer.excitation_energy?.proportion ?? -1;
+          return ![ null, undefined ].includes(isomer.excitation_energy?.proportion) && (include_extremes || proportion === proportion.clamp(0, 1));
+        }).map(
+          isomer => (isomer.excitation_energy?.proportion ?? 0).clamp(0, 1)
+        ));
+
+        return isoArray.length ? isoArray : null;
+      }).filter(
+        value => value !== null
+      ).flat(Infinity).avg() || 0 ]
+    ));
+
+    return Object.range(excitationEnergies, log);
+  },
+  'Maximum:isotope_excitation_energy': function(log, include_extremes) {
+    const excitationEnergies = Object.fromEntries(Object.entries(Nubase2020.nuclides).map(
+      ([ key, element ]) => [ key, Object.values(element).reduce((max, isotope) => {
+        const proportion = isotope.excitation_energy?.proportion ?? -1;
+        const clamped = proportion.clamp(0, 1);
+
+        let isoArray = isotope.excitation_energy?.proportion === undefined || !(include_extremes || proportion === clamped) ? [] : [ clamped ];
+        isoArray = isoArray.concat((isotope.isomers ?? []).filter(isomer => {
+          const proportion = isomer.excitation_energy?.proportion ?? -1;
+          return ![ null, undefined ].includes(isomer.excitation_energy?.proportion) && (include_extremes || proportion === proportion.clamp(0, 1));
+        }).map(
+          isomer => (isomer.excitation_energy?.proportion ?? 0).clamp(0, 1)
+        ));
+
+        return Math.max(max, ...isoArray);
+      }, -Infinity) ]
+    ));
+
+    return Object.range(excitationEnergies, log);
+  },
+  'group:divider:Base:excitation_energy': 3,
+  'Minimum:isotope_excitation_energy_base': function(log, include_extremes) {
+    const excitationEnergies = Object.fromEntries(Object.entries(Nubase2020.nuclides).map(
+      ([ key, element ]) => [ key, Object.values(element).reduce((min, isotope) => {
+        const proportion = isotope.excitation_energy?.logarithmic_proportion ?? -1;
+        const clamped = proportion.clamp(0, 1);
+
+        let isoArray = isotope.excitation_energy?.logarithmic_proportion === undefined || !(include_extremes || proportion === clamped) ? [] : [ clamped ];
+        isoArray = isoArray.concat((isotope.isomers ?? []).filter(isomer => {
+          const proportion = isomer.excitation_energy?.logarithmic_proportion ?? -1;
+          return ![ null, undefined ].includes(isomer.excitation_energy?.logarithmic_proportion) && (include_extremes || proportion === proportion.clamp(0, 1));
+        }).map(
+          isomer => (isomer.excitation_energy?.logarithmic_proportion ?? 0).clamp(0, 1)
+        ));
+
+        return Math.min(min, ...isoArray);
+      }, Infinity) ]
+    ));
+
+    return Object.range(excitationEnergies, log);
+  },
+  'Average:isotope_excitation_energy_base': function(log, include_extremes) {
+    const excitationEnergies = Object.fromEntries(Object.entries(Nubase2020.nuclides).map(
+      ([ key, element ]) => [ key, Object.values(element).map(isotope => {
+        const proportion = isotope.excitation_energy?.logarithmic_proportion ?? -1;
+        const clamped = proportion.clamp(0, 1);
+
+        let isoArray = isotope.excitation_energy?.logarithmic_proportion === undefined || !(include_extremes || proportion === clamped) ? [] : [ clamped ];
+        isoArray = isoArray.concat((isotope.isomers ?? []).filter(isomer => {
+          const proportion = isomer.excitation_energy?.logarithmic_proportion ?? -1;
+          return ![ null, undefined ].includes(isomer.excitation_energy?.logarithmic_proportion) && (include_extremes || proportion === proportion.clamp(0, 1));
+        }).map(
+          isomer => (isomer.excitation_energy?.logarithmic_proportion ?? 0).clamp(0, 1)
+        ));
+
+        return isoArray.length ? isoArray : null;
+      }).filter(
+        value => value !== null
+      ).flat(Infinity).avg() || 0 ]
+    ));
+
+    return Object.range(excitationEnergies, log);
+  },
+  'Maximum:isotope_excitation_energy_base': function(log, include_extremes) {
+    const excitationEnergies = Object.fromEntries(Object.entries(Nubase2020.nuclides).map(
+      ([ key, element ]) => [ key, Object.values(element).reduce((max, isotope) => {
+        const proportion = isotope.excitation_energy?.logarithmic_proportion ?? -1;
+        const clamped = proportion.clamp(0, 1);
+
+        let isoArray = isotope.excitation_energy?.logarithmic_proportion === undefined || !(include_extremes || proportion === clamped) ? [] : [ clamped ];
+        isoArray = isoArray.concat((isotope.isomers ?? []).filter(isomer => {
+          const proportion = isomer.excitation_energy?.logarithmic_proportion ?? -1;
+          return ![ null, undefined ].includes(isomer.excitation_energy?.logarithmic_proportion) && (include_extremes || proportion === proportion.clamp(0, 1));
+        }).map(
+          isomer => (isomer.excitation_energy?.logarithmic_proportion ?? 0).clamp(0, 1)
+        ));
+
+        return Math.max(max, ...isoArray);
+      }, -Infinity) ]
+    ));
+
+    return Object.range(excitationEnergies, log);
+  },
+  'group:divider::3': 3,
+  '#_Protons': function(log) {
+    const amounts = Object.fromEntries(Object.entries(Nubase2020.nuclides).map(
+      ([ key, element ]) => [ key, Object.values(element)[0].protons ]
+    ));
+
+    return Object.range(amounts, log);
+  },
+  '#_Neutrons': function(log) {
+    const amounts = Object.fromEntries(Object.entries(Nubase2020.nuclides).map(
+      ([ key, element ]) => [ key, Object.values(element)[0].neutrons ]
+    ));
+
+    return Object.range(amounts, log);
+  },
+  'Neutrons_per_Proton': function(log) {
+    const ratios = Object.fromEntries(Object.entries(Nubase2020.nuclides).map(
+      ([ key, element ]) => [ key, Object.values(element)[0].neutrons / Object.values(element)[0].protons ]
+    ));
+
+    return Object.range(ratios);
+  },
+  'group:divider::4': 6,
+  'group:side:#_Decay_Chains': 3,
+  'Average:decay_chains': function(log) {
+    const amounts = Object.fromEntries(Object.entries(Nubase2020.nuclides).map(
+      ([ key, element ]) => [ key, Object.values(element).map(
+        isotope => (Object.values(isotope.radioactive_decay ?? {}).length ?? 0) + Object.values(isotope.isomers ?? {}).map(
+          isomer => Object.values(isomer.radioactive_decay ?? {}).length ?? 0
+        ).sum()
+      ).sum() ]
+    ));
+
+    return Object.range(amounts, log);
+  },
+  'Maximum:decay_chains': function(log) {
+    const amounts = Object.fromEntries(Object.entries(Nubase2020.nuclides).map(
+      ([ key, element ]) => [ key, Object.values(element).map(
+        isotope => (Object.values(isotope.radioactive_decay ?? {}).length ?? 0) + (isotope.isomers ? Object.values(isotope.isomers).map(
+          isomer => Object.values(isomer.radioactive_decay ?? {}).length ?? 0
+        ).sum() : 0)
+      ).max() ]
+    ));
+
+    return Object.range(amounts, log);
+  },
+  'Maximum_(Isomers_seperate):decay_chains': function(log) {
+    const amounts = Object.fromEntries(Object.entries(Nubase2020.nuclides).map(
+      ([ key, element ]) => [ key, Object.values(element).map(
+        isotope => Math.max((Object.values(isotope.radioactive_decay ?? {}).length ?? 0), (isotope.isomers ? Object.values(isotope.isomers).map(
+          isomer => Object.values(isomer.radioactive_decay ?? {}).length ?? 0
+        ).max() : 0))
+      ).max() ]
+    ));
+
+    return Object.range(amounts, log);
+  },
+  'group:side:#_Decay_Parents': 3,
+  'Average:decay_parents': function(log) {
+    const amounts = Object.fromEntries(Object.entries(Nubase2020.nuclides).map(
+      ([ key, element ]) => [ key, Object.values(element).map(
+        isotope => (isotope.parents?.length ?? 0) + Object.values(isotope.isomers ?? {}).map(
+          isomer => isomer.parents?.length ?? 0
+        ).sum()
+      ).sum() ]
+    ));
+
+    return Object.range(amounts, log);
+  },
+  'Maximum:decay_parents': function(log) {
+    const amounts = Object.fromEntries(Object.entries(Nubase2020.nuclides).map(
+      ([ key, element ]) => [ key, Object.values(element).map(
+        isotope => (isotope.parents?.length ?? 0) + (isotope.isomers ? Object.values(isotope.isomers).map(
+          isomer => isomer.parents?.length ?? 0
+        ).sum() : 0)
+      ).max() ]
+    ));
+
+    return Object.range(amounts, log);
+  },
+  'Maximum_(Isomers_seperate):decay_parents': function(log) {
+    const amounts = Object.fromEntries(Object.entries(Nubase2020.nuclides).map(
+      ([ key, element ]) => [ key, Object.values(element).map(
+        isotope => Math.max((isotope.parents?.length ?? 0), (isotope.isomers ? Object.values(isotope.isomers).map(
+          isomer => isomer.parents?.length ?? 0
+        ).max() : 0))
+      ).max() ]
+    ));
+
+    return Object.range(amounts, log);
+  },
+  'group:divider::5': 6,
+  'group:side:Discovered': 3,
+  'Minimum:discovered': function(log) {
+    const dates = Object.fromEntries(Object.entries(Nubase2020.nuclides).map(
+      ([ key, element ]) => [ key, Object.values(element).reduce((min, isotope) => {
+        let isoArray = isotope.discoverd === undefined ? [] : [ isotope.discoverd ];
+        isoArray = isoArray.concat((isotope.isomers ?? []).map(
+          isomer => isomer.discoverd
+        )).filter(
+          value => value !== undefined
+        );
+
+        return Math.min(min, ...isoArray);
+      }, Infinity) ]
+    ));
+
+    return Object.range(dates, log);
+  },
+  'Average:discovered': function(log) {
+    const dates = Object.fromEntries(Object.entries(Nubase2020.nuclides).map(
+      ([ key, element ]) => [ key, Object.values(element).map(isotope => {
+        let isoArray = isotope.discoverd === undefined ? [] : [ isotope.discoverd ];
+        isoArray = isoArray.concat((isotope.isomers ?? []).map(
+          isomer => isomer.discoverd
+        )).filter(
+          value => value !== undefined
+        );
+
+        return isoArray.length ? isoArray : null;
+      }).filter(
+        value => value !== null
+      ).flat(Infinity).avg() || 0 ]
+    ));
+
+    return Object.range(dates, log);
+  },
+  'Maximum:discovered': function(log) {
+    const dates = Object.fromEntries(Object.entries(Nubase2020.nuclides).map(
+      ([ key, element ]) => [ key, Object.values(element).reduce((max, isotope) => {
+        let isoArray = isotope.discoverd === undefined ? [] : [ isotope.discoverd ];
+        isoArray = isoArray.concat((isotope.isomers ?? []).map(
+          isomer => isomer.updated
+        )).filter(
+          value => value !== undefined
+        );
+
+        return Math.max(max, ...isoArray);
+      }, 0) ]
+    ));
+
+    return Object.range(dates, log);
+  },
+  'group:side:Updated_(ENSDF)': 3,
+  'Minimum:updated': function(log) {
+    const dates = Object.fromEntries(Object.entries(Nubase2020.nuclides).map(
+      ([ key, element ]) => [ key, Object.values(element).reduce((min, isotope) => {
+        let isoArray = isotope.updated === undefined ? [] : [ isotope.updated ];
+        isoArray = isoArray.concat((isotope.isomers ?? []).map(
+          isomer => isomer.updated
+        )).filter(
+          value => value !== undefined
+        );
+
+        return Math.min(min, ...isoArray);
+      }, Infinity) ]
+    ));
+
+    return Object.range(dates, log);
+  },
+  'Average:updated': function(log) {
+    const dates = Object.fromEntries(Object.entries(Nubase2020.nuclides).map(
+      ([ key, element ]) => [ key, Object.values(element).map(isotope => {
+        let isoArray = isotope.updated === undefined ? [] : [ isotope.updated ];
+        isoArray = isoArray.concat((isotope.isomers ?? []).map(
+          isomer => isomer.updated
+        )).filter(
+          value => value !== undefined
+        );
+
+        return isoArray.length ? isoArray : null;
+      }).filter(
+        value => value !== null
+      ).flat(Infinity).avg() || 0 ]
+    ));
+
+    return Object.range(dates, log);
+  },
+  'Maximum:updated': function(log) {
+    const dates = Object.fromEntries(Object.entries(Nubase2020.nuclides).map(
+      ([ key, element ]) => [ key, Object.values(element).reduce((max, isotope) => {
+        let isoArray = isotope.updated === undefined ? [] : [ isotope.updated ];
+        isoArray = isoArray.concat((isotope.isomers ?? []).map(
+          isomer => isomer.updated
+        )).filter(
+          value => value !== undefined
+        );
+
+        return Math.max(max, ...isoArray);
+      }, 0) ]
+    ));
+
+    return Object.range(dates, log);
+  },
+};
+
+const computeTrends = function([ trend, thisFunction ]) {
+  const index = groupSize.reduce(
+    (currentIndex, size, index) => !size ? index : currentIndex,
+  undefined);
+
+  if (index !== undefined) {
+    for (let a = 0;a <= index;a++) {
+      groupSize.shift();
+      groupElement.shift();
+    }
+  }
+
+  groupSize = groupSize.map(
+    size => --size
+  );
+
+  const [ command, commandDat, key ] = trend.split(':');
+  if (command === 'group') {
+    const group = currentMenu.child('group template').cloneNode(true);
+    group.classList.remove('template');
+    group.classList.add(commandDat);
+
+    if (key?.length) {
+      group.classList.add(key);
+      group.child('title').innerHTML = '<sup></sup>' + key.replace(/_/g, ' ').trim();
+    } else
+      group.child('title').remove();
+
+    groupElement[0].appendChild(group);
+
+    groupSize = groupSize.map(
+      size => ++size
+    );
+
+    groupSize.unshift(thisFunction);
+    groupElement.unshift(group.child('content'));
+
+    return;
+  }
+
+  const trendElement = currentMenu.child('trend template').cloneNode(true);
+  trendElement.classList.remove('template');
+  trendElement.classList.add(command);
+  trendElement.innerHTML = '<sup></sup>' + command.replace(/_/g, ' ').trim() + '<span class="log" data-selected=false>log</span>';
+  trendElement.onclick = function(event) {
+    if (event.target.classList.contains('log'))
+      return;
+
+    if (this.dataset.selected === 'true') {
+      this.dataset.selected = false;
+      delete loadedElementColors[trend];
+    } else {
+      this.dataset.selected = true;
+      loadedElementColors[trend] = thisFunction(this.child('log').dataset.selected === 'true');
+    }
+  };
+
+  groupElement[0].appendChild(trendElement);
+  trendElement.child('log').onclick = function(event) {
+    this.dataset.selected = this.dataset.selected === 'true' ? false : true;
+
+    if (this.parentElement.dataset.selected === 'true')
+      loadedElementColors[trend] = thisFunction(this.dataset.selected === 'true');
+  };
+};
+
+const isotopicTrendsMenu = document.getElementById('isotopic_trends_menu');
+const elementalTrendsMenu = document.getElementById('elemental_trends_menu');
+
+let currentMenu, groupSize, groupElement;
+[ [ isotopicTrendsMenu, isotopicTrends ], [ elementalTrendsMenu, elementalTrends ] ].forEach(([ menu, trends ]) => {
+  currentMenu = menu;
+  groupSize = [ Infinity ];
+  groupElement = [ currentMenu ];
+
+  Object.entries(trends).forEach(computeTrends);
+});
+
+const trendsButton = document.getElementById('trends_button');
+trendsButton.onmouseup = function(e) {
+  document.body.dataset.trends = {
+    true: 'false',
+    false: 'true',
+  }[document.body.dataset.trends];
+
+  if (document.body.dataset.trends == 'true')
+    pTable.forEach(element => {
+      const html = document.getElementById(element.name.toLowerCase());
+      if (html) {
+        html.style.background = `rgb(${(groupColors[element.series] ?? [ 16, 16, 32 ]).join(', ')})`;
+        const shadow = `rgb(${(groupColors[element.series] ?? [ 16, 16, 32 ]).map(
+          value => value * 1.25
+        ).join(', ')})`;
+        html.style.boxShadow = `1px 1px ${shadow}, 2px 2px ${shadow}, 3px 3px ${shadow}, 4px 4px ${shadow}, 5px 5px ${shadow}, 6px 6px ${shadow}, 7px 7px ${shadow}, 8px 8px ${shadow}, 9px 9px ${shadow}, 10px 10px ${shadow}`;
+      }
+    });
+  else
+    pTable.forEach(element => {
+      const html = document.getElementById(element.name.toLowerCase());
+      if (html) {
+        html.style.background = null;
+        html.style.boxShadow = null;
+      }
+    });
+};
+
 const bottomText = document.getElementById('bottom_text');
 const bottomInnerText = bottomText.child('text');
 
@@ -383,6 +1331,7 @@ pTable.forEach(element => {
   if (html) {
     const { parentElement: parent } = html;
     html.dataset.tableRow = parent.id;
+    html.dataset.symbol = element.symbol;
 
     html.style.top = `${parent.getBoundingClientRect().top}px`;
 
@@ -439,7 +1388,9 @@ function Update() {
 
   FPS = (performance.now() - startTime) / ++frames;
 
+  TestUpdate();
   DPIUpdate();
+  UpdateTrendsContent();
   UpdateElementPositions();
   FollowIsotopes(nSidebar);
   FollowIsotopes(abundanceChart);
@@ -455,6 +1406,14 @@ function Update() {
   requestAnimationFrame(Update);
 }
 requestAnimationFrame(Update);
+
+function TestUpdate() {
+  [...document.getElementsByClassName('element')].forEach(
+    element => element.style.filter = `brightness(${Object.values(loadedElementColors ?? {}).length ? Object.values(loadedElementColors).reduce(
+      (avg, trend, _, array) => avg + (trend[element.dataset.symbol] ?? 0) / (array.length || 1), 0
+    ) * 100 : 100}%)`
+  );
+}
 
 function DPIUpdate() {
   DPI.x = dpiElement.offsetWidth;
@@ -475,6 +1434,21 @@ function UpdateScale() {
 
   bg.width = innerWidth;
   bg.height = innerHeight;
+}
+
+function UpdateTrendsContent() {
+  [ ...isotopicTrendsMenu.getElementsByClassName('content') ].forEach(element => {
+    const { parentElement } = element;
+    if (!parentElement.classList.contains('side'))
+      return;
+
+    let { bottom, height } = element.getBoundingClientRect();
+    bottom += +(element.dataset.vOffset ?? 0);
+
+    const vOffset = (innerHeight - bottom).clamp(-height + element.previousElementSibling.getBoundingClientRect().height, 0);
+    element.dataset.vOffset = -vOffset;
+    element.style.transform = `translate(0px, ${vOffset}px)`;
+  });
 }
 
 function UpdateElementPositions() {
@@ -896,7 +1870,7 @@ function DrawAbundanceChart(element) {
 
           text.innerHTML += fullText.shift();
       }
-      text.innerHTML = `${lastLine.text.split(' ').slice(0, -1).join(' ')}&mldr;</span>`;
+      text.innerHTML = `${lastLine.text.split(' ').slice(0, 0).join(' ')}&mldr;</span>`;
     });
   };
 
@@ -2593,3 +3567,120 @@ class Tooltip {
     tooltip.style.top = `${y}px`;
   }
 }
+
+/**
+ * Web Scraper
+ */
+
+/*
+const objectFinal = [];
+for (let i = 1;i <= 118;i++) {
+  await fetch(`https://periodictable.com/Elements/${Array.from({ length: 3 - i.toString().length }, () => '0').join('') + i}/data.html`).then(
+    response => response.text()
+  ).then(data => {
+    const div = document.createElement('div');
+    div.innerHTML = data;
+
+    document.body.appendChild(div);
+    const object = Object.fromEntries([ ...div.getElementsByTagName('a') ].filter(
+      ({ parentElement }) => parentElement.tagName === 'FONT'
+    ).map(element => {
+      let key = element.innerHTML.trim();
+      let value = element.parentElement.parentElement.nextElementSibling.innerText.trim();
+
+      value = value.replace(/\[note\]/g, '');
+      if (value === 'N/A' || value === 'None' || key.includes('Isotop'))
+        return [ key, undefined ];
+
+      // critical temp, critical pressure, curie point
+
+      let unit = [];
+      switch (key) {
+        case 'Absolute Melting Point':
+        case 'Absolute Boiling Point':
+          key = key.replace('Absolute ', '');
+        case 'Critical Pressure':
+        case 'Critical Temperature':
+        case 'Density':
+        case 'Heat of Fusion':
+        case 'Heat of Vaporization':
+        case 'Specific Heat':
+        case 'Neel Point':
+        case 'Thermal Conductivity':
+        case 'Thermal Expansion':
+        case 'Density':
+        case 'Density (Liquid)':
+        case 'Brinell Hardness':
+        case 'Vickers Hardness':
+        case 'Bulk Modulus':
+        case 'Shear Modulus':
+        case 'Speed of Sound':
+        case 'Thermal Conductivity':
+        case 'Thermal Expansion':
+        case 'ElectronAffinity':
+        case 'Electrical Conductivity':
+        case 'Resistivity':
+        case 'Curie Point':
+        case 'Mass Magnetic Susceptibility':
+        case 'Molar Magnetic Susceptibility':
+        case 'Volume Magnetic Susceptibility':
+        case 'Atomic Radius':
+        case 'Covalent Radius':
+        case 'Van der Waals Radius':
+        case 'Half-life':
+        case 'Lifetime':
+          [ value, ...unit] = value.split(/\s/);
+          break;
+        case 'Lattice Angles':
+          value = value.replace(', ', '').split(', ');
+          break;
+        case 'Ionization Energies':
+          [ value, unit ] = [ value.replace(' kJ/mol', '').split(', '), { unit: 'kJ/mol' } ];
+          break;
+        case 'Latice Constants':
+          [ value, unit ] = [ value.replace(' pm', '').split(', '), { unit: 'pm' } ];
+          break;
+        case 'Discovery':
+          value = value.split(' in ');
+          break;
+        case 'Melting Point':
+        case 'Boiling Point':
+          return undefined;
+      }
+
+      if (key.includes('%'))
+        [ value, unit ] = [ value.replace('%', ''), { unit: '%' } ];
+
+      if (value instanceof Array) {
+        value = value.map(thisValue => {
+          if (!Number.isNaN(+thisValue))
+            thisValue = +thisValue;
+          else if (thisValue.includes('×')) {
+            let [ number, exponent ] = thisValue.split('×');
+            exponent = exponent.replace('10', '');
+
+            thisValue = `${number}e${(exponent > 0 ? '+' : '') + exponent}`
+          }
+
+          return thisValue;
+        });
+      } else if (!Number.isNaN(+value))
+        value = +value;
+      else if (value.includes('×')) {
+        let [ number, exponent ] = value.split('×');
+        exponent = exponent.replace('10', '');
+
+        value = `${number}e${(exponent > 0 ? '+' : '') + exponent}`
+      }
+
+      return [ key.replace(/(\s|-)/g, '_'), value, { unit: unit ? [ unit ].flat(Infinity).join(' ') : undefined } ];
+    }).filter(
+      value => value !== undefined
+    ));
+
+    objectFinal.push(object);
+
+    div.remove();
+  });
+}
+*/
