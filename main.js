@@ -1,6 +1,6 @@
 const colors = [
   '#4D8066','#FF4D4D','#999966','#B33300','#B3B31A','#809980','#4D80CC','#CCFF1A','#FF99E6','#80B300','#00B3E6','#1AFF33','#99E6E6','#CC9999','#33FFCC','#FFB399','#6666FF','#66991A','#00E680','#E6B333','#E666B3','#E6331A','#E64D66','#B366CC','#4D8000','#B34D4D','#E6B3B3','#999933','#4DB380','#33991A','#809900','#66664D','#FF33FF','#4DB3FF','#E666FF','#66E64D','#6680B3','#CCCC00','#FF3380','#CC80CC','#FFFF99','#991AFF','#FF6633','#66994D','#E6FF80','#FF1A66','#3366E6','#1AB399','#99FF99','#9900B3'
-]; 
+];
 
 const colorizeColors = {
   Normal_Series: {
@@ -3077,7 +3077,7 @@ async function LoadElement() {
   LoadSearchableElments();
 }
 
-setTimeout(() => LoadElement.call(Wolfram.elements.C), 50);
+/* setTimeout(() => LoadElement.call(Wolfram.elements.C), 50); */
 
 function DrawAbundanceChart(element) {
   const NoNaturalIsotopes = function() {
