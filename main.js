@@ -68,6 +68,542 @@ const colorizeColors = {
     'gas diatomic': [ 128, 128, 0 ],
     '': [ null, null, null, null ],
   },
+  Electrical_Type: {
+    'conductor': [ 128, 0, 0 ],
+    'semiconductor': [ 128, 64, 0 ],
+    'insulator': [ 0, 0, 128 ],
+  },
+  Magnetic_Type: {
+    'diamagnetic': [ 128, 128, 0 ],
+    'paramagnetic': [ 128, 0, 0 ],
+    'antiferromagnetic': [ 0, 128, 0 ],
+    'ferromagnetic': [ 0, 0, 128 ],
+  },
+  Decay_Mode: {
+    'beta decay': [ 128, 0, 0 ],
+    'beta plus decay': [ 128, 128, 0 ],
+    'electron capture': [ 0, 128, 0 ],
+    'alpha emission': [ 0, 0, 128 ],
+  },
+  Physical_Color: {
+    'colorless': [ null, null, null, 0.3 ],
+    'silver': [ 192, 192, 192 ],
+    'slategray': [ 44, 50, 56 ],
+    'black': [ 0, 0, 0 ],
+    'gray': [ 128, 128, 128 ],
+    'yellow': [ 240, 230, 120 ],
+    'copper': [ 72, 45, 20 ],
+    'red': [ 128, 0, 0 ],
+    'gold': [ 218, 165, 32 ],
+  },
+  Mohs_Hardness: {
+    "2": [
+      205,
+      0,
+      50
+    ],
+    "3": [
+      177,
+      0,
+      78
+    ],
+    "4": [
+      149,
+      0,
+      106
+    ],
+    "5": [
+      120,
+      0,
+      135
+    ],
+    "6": [
+      92,
+      0,
+      163
+    ],
+    "7": [
+      64,
+      0,
+      191
+    ],
+    "0.2": [
+      255,
+      0,
+      0
+    ],
+    "0.3": [
+      252,
+      0,
+      3
+    ],
+    "0.4": [
+      249,
+      0,
+      6
+    ],
+    "0.5": [
+      247,
+      0,
+      8
+    ],
+    "0.6": [
+      244,
+      0,
+      11
+    ],
+    "1.2": [
+      227,
+      0,
+      28
+    ],
+    "1.23": [
+      226,
+      0,
+      29
+    ],
+    "1.25": [
+      226,
+      0,
+      29
+    ],
+    "1.41": [
+      221,
+      0,
+      34
+    ],
+    "1.44": [
+      220,
+      0,
+      35
+    ],
+    "1.5": [
+      219,
+      0,
+      36
+    ],
+    "1.65": [
+      214,
+      0,
+      41
+    ],
+    "1.75": [
+      212,
+      0,
+      43
+    ],
+    "1.77": [
+      211,
+      0,
+      44
+    ],
+    "1.8": [
+      210,
+      0,
+      45
+    ],
+    "1.97": [
+      205,
+      0,
+      50
+    ],
+    "2.25": [
+      198,
+      0,
+      57
+    ],
+    "2.33": [
+      195,
+      0,
+      60
+    ],
+    "2.5": [
+      191,
+      0,
+      64
+    ],
+    "2.6": [
+      188,
+      0,
+      67
+    ],
+    "2.75": [
+      184,
+      0,
+      71
+    ],
+    "3.07": [
+      175,
+      0,
+      80
+    ],
+    "3.5": [
+      163,
+      0,
+      92
+    ],
+    "4.75": [
+      128,
+      0,
+      127
+    ],
+    "5.13": [
+      117,
+      0,
+      138
+    ],
+    "5.5": [
+      106,
+      0,
+      149
+    ],
+    "6.5": [
+      78,
+      0,
+      177
+    ],
+    "7.5": [
+      50,
+      0,
+      205
+    ],
+    "8.5": [
+      22,
+      0,
+      233
+    ],
+    "9.3": [
+      0,
+      0,
+      255
+    ]
+  },
+  Refractive_Index: {
+    "1.000035": [
+      255,
+      0,
+      0
+    ],
+    "1.000067": [
+      242,
+      0,
+      13
+    ],
+    "1.000132": [
+      228,
+      0,
+      27
+    ],
+    "1.000195": [
+      215,
+      0,
+      40
+    ],
+    "1.000271": [
+      201,
+      0,
+      54
+    ],
+    "1.000281": [
+      188,
+      0,
+      67
+    ],
+    "1.000298": [
+      174,
+      0,
+      81
+    ],
+    "1.000427": [
+      161,
+      0,
+      94
+    ],
+    "1.000702": [
+      148,
+      0,
+      107
+    ],
+    "1.000773": [
+      134,
+      0,
+      121
+    ],
+    "1.000895": [
+      121,
+      0,
+      134
+    ],
+    "1.000933": [
+      107,
+      0,
+      148
+    ],
+    "1.000991": [
+      94,
+      0,
+      161
+    ],
+    "1.001111": [
+      81,
+      0,
+      174
+    ],
+    "1.001132": [
+      67,
+      0,
+      188
+    ],
+    "1.001212": [
+      54,
+      0,
+      201
+    ],
+    "1.001552": [
+      40,
+      0,
+      215
+    ],
+    "1.00205": [
+      27,
+      0,
+      228
+    ],
+    "2.417": [
+      13,
+      0,
+      242
+    ]
+  },
+  Poisson_Ratio: {
+    "0.032": [
+      255,
+      0,
+      0
+    ],
+    "0.15": [
+      183,
+      72,
+      0
+    ],
+    "0.21": [
+      146,
+      109,
+      0
+    ],
+    "0.23": [
+      134,
+      121,
+      0
+    ],
+    "0.24": [
+      128,
+      127,
+      0
+    ],
+    "0.25": [
+      122,
+      133,
+      0
+    ],
+    "0.26": [
+      116,
+      139,
+      0
+    ],
+    "0.27": [
+      110,
+      145,
+      0
+    ],
+    "0.28": [
+      104,
+      151,
+      0
+    ],
+    "0.29": [
+      98,
+      157,
+      0
+    ],
+    "0.3": [
+      92,
+      163,
+      0
+    ],
+    "0.31": [
+      85,
+      170,
+      0
+    ],
+    "0.32": [
+      79,
+      176,
+      0
+    ],
+    "0.33": [
+      73,
+      182,
+      0
+    ],
+    "0.34": [
+      67,
+      188,
+      0
+    ],
+    "0.35": [
+      61,
+      194,
+      0
+    ],
+    "0.36": [
+      55,
+      200,
+      0
+    ],
+    "0.37": [
+      49,
+      206,
+      0
+    ],
+    "0.38": [
+      43,
+      212,
+      0
+    ],
+    "0.39": [
+      37,
+      218,
+      0
+    ],
+    "0.4": [
+      31,
+      224,
+      0
+    ],
+    "0.44": [
+      6,
+      249,
+      0
+    ],
+    "0.45": [
+      0,
+      255,
+      0
+    ]
+  },
+  Space_Group: {
+    "2": [
+      0,
+      134,
+      121
+    ],
+    "11": [
+      0,
+      255,
+      0
+    ],
+    "12": [
+      0,
+      242,
+      13
+    ],
+    "14": [
+      0,
+      215,
+      40
+    ],
+    "15": [
+      0,
+      188,
+      67
+    ],
+    "62": [
+      0,
+      54,
+      201
+    ],
+    "63": [
+      0,
+      40,
+      215
+    ],
+    "64": [
+      0,
+      27,
+      228
+    ],
+    "70": [
+      0,
+      13,
+      242
+    ],
+    "139": [
+      0,
+      228,
+      27
+    ],
+    "141": [
+      0,
+      201,
+      54
+    ],
+    "152": [
+      0,
+      174,
+      81
+    ],
+    "166": [
+      0,
+      161,
+      94
+    ],
+    "194": [
+      0,
+      148,
+      107
+    ],
+    "217": [
+      0,
+      121,
+      134
+    ],
+    "221": [
+      0,
+      107,
+      148
+    ],
+    "225": [
+      0,
+      94,
+      161
+    ],
+    "227": [
+      0,
+      81,
+      174
+    ],
+    "229": [
+      0,
+      67,
+      188
+    ]
+  },
+  Adiabatic_Index: {
+    '7/5': [ 128, 0, 0 ],
+    '5/3': [ 0, 128, 0 ],
+  },
+  DOT_Hazard_Class: {
+    '2.1': [ 128, 0, 0 ],
+    '2.2': [ 0, 128, 0 ],
+    '2.3': [ 0, 0, 128 ],
+    '4.1': [ 128, 128, 0 ],
+    '4.2': [ 0, 128, 128 ],
+    '4.3': [ 128, 128, 0 ],
+    '6.1': [ 128, 64, 0 ],
+    '7': [ 0, 128, 64 ],
+    '8': [ 64, 0, 128 ],
+  },
   /* Simple_Series: {
     'diatomic nonmetal': [ 128, 0, 0 ],
     'noble gas': [ 128, 128, 0 ],
@@ -81,6 +617,12 @@ const colorizeColors = {
     'actinide': [ 128, 0, 64 ],
   } */
 };
+
+/*
+Object.fromEntries([].sort().map((value, index, array) => [ value, [ 255-255 * ((index) / (array.length)), 0, 255 * ((index) / (array.length)) ].map(value => Math.round(value)) ]))
+
+Object.fromEntries([].sort().map((value, index, array) => [ value, [ 255-255 * ((value - Math.min(...array)) / (Math.max(...array) - Math.min(...array))), 0, 255 * ((value - Math.min(...array)) / (Math.max(...array) - Math.min(...array))) ].map(value => Math.round(value)) ]))
+*/
 
 const Mouse = {
   x: null,
@@ -316,17 +858,6 @@ credits.onclick = function(e) {
 };
 
 const decayChainElement = document.getElementById('decay_chain');
-decayChainElement.onclick = function(e) {
-  let element = e.target;
-  let result = element.nodeName === 'A' || element.classList.contains('no_close') ? -1 : (element === document.body || element === this ? 1 : 0);
-  while (element.parentElement && !result) {
-    element = element.parentElement;
-    result = element.nodeName === 'A' || element.classList.contains('no_close') ? -1 : (element === document.body || element === this ? 1 : 0);
-  }
-
-  if (result === 1)
-    this.dataset.hidden = true;
-};
 
 window.onclick = function(e) {
   if (nSidebar.dataset.hidden === 'true') {
@@ -368,6 +899,7 @@ creditsButton.onmouseup = function(e) {
 
 const loadedElementTrends = {};
 const loadedElementColors = {};
+const loadedElementExtras = {};
 
 const evalMathEquation = angle => {
   return Function(`'use strict'; return (${angle.toString().replace(/(?<=\d)\s/g, '*').replace(/&pi;/g, Math.PI)})`)();
@@ -1212,7 +1744,7 @@ const elementalTrends = {
 const isotopicTrends = {
   'group:divider::1': 4,
   'group:side:Isotopes_&_Isomers': 4,
-  'group:divider:#_Isotopes': 2,
+  'group:side:#_Isotopes': 2,
   'All:isotopes': function(log) {
     const amounts = Object.fromEntries(Object.entries(Nubase2020.nuclides).map(
       ([ key, element ]) => [ key, Object.values(element).length ]
@@ -1223,13 +1755,13 @@ const isotopicTrends = {
   'Stable:#_isotopes': function(log) {
     const amounts = Object.fromEntries(Object.entries(Nubase2020.nuclides).map(
       ([ key, element ]) => [ key, Object.values(element).filter(
-        isotope => isotope.half_life.value.value === 'Stable'
+        isotope => isotope.half_life?.value?.value === 'Stable'
       ).length ]
     ));
 
     return Object.range(amounts, log);
   },
-  'group:divider:#_Isomers': 2,
+  'group:side:#_Isomers': 2,
   'All:isomers': function(log) {
     const amounts = Object.fromEntries(Object.entries(Nubase2020.nuclides).map(
       ([ key, element ]) => [ key, Object.values(element).map(
@@ -1243,7 +1775,7 @@ const isotopicTrends = {
     const amounts = Object.fromEntries(Object.entries(Nubase2020.nuclides).map(
       ([ key, element ]) => [ key, Object.values(element).map(
         isotope => Object.values(isotope.isomers ?? {}).filter(
-          isomer => isomer.half_life.value.value === 'Stable'
+          isomer => isomer.half_life?.value?.value === 'Stable'
         ).length
       ).sum() ]
     ));
@@ -1252,7 +1784,7 @@ const isotopicTrends = {
   },
   'group:divider::2': 18,
   'group:side:Mass_Excess': 6,
-  'group:divider:Standard:mass_excess': 3,
+  'group:side:Standard:mass_excess': 3,
   'Minimum:isotope_mass_excess': function(log, include_extremes) {
     const massExcesses = Object.fromEntries(Object.entries(Nubase2020.nuclides).map(
       ([ key, element ]) => [ key, Object.values(element).reduce((min, isotope) => {
@@ -1315,7 +1847,7 @@ const isotopicTrends = {
 
     return Object.range(massExcesses, log);
   },
-  'group:divider:Base:mass_excess': 3,
+  'group:side:Base:mass_excess': 3,
   'Minimum:isotope_mass_excess_base': function(log, include_extremes) {
     const massExcesses = Object.fromEntries(Object.entries(Nubase2020.nuclides).map(
       ([ key, element ]) => [ key, Object.values(element).reduce((min, isotope) => {
@@ -1379,7 +1911,7 @@ const isotopicTrends = {
     return Object.range(massExcesses, log);
   },
   'group:side:Half_Life': 6,
-  'group:divider:Standard:half_life': 3,
+  'group:side:Standard:half_life': 3,
   'Minimum:isotope_half_life': function(log, include_extremes) {
     const halfLives = Object.fromEntries(Object.entries(Nubase2020.nuclides).map(
       ([ key, element ]) => [ key, Object.values(element).reduce((min, isotope) => {
@@ -1442,7 +1974,7 @@ const isotopicTrends = {
 
     return Object.range(halfLives, log);
   },
-  'group:divider:Base:half_life': 3,
+  'group:side:Base:half_life': 3,
   'Minimum:isotope_half_life_base': function(log, include_extremes) {
     const halfLives = Object.fromEntries(Object.entries(Nubase2020.nuclides).map(
       ([ key, element ]) => [ key, Object.values(element).reduce((min, isotope) => {
@@ -1506,7 +2038,7 @@ const isotopicTrends = {
     return Object.range(halfLives, log);
   },
   'group:side:Excitation_Energy': 6,
-  'group:divider:Standard:excitation_energy': 3,
+  'group:side:Standard:excitation_energy': 3,
   'Minimum:isotope_excitation_energy': function(log, include_extremes) {
     const excitationEnergies = Object.fromEntries(Object.entries(Nubase2020.nuclides).map(
       ([ key, element ]) => [ key, Object.values(element).reduce((min, isotope) => {
@@ -1569,7 +2101,7 @@ const isotopicTrends = {
 
     return Object.range(excitationEnergies, log);
   },
-  'group:divider:Base:excitation_energy': 3,
+  'group:side:Base:excitation_energy': 3,
   'Minimum:isotope_excitation_energy_base': function(log, include_extremes) {
     const excitationEnergies = Object.fromEntries(Object.entries(Nubase2020.nuclides).map(
       ([ key, element ]) => [ key, Object.values(element).reduce((min, isotope) => {
@@ -1829,6 +2361,7 @@ const isotopicTrends = {
 };
 
 const colorizeFunctions = {
+  'group:divider::1': 3,
   'group:side:Series:1': 3,
   'Normal:series': [ 'Normal_Series', function() {
     return Object.fromEntries(Object.entries(Wolfram.elements).map(
@@ -1848,21 +2381,14 @@ const colorizeFunctions = {
       ([ _, value ]) => value !== undefined
     ));
   } ],
-  'Advanced_Series:series': [ 'Advanced_Series', function() {
+  'Advanced:series': [ 'Advanced_Series', function() {
     return Object.fromEntries(Object.entries(Wolfram.elements).map(
       ([ symbol, element ]) => [ symbol, element.classifications.series.value ]
     ).filter(
       ([ _, value ]) => value !== undefined
     ));
   } ],
-  'Electron_Block:other': [ 'Electron_Block', function() {
-    return Object.fromEntries(Object.entries(Wolfram.elements).map(
-      ([ symbol, element ]) => [ symbol, element.electron.block.value ]
-    ).filter(
-      ([ _, value ]) => value !== undefined
-    ));
-  } ],
-  'group:divider::1': 2,
+  'group:divider::2': 2,
   'Phase:phase': [ 'Phase', function() {
     return Object.fromEntries(Object.entries(Wolfram.elements).map(
       ([ symbol, element ]) => [ symbol, element.classifications.phase.value ]
@@ -1877,14 +2403,108 @@ const colorizeFunctions = {
       ([ _, value ]) => value !== undefined
     ));
   } ],
-  'group:divider::2': 1,
-  'Hide_Inter:other': [ 'Hide_Inter', function() {
+  'group:divider::3': 1,
+  'Electron_Block:other': [ 'Electron_Block', function() {
+    return Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.electron.block.value ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+  } ],
+  'group:divider::4': 2,
+  'Physical_Color:other': [ 'Physical_Color', function() {
+    return Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.properties.physical.color.value ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+  } ],
+  'Mohs_Hardness:other': [ 'Mohs_Hardness', function() {
+    return Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.properties.physical.hardness.mohs.value ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+  } ],
+  'group:divider::5': 2,
+  'Electrical_Type:other': [ 'Electrical_Type', function() {
+    return Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.properties.electrical.type.value ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+  } ],
+  'Magnetic_Type:other': [ 'Magnetic_Type', function() {
+    return Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.properties.magnetic.type.value ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+  } ],
+  'group:divider::6': 1,
+  'Decay_Mode:other': [ 'Decay_Mode', function() {
+    return Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.properties.nuclear.decay_mode.name.value ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+  } ],
+  'group:divider::7': 3,
+  'Refractive_Index:other': [ 'Refractive_Index', function() {
+    return Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.properties.physical.refractive_index.value ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+  } ],
+  'Adiabatic_Index:other': [ 'Adiabatic_Index', function() {
+    return Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.properties.thermal.adiabatic_index.value ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+  } ],
+  'Poisson_Ratio:other': [ 'Poisson_Ratio', function() {
+    return Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.properties.physical.poisson_ratio.value ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+  } ],
+  'group:divider::8': 3,
+  'Space_Group:other': [ 'Space_Group', function() {
+    return Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.atomic_structure.space_group.number.value ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+  } ],
+  'DOT_Hazard_Class:other': [ 'DOT_Hazard_Class', function() {
+    return Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.classifications.DOT_hazard_class.value ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+  } ],
+  'CPK_Hex:other': [ 'CPK_Hex', function() {
+    return Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.cpk_hex.value.match(/.{1,2}/g).map(
+        value => parseInt(value, 16)
+      ) ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+  } ],
+  'group:divider::9': 3,
+  'Hide_Inter': [ 'Hide_Inter', function() {
     return Object.fromEntries(Object.entries(Wolfram.elements).map(
       ([ symbol, element ]) => [ symbol, element.classifications.series.value ]
     ).filter(
       ([ _, value ]) => value !== undefined
     ));
   } ],
+  'Colored_Gradient': [ 'Colored_Gradient', true ],
+  'Colored_&_Brightness_Gradient': [ 'Colored_&_Brightness_Gradient', true ],
 };
 
 const computeTrends = function([ trend, thisFunction ], _, array) {
@@ -1949,7 +2569,9 @@ const computeTrends = function([ trend, thisFunction ], _, array) {
     if (this.dataset.selected === 'true') {
       this.dataset.selected = false;
 
-      if (thisFunction instanceof Array)
+      if (typeof thisFunction[1] === 'boolean')
+        delete loadedElementExtras[trend];
+      else if (thisFunction instanceof Array)
         delete loadedElementColors[trend];
       else
         delete loadedElementTrends[trend];
@@ -1957,30 +2579,34 @@ const computeTrends = function([ trend, thisFunction ], _, array) {
       this.dataset.selected = true;
 
       if (thisFunction instanceof Array) {
-        const colors = Object.fromEntries(Object.entries(thisFunction[1]()).map(
-          ([ key, value ]) => [ key, colorizeColors[thisFunction[0]][value.toString().toLowerCase()] ]
-        ));
+        if (typeof thisFunction[1] === 'boolean')
+          loadedElementExtras[trend] = thisFunction[1];
+        else {
+          const colors = Object.fromEntries(Object.entries(thisFunction[1]()).map(
+            ([ key, value ]) => [ key, value instanceof Array ? value : colorizeColors[thisFunction[0]][value.toString().toLowerCase()] ]
+          ));
 
-        let badValue = [];
-        let badIndex = [];
-        Object.entries(colors).forEach(([ key, value ]) => {
-          if (!value) {
-            const realValue = thisFunction[1]()[key];
-            if (!badValue.includes(realValue))
-              badValue.push(realValue);
+          let badValue = [];
+          let badIndex = [];
+          Object.entries(colors).forEach(([ key, value ]) => {
+            if (!value) {
+              const realValue = thisFunction[1]()[key];
+              if (!badValue.includes(realValue))
+                badValue.push(realValue);
 
-            badIndex .push({
-              element: key,
-              value: realValue,
-              color: value
-            });
-          }
-        });
+              badIndex .push({
+                element: key,
+                value: realValue,
+                color: value
+              });
+            }
+          });
 
-        if (badValue.length || badIndex.length)
-          console.error( { object_name: thisFunction[0], object: colorizeColors[thisFunction[0]] }, badValue, badIndex);
+          if (badValue.length || badIndex.length)
+            console.error( { object_name: thisFunction[0], object: colorizeColors[thisFunction[0]] }, badValue, badIndex);
 
-        loadedElementColors[trend] = colors;
+          loadedElementColors[trend] = colors;
+        }
       } else
         loadedElementTrends[trend] = thisFunction(this.child('log').dataset.selected === 'true');
     }
@@ -2138,7 +2764,7 @@ animation.maxTime = GetAnimationTime(shownElements - 1) + 1;
 
 [ ...document.getElementsByClassName('fake_element') ].forEach(element => {
   const { parentElement: parent } = element;
-  element.style.top = `${parent.getBoundingClientRect().top}px`;
+  element.classList.add(`element_${parent.id}`);
 });
 
 Object.entries(Wolfram.elements).forEach(([ symbol, element ]) => {
@@ -2148,8 +2774,7 @@ Object.entries(Wolfram.elements).forEach(([ symbol, element ]) => {
     html.dataset.tableRow = parent.id;
     html.dataset.symbol = symbol;
 
-    html.style.top = `${parent.getBoundingClientRect().top}px`;
-
+    html.classList.add(`element_${parent.id}`);
     html.innerHTML = `<p class='atomic_number'>${element.identifiers.atomic_number.value}</p><p class='atomic_mass'>${(element.atomic_structure.atomic_mass.value ?? 0).toDecimals(2)}</p><p class='symbol'>${symbol}</p><div class='hoverable'></div>`;
 
     html.onmouseover = function() {
@@ -2200,7 +2825,6 @@ function Update() {
   UpdateTrendsContent(elementalTrendsMenu);
   UpdateTrendsContent(isotopicTrendsMenu);
   UpdateTrendsContent(colorizeMenu);
-  UpdateElementPositions();
   FollowIsotopes(nSidebar);
   FollowIsotopes(abundanceChart);
   UpdateCollapsibles();
@@ -2221,9 +2845,24 @@ function TrendsUpdate() {
     if (element.classList.contains('fake_element'))
       return;
 
-    element.style.filter = `brightness(${Object.values(loadedElementTrends ?? {}).length ? Object.values(loadedElementTrends).reduce(
-      (avg, trend, _, array) => avg + (trend[element.dataset.symbol] ?? 0) / (array.length || 1), 0
-    ) * 100 : 100}%)`;
+    if (loadedElementExtras.Colored_Gradient || loadedElementExtras['Colored_&_Brightness_Gradient']) {
+      const color = Object.values(loadedElementTrends ?? {}).length ? (Object.values(loadedElementTrends).reduce(
+        (avg, trend, _, array) => avg + trend[element.dataset.symbol] / array.length, 0
+      ) * 255) : undefined;
+
+      loadedElementColors.Colored_Gradient ??= {};
+      if (color === undefined || Number.isNaN(color))
+        loadedElementColors.Colored_Gradient[element.dataset.symbol] = undefined;
+      else
+        loadedElementColors.Colored_Gradient[element.dataset.symbol] = [ 255 - color, 0, color ];
+    }
+
+    if (!loadedElementExtras.Colored_Gradient || loadedElementExtras['Colored_&_Brightness_Gradient'])
+      element.style.filter = `brightness(${Object.values(loadedElementTrends ?? {}).length ? Object.values(loadedElementTrends).reduce(
+        (avg, trend, _, array) => avg + (trend[element.dataset.symbol] ?? 0) / (array.length || 1), 0
+      ) * 100 : 100}%)`;
+    else
+      element.style.filter = null;
 
     const [ r, g, b, a ] = (Object.values(loadedElementColors ?? {}).length ? (Object.values(loadedElementColors).reduce((avg, color) => {
       const thisColor = color[element.dataset.symbol];
@@ -2253,6 +2892,8 @@ function TrendsUpdate() {
     const shadowRgb = r === null || g === null || b === null ? null : `rgb(${[ r, g, b ].map(
       value => value / 1.25
     ).join(', ')})`;
+
+    delete loadedElementColors.Colored_Gradient;
 
     element.style.background = rgb;
     if (shadowRgb) {
@@ -2329,12 +2970,6 @@ function UpdateTrendsContent(menu) {
 
     element.style.top = `${top}px`;
   });
-}
-
-function UpdateElementPositions() {
-  [ ...document.getElementsByClassName('element') ].forEach(
-    element => element.style.top = `${(element.classList.contains('fake_element') ? element.parentElement : document.getElementById(element.dataset.tableRow))?.getBoundingClientRect().top}px`
-  );
 }
 
 function FollowIsotopes(element) {
@@ -2655,6 +3290,7 @@ async function LoadElement() {
   sidebar.dataset.symbol = this.identifiers.symbol.value;
   sidebar.dataset.name = this.identifiers.name.value;
 
+  sidebar.child('top').scrollIntoView();
   sidebar.vChild('atomic_mass').innerHTML = this.atomic_structure.atomic_mass.value;
 
   {
@@ -2709,7 +3345,21 @@ async function LoadElement() {
       }
 
       overview.vChild('electronegativity').innerHTML = this.electron.reactivity.electronegativity.value;
+      overview.vChild('electronegativity').dataset.unit = this.electron.reactivity.electronegativity.tags.unit;
       overview.vChild('electron_affinity').innerHTML = this.electron.reactivity.electron_affinity.value;
+      overview.vChild('electron_affinity').dataset.unit = this.electron.reactivity.electron_affinity.tags.unit;
+
+      overview.child('ionization_energies').parentElement.child('title').innerHTML = 'Ionization Energies';
+      overview.child('ionization_energies').parentElement.child('title').dataset.unit = `(${this.electron.reactivity.ionization_energies.tags.unit})`;
+      const ionizationEnergies = overview.child('ionization_energies').child('wrap_array');
+      [ ...ionizationEnergies.getElementsByClassName('ionization_energy data_point') ].forEach(
+        element => element.remove()
+      );
+      (this.electron.reactivity.ionization_energies.value ?? []).sort((a, b) => b - a).forEach(energy => {
+        const element = ionizationEnergies.child('ionization_energy template').template();
+        element.classList.add('data_point');
+        element.innerHTML = energy;
+      });
     }
 
     {
@@ -2817,13 +3467,17 @@ async function LoadElement() {
       const atomicStructure = content.child('atomic_structure');
 
       atomicStructure.vChild('atomic_mass').innerHTML = this.atomic_structure.atomic_mass.value;
+      atomicStructure.vChild('atomic_mass').dataset.unit = 'amu';
 
       atomicStructure.vChild('crystal_structure').innerHTML = this.atomic_structure.crystal_structure.value;
       atomicStructure.vChild('crystal_structure').dataset.searchQuery = `${this.atomic_structure.crystal_structure.value} crystal structure`;
 
       atomicStructure.vChild('atomic_radius').innerHTML = this.atomic_structure.radius.atomic.value;
+      atomicStructure.vChild('atomic_radius').dataset.unit = this.atomic_structure.radius.atomic.tags.unit;
       atomicStructure.vChild('covalent_radius').innerHTML = this.atomic_structure.radius.covalent.value;
+      atomicStructure.vChild('covalent_radius').dataset.unit = this.atomic_structure.radius.covalent.tags.unit;
       atomicStructure.vChild('van_der_waals_radius').innerHTML = this.atomic_structure.radius.van_der_waals.value;
+      atomicStructure.vChild('van_der_waals_radius').dataset.unit = this.atomic_structure.radius.van_der_waals.tags.unit;
 
       const latticeAngles = atomicStructure.child('lattice_angles').child('array');
       [ ...latticeAngles.getElementsByClassName('lattice_angle data_point') ].forEach(
@@ -2896,8 +3550,12 @@ async function LoadElement() {
         const reactivity = electron.child('reactivity section');
 
         reactivity.vChild('electronegativity').innerHTML = this.electron.reactivity.electronegativity.value;
+        reactivity.vChild('electronegativity').dataset.unit = this.electron.reactivity.electronegativity.tags.unit;
         reactivity.vChild('electron_affinity').innerHTML = this.electron.reactivity.electron_affinity.value;
+        reactivity.vChild('electron_affinity').dataset.unit = this.electron.reactivity.electron_affinity.tags.unit;
 
+        reactivity.child('ionization_energies').parentElement.child('title').innerHTML = 'Ionization Energies';
+        reactivity.child('ionization_energies').parentElement.child('title').dataset.unit = `(${this.electron.reactivity.ionization_energies.tags.unit})`;
         const ionizationEnergies = reactivity.child('ionization_energies').child('wrap_array');
         [ ...ionizationEnergies.getElementsByClassName('ionization_energy data_point') ].forEach(
           element => element.remove()
@@ -2950,7 +3608,9 @@ async function LoadElement() {
         }
 
         nuclear.vChild('neutron_cross_section').innerHTML = this.properties.nuclear.neutron.cross_section.value;
+        nuclear.vChild('neutron_cross_section').dataset.unit = this.properties.nuclear.neutron.cross_section.tags.unit;
         nuclear.vChild('neutron_mass_absorption').innerHTML = this.properties.nuclear.neutron.mass_absorption.value;
+        nuclear.vChild('neutron_mass_absorption').dataset.unit = this.properties.nuclear.neutron.mass_absorption.tags.unit ?? 'Da';
       }
 
       {
@@ -2962,26 +3622,39 @@ async function LoadElement() {
         ).join('');
 
         physical.vChild('refractive_index').innerHTML = this.properties.physical.refractive_index.value;
+        physical.vChild('refractive_index').dataset.unit = this.properties.physical.refractive_index.tags.unit;
         physical.vChild('speed_of_sound').innerHTML = this.properties.physical.speed_of_sound.value;
+        physical.vChild('speed_of_sound').dataset.unit = this.properties.physical.speed_of_sound.tags.unit;
 
         physical.vChild('standard_density').innerHTML = this.properties.physical.density.standard.value;
+        physical.vChild('standard_density').dataset.unit = this.properties.physical.density.standard.tags.unit;
         physical.vChild('liquid_density').innerHTML = this.properties.physical.density.liquid.value;
+        physical.vChild('liquid_density').dataset.unit = this.properties.physical.density.liquid.tags.unit;
         physical.vChild('molar_volume').innerHTML = this.properties.physical.molar_volume.value;
+        physical.vChild('molar_volume').dataset.unit = this.properties.physical.molar_volume.tags.unit;
 
         physical.vChild('mohs_hardness').innerHTML = this.properties.physical.hardness.mohs.value;
+        physical.vChild('mohs_hardness').dataset.unit = this.properties.physical.hardness.mohs.tags.unit;
         physical.vChild('brinell_hardness').innerHTML = this.properties.physical.hardness.brinell.value;
+        physical.vChild('brinell_hardness').dataset.unit = this.properties.physical.hardness.brinell.tags.unit;
         physical.vChild('vickers_hardness').innerHTML = this.properties.physical.hardness.vickers.value;
+        physical.vChild('vickers_hardness').dataset.unit = this.properties.physical.hardness.vickers.tags.unit;
 
         physical.vChild('poisson_ratio').innerHTML = this.properties.physical.poisson_ratio.value;
+        physical.vChild('poisson_ratio').dataset.unit = this.properties.physical.poisson_ratio.tags.unit;
         physical.vChild('bulk_modulus').innerHTML = this.properties.physical.modulus.bulk.value;
+        physical.vChild('bulk_modulus').dataset.unit = this.properties.physical.modulus.bulk.tags.unit;
         physical.vChild('shear_modulus').innerHTML = this.properties.physical.modulus.shear.value;
+        physical.vChild('shear_modulus').dataset.unit = this.properties.physical.modulus.shear.tags.unit;
         physical.vChild('yound_modulus').innerHTML = this.properties.physical.modulus.young.value;
+        physical.vChild('yound_modulus').dataset.unit = this.properties.physical.modulus.young.tags.unit;
       }
 
       {
         const thermal = properties.child('thermal section');
 
         thermal.vChild('conductivity').innerHTML = this.properties.thermal.conductivity.value;
+        thermal.vChild('conductivity').dataset.unit = this.properties.thermal.conductivity.tags.unit;
 
         Object.entries({
           melting_point: this.properties.thermal.melting_point,
@@ -2999,12 +3672,17 @@ async function LoadElement() {
         });
 
         thermal.vChild('critical_pressure').innerHTML = this.properties.thermal.critical.pressure.value;
-        thermal.vChild('critical_pressure').innerHTML = this.properties.thermal.critical.temperature.value;
+        thermal.vChild('critical_pressure').dataset.unit = this.properties.thermal.critical.pressure.tags.unit;
+        thermal.vChild('critical_temperature').innerHTML = this.properties.thermal.critical.temperature.value;
 
         thermal.vChild('specific_heat').innerHTML = this.properties.thermal.heat.specific.value;
+        thermal.vChild('specific_heat').dataset.unit = this.properties.thermal.heat.specific.tags.unit;
         thermal.vChild('fusion_heat').innerHTML = this.properties.thermal.heat.fusion.value;
+        thermal.vChild('fusion_heat').dataset.unit = this.properties.thermal.heat.fusion.tags.unit;
         thermal.vChild('vaporization_heat').innerHTML = this.properties.thermal.heat.vaporization.value;
+        thermal.vChild('vaporization_heat').dataset.unit = this.properties.thermal.heat.vaporization.tags.unit;
         thermal.vChild('adiabatic_index').innerHTML = this.properties.thermal.adiabatic_index.value;
+        thermal.vChild('adiabatic_index').dataset.unit = this.properties.thermal.adiabatic_index.tags.unit;
       }
 
       {
@@ -3014,9 +3692,12 @@ async function LoadElement() {
         electrical.vChild('type').dataset.searchQuery = `periodic table ${this.properties.electrical.type.value}s`;
 
         electrical.vChild('conductivity').innerHTML = this.properties.electrical.conductivity.value;
+        electrical.vChild('conductivity').dataset.unit = this.properties.electrical.conductivity.tags.unit;
         electrical.vChild('resistivity').innerHTML = this.properties.electrical.resistivity.value;
+        electrical.vChild('resistivity').dataset.unit = this.properties.electrical.resistivity.tags.unit;
 
         electrical.vChild('superconducting_point').innerHTML = this.properties.electrical.superconducting_point.value;
+        electrical.vChild('superconducting_point').dataset.unit = this.properties.electrical.superconducting_point.tags.unit;
       }
 
       {
@@ -3040,8 +3721,11 @@ async function LoadElement() {
           const susceptibility = magnetic.child('susceptibility');
 
           susceptibility.vChild('mass').innerHTML = this.properties.magnetic.susceptibility.mass.value;
+          susceptibility.vChild('mass').dataset.unit = this.properties.magnetic.susceptibility.mass.tags.unit;
           susceptibility.vChild('molar').innerHTML = this.properties.magnetic.susceptibility.molar.value;
+          susceptibility.vChild('molar').dataset.unit = this.properties.magnetic.susceptibility.molar.tags.unit;
           susceptibility.vChild('volume').innerHTML = this.properties.magnetic.susceptibility.volume.value;
+          susceptibility.vChild('volume').dataset.unit = this.properties.magnetic.susceptibility.volume.tags.unit ?? '&chi;v';
         }
       }
 
@@ -3057,6 +3741,13 @@ async function LoadElement() {
     /* .vChild('').innerHTML = this.properties.;
     .vChild('').dataset.searchQuery = `${this.properties.}`; */
   }
+
+  [ ...sidebar.getElementsByTagName('*') ].forEach(element => {
+    if (element.dataset.unit !== undefined && element.dataset.unit !== 'undefined')
+      element.innerHTML += ` ${element.dataset.unit}`;
+
+    delete element.dataset.unit;
+  });
 
   [ ...sidebar.getElementsByClassName('data_point') ].forEach(dataPoint => {
     if (dataPoint.innerHTML === 'undefined') {
@@ -3647,6 +4338,9 @@ setTimeout(async function() {
 }, 100);*/
 
 function CalculateDecayChain(compact = false) {
+  decayChainElement.onclick = null;
+  decayChainElement.classList.add('loading');
+
   const maxChain = 1000;
 
   let depthSizes;
@@ -3762,6 +4456,21 @@ function CalculateDecayChain(compact = false) {
     decayChainElement.child('collapse_button').hidden = true;
     if (!compact)
       CalculateDecayChain.call(this, true);
+    else {
+      decayChainElement.onclick = function(e) {
+        let element = e.target;
+        let result = element.nodeName === 'A' || element.classList.contains('no_close') ? -1 : (element === document.body || element === this ? 1 : 0);
+        while (element.parentElement && !result) {
+          element = element.parentElement;
+          result = element.nodeName === 'A' || element.classList.contains('no_close') ? -1 : (element === document.body || element === this ? 1 : 0);
+        }
+
+        if (result === 1)
+          this.dataset.hidden = true;
+      };
+
+      decayChainElement.classList.remove('loading');
+    }
 
     return false;
   }
@@ -3840,6 +4549,19 @@ function CalculateDecayChain(compact = false) {
 
       if (++chainIndex === chainLength) {
         decayChainElement.innerHTML = decayChainElement.innerHTML.replace(/<svg.*em">/s, `${decaySvg.replace('thisWidth', `${maxLeft}ch`).replace('thisHeight', `${maxTop - 1.5}em`)}`);
+        decayChainElement.onclick = function(e) {
+          let element = e.target;
+          let result = element.nodeName === 'A' || element.classList.contains('no_close') ? -1 : (element === document.body || element === this ? 1 : 0);
+          while (element.parentElement && !result) {
+            element = element.parentElement;
+            result = element.nodeName === 'A' || element.classList.contains('no_close') ? -1 : (element === document.body || element === this ? 1 : 0);
+          }
+
+          if (result === 1)
+            this.dataset.hidden = true;
+        };
+
+        decayChainElement.classList.remove('loading');
 
         LoadSearchableElments();
 
@@ -4117,7 +4839,7 @@ function LoadSearchableElments() {
 
               LoadElement.call(Wolfram.elements[iso.element]);
               nSidebar.dataset.stuckOpen = iso.symbol;
-              [...sidebar.child('information').child('isotopes').getElementsByClassName('isotope')].forEach(
+              [ ...sidebar.child('content').child('isotopes').getElementsByClassName('isotope') ].forEach(
                 element => iso.formatted_symbol === element.innerHTML ? element.classList.add('selected') : element.classList.remove('selected')
               );
 
@@ -4130,7 +4852,7 @@ function LoadSearchableElments() {
 
               LoadElement.call(Wolfram.elements[iso.element]);
               nSidebar.dataset.stuckOpen = iso.symbol;
-              [...sidebar.child('information').child('isotopes').getElementsByClassName('isotope')].forEach(
+              [ ...sidebar.child('content').child('isotopes').getElementsByClassName('isotope') ].forEach(
                 element => iso.formatted_symbol === element.innerHTML ? element.classList.add('selected') : element.classList.remove('selected')
               );
 

@@ -887,7 +887,7 @@ Reference
 				],
 				"tags": {
 					"unit": [
-						"m Ω"
+						"m &#x2126;"
 					],
 					"note": [
 						[
@@ -2561,7 +2561,7 @@ const Wolfram = {
           "resistivity": {
             "value": 9.4e-8,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -3061,7 +3061,7 @@ const Wolfram = {
           "resistivity": {
             "value": 4e-8,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -3551,7 +3551,7 @@ const Wolfram = {
           "resistivity": {
             "value": 10000,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -4071,7 +4071,7 @@ const Wolfram = {
               "note": [
                 "Resistivity: Value given for graphite. Diamond resistivity is approximately 1000."
               ],
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -6594,7 +6594,7 @@ const Wolfram = {
           "resistivity": {
             "value": 4.7e-8,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -7106,7 +7106,7 @@ const Wolfram = {
           "resistivity": {
             "value": 4.4e-8,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -7635,7 +7635,7 @@ const Wolfram = {
           "resistivity": {
             "value": 2.6e-8,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -8147,7 +8147,7 @@ const Wolfram = {
           "resistivity": {
             "value": 0.001,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -8665,7 +8665,7 @@ const Wolfram = {
           "resistivity": {
             "value": 1e-7,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -9182,7 +9182,7 @@ const Wolfram = {
           "resistivity": {
             "value": 1000000000000000,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -9708,7 +9708,7 @@ const Wolfram = {
           "resistivity": {
             "value": 100,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -10746,7 +10746,7 @@ const Wolfram = {
           "resistivity": {
             "value": 7e-8,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -11269,7 +11269,7 @@ const Wolfram = {
           "resistivity": {
             "value": 3.4e-8,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -11798,7 +11798,7 @@ const Wolfram = {
           "resistivity": {
             "value": 5.5e-7,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -12328,7 +12328,7 @@ const Wolfram = {
           "resistivity": {
             "value": 4e-7,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -12877,7 +12877,7 @@ const Wolfram = {
           "resistivity": {
             "value": 2e-7,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -13420,7 +13420,7 @@ const Wolfram = {
           "resistivity": {
             "value": 1.3e-7,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -13964,7 +13964,7 @@ const Wolfram = {
           "resistivity": {
             "value": 0.0000016,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -14506,7 +14506,7 @@ const Wolfram = {
           "resistivity": {
             "value": 9.7e-8,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -15049,7 +15049,7 @@ const Wolfram = {
           "resistivity": {
             "value": 6e-8,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -15583,7 +15583,7 @@ const Wolfram = {
           "resistivity": {
             "value": 7e-8,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -16140,7 +16140,7 @@ const Wolfram = {
           "resistivity": {
             "value": 1.7e-8,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -16678,7 +16678,7 @@ const Wolfram = {
           "resistivity": {
             "value": 5.9e-8,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -17219,7 +17219,7 @@ const Wolfram = {
           "resistivity": {
             "value": 1.4e-7,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -17742,7 +17742,7 @@ const Wolfram = {
           "resistivity": {
             "value": 0.0005,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -18279,7 +18279,7 @@ const Wolfram = {
           "resistivity": {
             "value": 3e-7,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -19340,7 +19340,7 @@ const Wolfram = {
           "resistivity": {
             "value": 10000000000,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -20414,7 +20414,7 @@ const Wolfram = {
           "resistivity": {
             "value": 1.2e-7,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -20927,7 +20927,7 @@ const Wolfram = {
           "resistivity": {
             "value": 1.3e-7,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -21462,7 +21462,7 @@ const Wolfram = {
           "resistivity": {
             "value": 5.7e-7,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -21988,7 +21988,7 @@ const Wolfram = {
           "resistivity": {
             "value": 4.2e-7,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -22525,7 +22525,7 @@ const Wolfram = {
           "resistivity": {
             "value": 1.5e-7,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -23054,7 +23054,7 @@ const Wolfram = {
           "resistivity": {
             "value": 5e-8,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -23590,7 +23590,7 @@ const Wolfram = {
           "resistivity": {
             "value": 2e-7,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -23640,7 +23640,7 @@ const Wolfram = {
           },
           "decay_mode": {
             "name": {
-              "value": " Beta Decay",
+              "value": "Beta Decay",
               "tags": {}
             },
             "symbol": {
@@ -24118,7 +24118,7 @@ const Wolfram = {
           "resistivity": {
             "value": 7e-8,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -24670,7 +24670,7 @@ const Wolfram = {
           "resistivity": {
             "value": 4.3e-8,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -25195,7 +25195,7 @@ const Wolfram = {
           "resistivity": {
             "value": 1e-7,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -25737,7 +25737,7 @@ const Wolfram = {
           "resistivity": {
             "value": 1.6e-8,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -26265,7 +26265,7 @@ const Wolfram = {
           "resistivity": {
             "value": 7e-8,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -26810,7 +26810,7 @@ const Wolfram = {
           "resistivity": {
             "value": 8e-8,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -27346,7 +27346,7 @@ const Wolfram = {
           "resistivity": {
             "value": 1.1e-7,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -27911,7 +27911,7 @@ const Wolfram = {
           "resistivity": {
             "value": 4e-7,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -28430,7 +28430,7 @@ const Wolfram = {
           "resistivity": {
             "value": 0.0001,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -28976,7 +28976,7 @@ const Wolfram = {
           "resistivity": {
             "value": 10000000,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -30046,7 +30046,7 @@ const Wolfram = {
           "resistivity": {
             "value": 2e-7,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -30567,7 +30567,7 @@ const Wolfram = {
           "resistivity": {
             "value": 3.5e-7,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -31116,7 +31116,7 @@ const Wolfram = {
           "resistivity": {
             "value": 6.1e-7,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -31303,7 +31303,7 @@ const Wolfram = {
       },
       "electron": {
         "block": {
-          "value": "f",
+          "value": "d",
           "tags": {}
         },
         "configuration": {
@@ -31647,7 +31647,7 @@ const Wolfram = {
           "resistivity": {
             "value": 7.5e-7,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -32187,7 +32187,7 @@ const Wolfram = {
           "resistivity": {
             "value": 7e-7,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -32719,7 +32719,7 @@ const Wolfram = {
           "resistivity": {
             "value": 6.4e-7,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -33242,7 +33242,7 @@ const Wolfram = {
           "resistivity": {
             "value": 7.5e-7,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -33283,7 +33283,7 @@ const Wolfram = {
           },
           "decay_mode": {
             "name": {
-              "value": " Electron Capture",
+              "value": "Electron Capture",
               "tags": {}
             },
             "symbol": {
@@ -33746,7 +33746,7 @@ const Wolfram = {
           "resistivity": {
             "value": 9.4e-7,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -34289,7 +34289,7 @@ const Wolfram = {
           "resistivity": {
             "value": 9e-7,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -34820,7 +34820,7 @@ const Wolfram = {
           "resistivity": {
             "value": 0.0000013,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -35366,7 +35366,7 @@ const Wolfram = {
           "resistivity": {
             "value": 0.0000012,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -35895,7 +35895,7 @@ const Wolfram = {
           "resistivity": {
             "value": 9.1e-7,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -36452,7 +36452,7 @@ const Wolfram = {
           "resistivity": {
             "value": 9.4e-7,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -36980,7 +36980,7 @@ const Wolfram = {
           "resistivity": {
             "value": 8.6e-7,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -37528,7 +37528,7 @@ const Wolfram = {
           "resistivity": {
             "value": 7e-7,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -38048,7 +38048,7 @@ const Wolfram = {
           "resistivity": {
             "value": 2.8e-7,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -38595,7 +38595,7 @@ const Wolfram = {
           "resistivity": {
             "value": 5.7e-7,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -39124,7 +39124,7 @@ const Wolfram = {
           "resistivity": {
             "value": 3e-7,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -39669,7 +39669,7 @@ const Wolfram = {
           "resistivity": {
             "value": 1.3e-7,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -40199,7 +40199,7 @@ const Wolfram = {
           "resistivity": {
             "value": 5e-8,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -40740,7 +40740,7 @@ const Wolfram = {
           "resistivity": {
             "value": 1.8e-7,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -41271,7 +41271,7 @@ const Wolfram = {
           "resistivity": {
             "value": 8e-8,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -41822,7 +41822,7 @@ const Wolfram = {
           "resistivity": {
             "value": 4.7e-8,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -42358,7 +42358,7 @@ const Wolfram = {
           "resistivity": {
             "value": 1.1e-7,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -42906,7 +42906,7 @@ const Wolfram = {
           "resistivity": {
             "value": 2.2e-8,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -43431,7 +43431,7 @@ const Wolfram = {
           "resistivity": {
             "value": 9.6e-7,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -43980,7 +43980,7 @@ const Wolfram = {
           "resistivity": {
             "value": 1.5e-7,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -44513,7 +44513,7 @@ const Wolfram = {
           "resistivity": {
             "value": 2.1e-7,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -45051,7 +45051,7 @@ const Wolfram = {
           "resistivity": {
             "value": 0.0000013,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -45100,7 +45100,7 @@ const Wolfram = {
           },
           "decay_mode": {
             "name": {
-              "value": " Alpha Emission",
+              "value": "Alpha Emission",
               "tags": {}
             },
             "symbol": {
@@ -45539,7 +45539,7 @@ const Wolfram = {
           "resistivity": {
             "value": 4.3e-7,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -45580,7 +45580,7 @@ const Wolfram = {
           },
           "decay_mode": {
             "name": {
-              "value": " Alpha Emission",
+              "value": "Alpha Emission",
               "tags": {}
             },
             "symbol": {
@@ -46037,7 +46037,7 @@ const Wolfram = {
           },
           "decay_mode": {
             "name": {
-              "value": " Beta Plus Decay",
+              "value": "Beta Plus Decay",
               "tags": {}
             },
             "symbol": {
@@ -46504,7 +46504,7 @@ const Wolfram = {
           },
           "decay_mode": {
             "name": {
-              "value": " Alpha Emission",
+              "value": "Alpha Emission",
               "tags": {}
             },
             "symbol": {
@@ -46933,7 +46933,7 @@ const Wolfram = {
           },
           "decay_mode": {
             "name": {
-              "value": " Beta Decay",
+              "value": "Beta Decay",
               "tags": {}
             },
             "symbol": {
@@ -47346,7 +47346,7 @@ const Wolfram = {
           "resistivity": {
             "value": 0.000001,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -47387,7 +47387,7 @@ const Wolfram = {
           },
           "decay_mode": {
             "name": {
-              "value": " Alpha Emission",
+              "value": "Alpha Emission",
               "tags": {}
             },
             "symbol": {
@@ -47846,7 +47846,7 @@ const Wolfram = {
           },
           "decay_mode": {
             "name": {
-              "value": " Beta Decay",
+              "value": "Beta Decay",
               "tags": {}
             },
             "symbol": {
@@ -47970,7 +47970,7 @@ const Wolfram = {
       },
       "electron": {
         "block": {
-          "value": "f",
+          "value": "d",
           "tags": {}
         },
         "configuration": {
@@ -48305,7 +48305,7 @@ const Wolfram = {
           "resistivity": {
             "value": 1.5e-7,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -48355,7 +48355,7 @@ const Wolfram = {
           },
           "decay_mode": {
             "name": {
-              "value": " Alpha Emission",
+              "value": "Alpha Emission",
               "tags": {}
             },
             "symbol": {
@@ -48792,7 +48792,7 @@ const Wolfram = {
           "resistivity": {
             "value": 1.8e-7,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -48842,7 +48842,7 @@ const Wolfram = {
           },
           "decay_mode": {
             "name": {
-              "value": " Alpha Emission",
+              "value": "Alpha Emission",
               "tags": {}
             },
             "symbol": {
@@ -49303,7 +49303,7 @@ const Wolfram = {
           "resistivity": {
             "value": 2.8e-7,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -49353,7 +49353,7 @@ const Wolfram = {
           },
           "decay_mode": {
             "name": {
-              "value": " Alpha Emission",
+              "value": "Alpha Emission",
               "tags": {}
             },
             "symbol": {
@@ -49788,7 +49788,7 @@ const Wolfram = {
           "resistivity": {
             "value": 0.0000012,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -49829,7 +49829,7 @@ const Wolfram = {
           },
           "decay_mode": {
             "name": {
-              "value": " Alpha Emission",
+              "value": "Alpha Emission",
               "tags": {}
             },
             "symbol": {
@@ -50253,7 +50253,7 @@ const Wolfram = {
           "resistivity": {
             "value": 0.0000015,
             "tags": {
-              "unit": "m Ω"
+              "unit": "m &#x2126;"
             }
           },
           "superconducting_point": {
@@ -50302,7 +50302,7 @@ const Wolfram = {
           },
           "decay_mode": {
             "name": {
-              "value": " Alpha Emission",
+              "value": "Alpha Emission",
               "tags": {}
             },
             "symbol": {
@@ -50753,7 +50753,7 @@ const Wolfram = {
           },
           "decay_mode": {
             "name": {
-              "value": " Alpha Emission",
+              "value": "Alpha Emission",
               "tags": {}
             },
             "symbol": {
@@ -51190,7 +51190,7 @@ const Wolfram = {
           },
           "decay_mode": {
             "name": {
-              "value": " Alpha Emission",
+              "value": "Alpha Emission",
               "tags": {}
             },
             "symbol": {
@@ -51625,7 +51625,7 @@ const Wolfram = {
           },
           "decay_mode": {
             "name": {
-              "value": " Alpha Emission",
+              "value": "Alpha Emission",
               "tags": {}
             },
             "symbol": {
@@ -52053,7 +52053,7 @@ const Wolfram = {
           },
           "decay_mode": {
             "name": {
-              "value": " Alpha Emission",
+              "value": "Alpha Emission",
               "tags": {}
             },
             "symbol": {
@@ -52478,7 +52478,7 @@ const Wolfram = {
           },
           "decay_mode": {
             "name": {
-              "value": " Alpha Emission",
+              "value": "Alpha Emission",
               "tags": {}
             },
             "symbol": {
@@ -52884,7 +52884,7 @@ const Wolfram = {
           },
           "decay_mode": {
             "name": {
-              "value": " Alpha Emission",
+              "value": "Alpha Emission",
               "tags": {}
             },
             "symbol": {
@@ -53290,7 +53290,7 @@ const Wolfram = {
           },
           "decay_mode": {
             "name": {
-              "value": " Alpha Emission",
+              "value": "Alpha Emission",
               "tags": {}
             },
             "symbol": {
@@ -53694,7 +53694,7 @@ const Wolfram = {
           },
           "decay_mode": {
             "name": {
-              "value": " Alpha Emission",
+              "value": "Alpha Emission",
               "tags": {}
             },
             "symbol": {
@@ -54099,7 +54099,7 @@ const Wolfram = {
           },
           "decay_mode": {
             "name": {
-              "value": " Alpha Emission",
+              "value": "Alpha Emission",
               "tags": {}
             },
             "symbol": {
@@ -54492,7 +54492,7 @@ const Wolfram = {
           },
           "decay_mode": {
             "name": {
-              "value": " Alpha Emission",
+              "value": "Alpha Emission",
               "tags": {}
             },
             "symbol": {
@@ -54886,7 +54886,7 @@ const Wolfram = {
           },
           "decay_mode": {
             "name": {
-              "value": " Alpha Emission",
+              "value": "Alpha Emission",
               "tags": {}
             },
             "symbol": {
@@ -55280,7 +55280,7 @@ const Wolfram = {
           },
           "decay_mode": {
             "name": {
-              "value": " Alpha Emission",
+              "value": "Alpha Emission",
               "tags": {}
             },
             "symbol": {
@@ -55673,7 +55673,7 @@ const Wolfram = {
           },
           "decay_mode": {
             "name": {
-              "value": " Alpha Emission",
+              "value": "Alpha Emission",
               "tags": {}
             },
             "symbol": {
@@ -56066,7 +56066,7 @@ const Wolfram = {
           },
           "decay_mode": {
             "name": {
-              "value": " Alpha Emission",
+              "value": "Alpha Emission",
               "tags": {}
             },
             "symbol": {
@@ -56457,7 +56457,7 @@ const Wolfram = {
           },
           "decay_mode": {
             "name": {
-              "value": " Alpha Emission",
+              "value": "Alpha Emission",
               "tags": {}
             },
             "symbol": {
@@ -56845,7 +56845,7 @@ const Wolfram = {
           },
           "decay_mode": {
             "name": {
-              "value": " Alpha Emission",
+              "value": "Alpha Emission",
               "tags": {}
             },
             "symbol": {
@@ -57233,7 +57233,7 @@ const Wolfram = {
           },
           "decay_mode": {
             "name": {
-              "value": " Alpha Emission",
+              "value": "Alpha Emission",
               "tags": {}
             },
             "symbol": {
@@ -57618,7 +57618,7 @@ const Wolfram = {
           },
           "decay_mode": {
             "name": {
-              "value": " Alpha Emission",
+              "value": "Alpha Emission",
               "tags": {}
             },
             "symbol": {
@@ -58000,7 +58000,7 @@ const Wolfram = {
           },
           "decay_mode": {
             "name": {
-              "value": " Alpha Emission",
+              "value": "Alpha Emission",
               "tags": {}
             },
             "symbol": {
@@ -58379,7 +58379,7 @@ const Wolfram = {
           },
           "decay_mode": {
             "name": {
-              "value": " Alpha Emission",
+              "value": "Alpha Emission",
               "tags": {}
             },
             "symbol": {
@@ -58757,7 +58757,7 @@ const Wolfram = {
           },
           "decay_mode": {
             "name": {
-              "value": " Alpha Emission",
+              "value": "Alpha Emission",
               "tags": {}
             },
             "symbol": {
@@ -59136,7 +59136,7 @@ const Wolfram = {
           },
           "decay_mode": {
             "name": {
-              "value": " Alpha Emission",
+              "value": "Alpha Emission",
               "tags": {}
             },
             "symbol": {
@@ -59885,7 +59885,7 @@ const Wolfram = {
           },
           "decay_mode": {
             "name": {
-              "value": " Alpha Emission",
+              "value": "Alpha Emission",
               "tags": {}
             },
             "symbol": {

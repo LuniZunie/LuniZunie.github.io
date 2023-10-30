@@ -57,6 +57,12 @@
   display: none;
 }
 
+#sidebar > .top {
+  display: inline-block;
+  position: absolute;
+  top: -10px;
+}
+
 #sidebar > .close {
   cursor: pointer;
   -webkit-user-select: none;
@@ -213,6 +219,8 @@
 }
 
 #sidebar > .content .section > .title {
+  text-align: center;
+
   padding-bottom: 0.5em;
   margin-bottom: 0.5em;
   border-bottom: 1px solid #aab2;

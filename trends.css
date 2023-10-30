@@ -2,7 +2,7 @@
   position: fixed;
   left: calc(var(--center) - 2.5vw - calc(31vw + 1.5ch));
   top: 0px;
-  width: calc(62vw + 3ch);
+  min-width: calc(62vw + 4ch);
 
   border-radius: 0 0 calc(1em + 2vmin) calc(1em + 2vmin);
   padding: 0px calc(1em + 2vmin);
@@ -16,7 +16,7 @@
   cursor: pointer;
 
   display: inline-block;
-  width: 20vw;
+  min-width: 20vw;
 
   padding: 1vmin;
 
@@ -43,7 +43,7 @@ body:has(#top_nav > .button.colorize:hover) > #colorize_menu, #colorize_menu:hov
 
   display: none;
   position: fixed;
-  max-height: calc(100vh - 1em);
+  max-height: calc(100vh - 4em);
 
   border: 1px solid #33a;
   border-top: none;

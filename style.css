@@ -180,6 +180,10 @@ body[data-hide-everything=true] :not(#background) {
   transition: all 500ms;
 }
 
+#decay_chain.loading {
+  cursor: wait;
+}
+
 #decay_chain[data-hidden=true] {
   pointer-events: none;
 
@@ -256,6 +260,8 @@ body[data-hide-everything=true] :not(#background) {
   position: fixed;
   left: 1vmin;
   top: 1vmin;
+
+  z-index: 2147483642;
 }
 
 #top_buttons > * {
@@ -437,372 +443,6 @@ body[data-trends=true] #top_buttons > #trends_button::after {
   background: #585868;
 }
 
-/* .sidebar .temperature {
-  -webkit-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-
-  margin: 1.5em 3vmin;
-}
-
-.sidebar .temperature .key {
-  display: inline-block;
-
-  width: 11ch;
-}
-
-.sidebar .temperature .data {
-  cursor: text;
-  -webkit-user-select: all;
-  -ms-user-select: all;
-  user-select: all;
-
-  display: inline-block;
-
-  padding: 1vmin;
-  border-radius: 1vmin;
-
-  text-align: center;
-
-  background: #334;
-}
-
-.sidebar .temperature .kelvin {
-
-  display: inline-block;
-  cursor: pointer;
-
-  padding: 1vmin;
-  border-radius: 1vmin 0.25vmin 0.25vmin 1vmin;
-
-  background: #334;
-}
-
-.sidebar .temperature[data-selected='k'] .kelvin {
-  background: #337;
-}
-
-.sidebar .temperature .celsius {
-  cursor: pointer;
-
-  display: inline-block;
-
-  padding: 1vmin;
-  border-radius: 0.25vmin;
-
-  background: #334;
-}
-
-.sidebar .temperature[data-selected='c'] .celsius {
-  background: #337;
-}
-
-.sidebar .temperature .fahrenheit {
-  cursor: pointer;
-
-  display: inline-block;
-
-  padding: 1vmin;
-  border-radius: 0.25vmin 1vmin 1vmin 0.25vmin;
-
-  background: #334;
-}
-
-.sidebar .temperature[data-selected='f'] .fahrenheit {
-  background: #337;
-} */
-
-.sidebar .title {
-  text-align: center;
-}
-
-/* #sidebar .half_life {
-  -webkit-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-
-  width: 100%;
-
-  padding-top: 1em;
-
-  white-space: nowrap;
-
-  overflow-x: auto;
-}
-
-#sidebar .half_life .value {
-  cursor: text;
-  -webkit-user-select: all;
-  -ms-user-select: all;
-  user-select: all;
-
-  padding: 1vmin;
-  border-radius: 1vmin;
-
-  background: #334;
-}
-
-#sidebar .half_life .other {
-  cursor: pointer;
-
-  position: absolute;
-  right: calc(7vmin + 1ch + 5px);
-
-  padding: 1vmin;
-  border-radius: 1vmin 0.25vmin 0.25vmin 1vmin;
-
-  background: #334;
-}
-
-#sidebar .half_life:not(:has(.second)) .other {
-  right: 5vmin;
-
-  border-radius: 1vmin;
-}
-
-#sidebar .half_life[data-selected='o'] .other {
-  background: #337;
-}
-
-#sidebar .half_life .second {
-  cursor: pointer;
-
-  position: absolute;
-  right: 5vmin;
-
-  padding: 1vmin;
-  border-radius: 0.25vmin 1vmin 1vmin 0.25vmin;
-
-  background: #334;
-}
-
-#sidebar .half_life[data-selected='s'] .second {
-  background: #337;
-}
-
-#sidebar {
-  position: fixed;
-  right: 0px;
-  top: 0px;
-  width: 0vw;
-  height: 100vh;
-
-  padding: 0px;
-  border-radius: 5vmin 0 0 5vmin;
-
-	overflow: hidden auto;
-
-  background: #112;
-
-  transition: 500ms all;
-}
-
-#sidebar[data-hidden=false] {
-  width: 30vw;
-
-  padding: 10px;
-}
-
-#sidebar .close {
-  cursor: pointer;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-
-  position: absolute;
-  left: 0px;
-  top: 0px;
-  width: 3vmin;
-  height: 3vmin;
-
-  padding: 2vmin 4vmin 2vmin 5vmin;
-  border-radius: 5vmin 0 2vmin 0;
-
-  background: #223;
-}
-
-#sidebar .close:hover {
-  background: #181828;
-}
-
-#sidebar .atomic_number {
-  position: absolute;
-  left: 13vmin;
-  top: 0px;
-}
-
-#sidebar .atomic_mass {
-  position: absolute;
-  right: 1vmin;
-  top: 0px;
-}
-
-#sidebar .symbol {
-  position: absolute;
-  top: 4vmin;
-  width: 100%;
-
-  text-align: center;
-}
-
-#sidebar .name {
-  position: absolute;
-  top: 10vmin;
-  width: 100%;
-
-  text-align: center;
-}
-
-#sidebar .discovery {
-  position: absolute;
-  top: 20vmin;
-  width: calc(100% - 10px);
-
-  padding: 5px;
-
-  white-space: nowrap;
-  text-align: center;
-  font-size: 1.125em;
-
-  overflow-x: auto;
-}
-
-#sidebar .discovery *:first-child {
-  margin-left: 10px;
-}
-
-#sidebar .information {
-  position: absolute;
-  top: calc(27vmin + 10px);
-  width: calc(100% - 4vmin - 10px);
-
-  margin: 1vmin;
-
-  padding: 1vmin;
-  border-radius: 3vmin;
-
-  font-size: 0.875em;
-
-  overflow-x: hidden;
-
-  background: #223;
-}
-
-#sidebar .information > :not(.title):not(.summary) {
-  margin: 1em 3vmin;
-
-  white-space: nowrap;
-  overflow: auto;
-}
-
-#sidebar .information > :not(.title):not(.summary).temperature {
-  margin: 1.5em 3vmin;
-}
-
-#sidebar .information .appearance .data .searchable {
-	margin: auto;
-}
-
-#sidebar .information .isotopes {
-  cursor: default;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-
-  padding: 1vmin 2vmin;
-  border-radius: 1vmin;
-
-  white-space: normal !important;
-  text-align: center;
-  font-size: 1.125em;
-
-  line-height: calc(2vmin + 1em + 10px);
-
-  background: #112;
-}
-
-#sidebar .information .isotopes .no_known_isotopes {
-  color: #999;
-}
-
-#sidebar .information .isotopes .isotope {
-  cursor: pointer;
-  -webkit-user-select: auto;
-  -ms-user-select: auto;
-  user-select: auto;
-
-  min-width: calc(4vmin + 1ex);
-
-  text-decoration: none;
-}
-
-#sidebar .information .isotopes .key {
-  margin: 4px;
-}
-
-#sidebar .information .isotopes .key:not(.unknown) {
-  margin: 4px;
-
-  background: #112;
-}
-
-#sidebar .information .isotopes .unknown {
-  background: #181828;
-}
-
-#sidebar .information .isotopes .unstable {
-  outline: 2px solid red;
-}
-
-#sidebar .information .isotopes .stable:is(.isotope, .key) {
-  outline: 2px solid cyan;
-}
-
-#sidebar .information .isotopes .natural {
-  outline: 2px solid yellow;
-}
-
-#sidebar .information .isotopes .isotope {
-  margin-right: 10px;
-}
-
-#sidebar .information .isotopes .isotope.selected {
-  outline: 2px solid white;
-}
-
-#sidebar .information .isotopes .isotope:hover {
-  filter: brightness(85%);
-}
-
-#sidebar .information .isotopes .isotope:active {
-  filter: brightness(55%);
-}
-
-#sidebar .information .summary {
-  width: calc(100% - 10vmin);
-
-  margin: 1vmin 3vmin;
-  padding: 1vmin 2vmin;
-  border-radius: 1vmin;
-
-  background: #112;
-}
-
-#sidebar .information .summary .title {
-  text-align: center;
-}
-
-#sidebar .information .summary .text > p {
-  text-align: justify;
-}
-
-#sidebar .information .summary .citation {
-  width: 100%;
-
-  text-align: right;
-  font-style: italic;
-} */
-
 #nuclide_sidebar {
   pointer-events: all;
 
@@ -858,6 +498,7 @@ body[data-trends=true] #top_buttons > #trends_button::after {
 }
 
 #nuclide_sidebar .section > .title {
+  text-align: center;
   margin-bottom: calc(0.83em + 1vmin);
 }
 
@@ -1189,34 +830,37 @@ body > table > tbody > .period.inter-period {
   width: calc(var(--elementScale) * 14);
 }
 
-#period0 {
+#period0, .element_period0 {
   top: calc(50vh - var(--elementScale) * 4.75 - var(--elementScale));
 }
-#period1 {
+#period0, .element_period0 {
+  top: calc(50vh - var(--elementScale) * 4.75 - var(--elementScale));
+}
+#period1, .element_period1 {
   top: calc(50vh - var(--elementScale) * 4.75);
 }
-#period2 {
+#period2, .element_period2 {
   top: calc(50vh - var(--elementScale) * 4.75 + var(--elementScale));
 }
-#period3 {
+#period3, .element_period3 {
   top: calc(50vh - var(--elementScale) * 4.75 + var(--elementScale) * 2);
 }
-#period4 {
+#period4, .element_period4 {
   top: calc(50vh - var(--elementScale) * 4.75 + var(--elementScale) * 3);
 }
-#period5 {
+#period5, .element_period5 {
   top: calc(50vh - var(--elementScale) * 4.75 + var(--elementScale) * 4);
 }
-#period6 {
+#period6, .element_period6 {
   top: calc(50vh - var(--elementScale) * 4.75 + var(--elementScale) * 5);
 }
-#period7 {
+#period7, .element_period7 {
   top: calc(50vh - var(--elementScale) * 4.75 + var(--elementScale) * 6);
 }
-#inter-period1 {
+#inter-period1, .element_inter-period1 {
   top: calc(50vh - var(--elementScale) * 4.75 + var(--elementScale) * 7.5);
 }
-#inter-period2 {
+#inter-period2, .element_inter-period2 {
   top: calc(50vh - var(--elementScale) * 4.75 + var(--elementScale) * 8.5);
 }
 
@@ -1307,7 +951,6 @@ body > table > tbody > .period.inter-period {
 }
 
 .fake_element > p.star {
-  font-size: xx-large;
   color: rgb(255, 255, 255);
 }
 
@@ -1369,13 +1012,29 @@ body:has(#zinc.element.hidden_element) .fake_element.group12 {
   line-height: calc(var(--elementScale) - var(--elementPadding) * 2);
 }
 
-.fake_element > span.group_number {
+.fake_element > span.group_number, .fake_element > span.electron_block {
   position: absolute;
   bottom: 0px;
 
   color: rgb(128, 0, 0);
 
   font-size: calc(calc(var(--elementScale) - var(--elementPadding) * 2) * 0.3);
+}
+
+.fake_element > span.electron_block {
+  position: absolute;
+  bottom: 0px;
+
+  color: white;
+
+  font-size: calc(calc(var(--elementScale) - var(--elementPadding) * 2) * 0.3);
+}
+
+.fake_element:has(span.electron_block) {
+  white-space: nowrap;
+  overflow: visible;
+
+  transform: translateY(50%);
 }
 
 .element > p.atomic_number {
@@ -1398,6 +1057,9 @@ body:has(#zinc.element.hidden_element) .fake_element.group12 {
   font-size: calc(calc(var(--elementScale) - var(--elementPadding) * 2) * 0.15);
 }
 
+.element.group-1 {
+  left: calc(var(--center) - var(--elementScale) * 9 - var(--elementScale) * 2);
+}
 .element.group0 {
   left: calc(var(--center) - var(--elementScale) * 9 - var(--elementScale));
 }

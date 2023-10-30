@@ -71,7 +71,7 @@
       </div>
     </div>
     <div id='copyright'>
-      &copy; 2023 by Cedric Hotopp | All rights reserved.<br><small>Contributions from: Samuel Lee, Sebastion L</small>
+      &copy; 2023 by Cedric Hotopp | All rights reserved.<br><small>Contributions from: Samuel Lee, Sebastian L</small>
     </div>
     <div id='elemental_trends_menu' class='trends_menu'>
       <div class='trend template' data-selected=false>[Trend]</div>
@@ -109,6 +109,7 @@
     <table id='periodicTable'>
       <tr class='period' id='period0'>
         <td class='element fake_element group1'><span class='group_number'>1</span></td>
+        <td class='element fake_element group15'><span class='electron_block'>p</span></td>
         <td class='element fake_element group18'><span class='group_number'>18</span></td>
       </tr>
       <tr class='period' id='period1'>
@@ -126,6 +127,7 @@
         <td class='element fake_element group0'><span class='period_number'>2</span></td>
         <td class='element group1' id='lithium'></td>
         <td class='element group2' id='beryllium'></td>
+        <td class='element fake_element group7'><span class='electron_block'>d (n-1)</span></td>
         <td class='element group13' id='boron'></td>
         <td class='element group14' id='carbon'></td>
         <td class='element group15' id='nitrogen'></td>
@@ -134,6 +136,7 @@
         <td class='element group18' id='neon'></td>
       </tr>
       <tr class='period' id='period3'>
+        <td class='element fake_element group0'><span class='electron_block'>s</span></td>
         <td class='element fake_element group0'><span class='period_number'>3</span></td>
         <td class='element group1' id='sodium'></td>
         <td class='element group2' id='magnesium'></td>
@@ -266,6 +269,7 @@
         <td class='element inter-element group3 inter-group6' id='plutonium'></td>
         <td class='element inter-element group3 inter-group7' id='americium'></td>
         <td class='element inter-element group3 inter-group8' id='curium'></td>
+        <td class='element fake_element group9'><span class='electron_block'>f (n-2)</span></td>
         <td class='element inter-element group3 inter-group9' id='berkelium'></td>
         <td class='element inter-element group3 inter-group10' id='californium'></td>
         <td class='element inter-element group3 inter-group11' id='einsteinium'></td>
@@ -277,6 +281,7 @@
     </table>
     <div id='zoomed_element' hidden></div>
     <div id='sidebar' class='sidebar' data-hidden=true>
+      <span class='top'></span>
       <img class='close' src='x-icon.png' />
       <h2 class='atomic_mass parent_data_point'><span class='value data_point'>[Atmoic Mass]</span> amu</h2>
       <div class='content'>
@@ -315,6 +320,10 @@
             <p class='valence_electrons parent_data_point'>Valence Electrons: <span class='value data_point searchable'></span></p>
             <p class='electronegativity parent_data_point'>Electronegativity: <span class='value data_point searchable'></span></p>
             <p class='electron_affinity parent_data_point'>Electron Affinity: <span class='value data_point searchable'></span></p>
+            <div class='section parent_data_point'>
+              <h4 class='title'>Ionization Energies</h4>
+              <p class='ionization_energies parent_data_point'><span class='wrap_array parent_data_point'><span class='ionization_energy value searchable template'></span></span></p>
+            </div>
             <div class='section parent_data_point'>
               <h4 class='title'>Electrons per Shell</h4>
               <p class='electrons_per_shell parent_data_point'><span class='wrap_array parent_data_point'><span class='subshell value searchable template'></span></span></p>

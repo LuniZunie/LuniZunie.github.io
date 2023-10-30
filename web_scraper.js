@@ -11512,7 +11512,7 @@ function DecayModeConversion({ value: mode, tags }) {
     return { name: { tags: {} }, symbol: { tags: {} } };
 
   return { name: {
-    value: mode.replace(/(?=[A-Z])/g, ' '),
+    value: mode.replace(/(?=[A-Z])/g, ' ').trim(),
     tags: tags,
   }, symbol: {
     value: (function(mode) {
