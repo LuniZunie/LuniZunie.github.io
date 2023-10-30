@@ -1,0 +1,377 @@
+@keyframes rotateUp {
+  from {
+    transform: rotateZ(0deg);
+  }
+  to {
+    transform: rotateZ(-180deg);
+  }
+}
+
+@keyframes rotateDown {
+  from {
+    transform: rotateZ(180deg);
+  }
+  to {
+    transform: rotateZ(0deg);
+  }
+}
+
+#sidebar {
+  position: fixed;
+  right: 0px;
+  top: 0px;
+  width: 0vw;
+  height: 100vh;
+
+  padding: 0px;
+  border-radius: 5vmin 0 0 5vmin;
+
+	overflow: hidden auto;
+
+  background: #112;
+
+  transition: 500ms all;
+}
+
+#sidebar[data-hidden=false] {
+  width: 30vw;
+
+  padding: 10px;
+  padding-bottom: 1vmin;
+}
+
+#sidebar *::-webkit-scrollbar {
+  width: calc(10px + 0.5ch);
+	height: calc(10px + 0.5ch);
+
+	border-radius: 5px;
+}
+
+#sidebar *::-webkit-scrollbar-thumb {
+  border-bottom: 0.5ch solid transparent;
+
+  background-clip: content-box;
+}
+
+#sidebar .template {
+  display: none;
+}
+
+#sidebar > .close {
+  cursor: pointer;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  position: absolute;
+  left: 1vmin;
+  top: 1vmin;
+  width: 3vmin;
+  height: 3vmin;
+
+  padding: 2vmin 4vmin 2vmin 5vmin;
+  border-radius: 5vmin 0 2vmin 0;
+
+  background: #224;
+  filter: brightness(85%);
+}
+
+#sidebar > .close:hover {
+  filter: brightness(75%);
+}
+
+#sidebar > .close:active {
+  filter: brightness(50%);
+}
+
+#sidebar > .atomic_mass {
+  position: absolute;
+  right: 1vmin;
+  top: 1vmin;
+
+  margin: 0px;
+}
+
+#sidebar > .content {
+  position: relative;
+  top: 7vmin;
+  width: 100%;
+
+  padding-bottom: 2vmin;
+}
+
+#sidebar > .content > .elementText {
+  width: 100%;
+
+  margin-bottom: 0.1em;
+
+  text-align: center;
+}
+
+#sidebar > .content > .name {
+  width: 100%;
+
+  margin-top: 0.1em;
+  margin-bottom: 0.5em;
+
+  white-space: nowrap;
+  overflow-x: auto;
+  text-align: center;
+}
+
+#sidebar > .content > :is(.allotropes, .discovery), #sidebar > .content .array {
+  width: 100%;
+
+  margin-top: 0.15em;
+  margin-bottom: 0em;
+
+  white-space: nowrap;
+  overflow-x: auto;
+  text-align: center;
+}
+
+#sidebar > .content .wrap_array {
+  display: inline-block;
+  width: 100%;
+
+  margin-top: 0.15em;
+  margin-bottom: 0em;
+
+  white-space: wrap !important;
+  text-align: center;
+}
+
+#sidebar > .content > :is(.allotropes, .discovery) > :is(.allotrope, .value), #sidebar > .content :is(.array, .wrap_array) > .value {
+  margin: 0.5ch;
+}
+
+#sidebar > .content > .allotropes {
+  width: calc(100% - 4vmin);
+
+  border-top: 2px solid #334;
+}
+
+#sidebar > .content > .allotropes > .array {
+  display: inline-block;
+  width: calc(100% - 4vmin);
+
+  white-space: nowrap;
+  overflow-x: auto;
+}
+
+#sidebar > .content > .allotropes + * {
+  width: 100%;
+
+  margin-top: 0em;
+  border-top: 2px solid #334;
+}
+
+#sidebar > .content > .overview > .p_n_e {
+  width: 100%;
+
+  text-align: center;
+}
+
+#sidebar > .content .section.collapsible[data-expanded=false] > :not(.title) {
+  display: none;
+
+  opacity: 0;
+}
+
+#sidebar > .content .section.collapsible > .title > .collapse_button {
+  cursor: pointer;
+
+  display: none;
+  float: right;
+  shape-outside: padding-box;
+}
+
+#sidebar > .content .section.collapsible:has(.parent_data_point:not([style*='display: none'])) > .title > .collapse_button {
+  display: block;
+}
+
+#sidebar > .content .section.collapsible > .title > .collapse_button.animate {
+  animation: rotateDown 600ms cubic-bezier(0.68, -0.6, 0.32, 1.6) 0s 1 normal forwards;
+}
+
+#sidebar > .content .section.collapsible[data-expanded=true] > .title > .collapse_button {
+  animation: rotateUp 600ms cubic-bezier(0.68, -0.6, 0.32, 1.6) 0s 1 normal forwards;
+}
+
+#sidebar > .content .section {
+  padding: 1vmin;
+  margin: 1vmin;
+
+  border: 1px solid #0005;
+  border-radius: 2vmin;
+
+  background: #5561;
+}
+
+#sidebar > .content :is(.section, .divider):not(.allotropes) > :not(.section, .title, .divider, .wrap_array, .p_n_e) {
+  margin-left: 2ch;
+}
+
+#sidebar > .content .section > .title {
+  padding-bottom: 0.5em;
+  margin-bottom: 0.5em;
+  border-bottom: 1px solid #aab2;
+}
+
+#sidebar > .content :is(.section, .divider):not(.isotope) > .parent_data_point:not(.section, .divider, .wrap_array) {
+  white-space: nowrap;
+  overflow-x: auto;
+}
+
+#sidebar > .content :is(.section, .divider):not(.isotope) > .parent_data_point:not(.section, .divider) > .data_point {
+  margin-left: 0.5ch;
+  margin-right: 0.5ch;
+}
+
+#sidebar > .content > .abundance > .type {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+#sidebar > .content > .classifications > .advanced > .cpk_hex > .value::before {
+  content: '#';
+}
+
+#sidebar > .content > .classifications > .advanced > .cpk_hex > .box {
+  content: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAQElEQVR42qXKwQkAIAxDUUdxtO6/RBQkQZvSi8I/pL4BoGw/XPkh4XigPmsUgh0626AjRsgxHTkUThsG2T/sIlzdTsp52kSS1wAAAABJRU5ErkJggg==);
+
+  position: relative;
+  top: calc(1em - 1px);
+  width: 1em;
+  height: 1em;
+}
+
+#sidebar:has(.content > .isotopes:hover) + #nuclide_sidebar[data-hidden=true] + #abundance_chart {
+  pointer-events: all;
+
+  opacity: 1;
+}
+
+#sidebar > .content > .isotopes {
+  cursor: default;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  white-space: normal;
+  text-align: center;
+
+  line-height: calc(2vmin + 1em + 10px);
+}
+
+#sidebar > .content > .isotopes .no_known_isotopes {
+  color: #999;
+}
+
+#sidebar > .content > .isotopes > .isotope {
+  cursor: pointer;
+  -webkit-user-select: auto;
+  -ms-user-select: auto;
+  user-select: auto;
+
+  min-width: calc(4vmin + 1ex);
+
+  text-decoration: none;
+}
+
+#sidebar > .content > .isotopes > :is(.isotope, .key) {
+  margin: 4px;
+  margin-right: 10px;
+
+  background: #bbc1;
+}
+
+#sidebar > .content > .isotopes > .unstable {
+  outline: 2px solid red;
+}
+
+#sidebar > .content > .isotopes > .natural {
+  outline: 2px solid yellow;
+}
+
+#sidebar > .content > .isotopes > .stable {
+  outline: 2px solid cyan;
+}
+
+#sidebar > .content > .isotopes > .isotope.selected {
+  outline: 2px solid white;
+}
+
+#sidebar > .content > .isotopes > .isotope:hover {
+  filter: brightness(85%);
+}
+
+#sidebar > .content > .isotopes > .isotope:active {
+  filter: brightness(55%);
+}
+
+#sidebar > .content *:not([data-unit=undefined])[data-unit]::after {
+  content: attr(data-unit);
+
+  margin-left: 1ch;
+}
+
+#sidebar > .content *:not([data-connected-unit=undefined])[data-connected-unit]::after {
+  content: attr(data-connected-unit);
+}
+
+#sidebar > .content .temperature > .value {
+  text-align: center;
+}
+
+#sidebar > .content .temperature > .kelvin {
+
+  display: inline-block;
+  cursor: pointer;
+
+  padding: 1vmin;
+  border-radius: 1vmin 0.25vmin 0.25vmin 1vmin;
+
+  background: #334;
+}
+
+#sidebar > .content .temperature > .celsius {
+  cursor: pointer;
+
+  display: inline-block;
+
+  padding: 1vmin;
+  border-radius: 0.25vmin;
+
+  background: #334;
+}
+
+#sidebar > .content .temperature > .fahrenheit {
+  cursor: pointer;
+
+  display: inline-block;
+
+  padding: 1vmin;
+  border-radius: 0.25vmin 1vmin 1vmin 0.25vmin;
+
+  background: #334;
+}
+
+#sidebar > .content .temperature[data-selected='k'] > .kelvin, #sidebar > .content .temperature[data-selected='c'] > .celsius, #sidebar > .content .temperature[data-selected='f'] > .fahrenheit {
+  background: #337;
+}
+
+#sidebar > .content > .properties > .thermal > .divider > :is(.melting_point, .boiling_point) > .key {
+  display: inline-block;
+  min-width: 11.5ch;
+}
+
+#sidebar > .content > .properties > :is(.electrical, .magnetic) > .top > .type {
+  width: calc(100% - 4ch);
+
+  text-align: center;
+}
+
+#sidebar > .content > .summary {
+  text-align: justify;
+}

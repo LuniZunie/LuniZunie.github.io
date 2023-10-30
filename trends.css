@@ -1,0 +1,236 @@
+#top_nav {
+  position: fixed;
+  left: calc(var(--center) - 2.5vw - calc(31vw + 1.5ch));
+  top: 0px;
+  width: calc(62vw + 3ch);
+
+  border-radius: 0 0 calc(1em + 2vmin) calc(1em + 2vmin);
+  padding: 0px calc(1em + 2vmin);
+
+  background: #112;
+
+  transition: 500ms all;
+}
+
+#top_nav > .button {
+  cursor: pointer;
+
+  display: inline-block;
+  width: 20vw;
+
+  padding: 1vmin;
+
+  font-weight: bold;
+  text-align: center;
+}
+
+body:has(#top_nav > .button.elemental_trends:hover) > #elemental_trends_menu, #elemental_trends_menu:hover {
+  display: block;
+}
+
+body:has(#top_nav > .button.isotopic_trends:hover) > #isotopic_trends_menu, #isotopic_trends_menu:hover {
+  display: block;
+}
+
+body:has(#top_nav > .button.colorize:hover) > #colorize_menu, #colorize_menu:hover {
+  display: block;
+}
+
+.trends_menu {
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  display: none;
+  position: fixed;
+  max-height: calc(100vh - 1em);
+
+  border: 1px solid #33a;
+  border-top: none;
+  border-radius: 0 0 1vmin 1vmin;
+
+  white-space: nowrap;
+  overflow: auto;
+  direction: rtl;
+
+  background: #112;
+
+  z-index: 2147483641;
+
+  transition: opacity 300ms;
+}
+
+.trends_menu::-webkit-scrollbar {
+  width: calc(12px + 0.5ch);
+	height: calc(12px + 0.5ch);
+
+	border-radius: 5px;
+}
+
+.trends_menu::-webkit-scrollbar-thumb {
+  border: 0.5ch solid transparent;
+  border-radius: 0.7ch;
+
+  background-clip: content-box;
+}
+
+.trends_menu * {
+  direction: ltr;
+
+  transition: opacity 300ms;
+}
+
+.trends_menu .template {
+  display: none;
+}
+
+.trends_menu > .title {
+  text-align: center;
+
+  padding: 0px 3ch 0.67em 3ch;
+  margin-bottom: 0px;
+  border-bottom: 1px solid #33a;
+}
+
+.trends_menu .group.divider {
+  border-top: 1px solid #33a;
+  border-bottom: 1px solid #33a;
+}
+
+.trends_menu > .group.template + .group.divider {
+  border-top: none;
+}
+
+.trends_menu .group.divider > .title {
+  border-bottom: 1px solid #33a;
+  padding-bottom: 1em;
+  margin-bottom: 0px;
+
+  text-align: center;
+  font-weight: bold;
+}
+
+.trends_menu .group.side > .title {
+  cursor: pointer;
+
+  display: inline-block;
+  width: calc(100% - 2vmin);
+
+  margin: 0px;
+  padding: calc(1vmin + 0.33em) 1vmin calc(1vmin + 0.5em) 1vmin;
+}
+
+.trends_menu .group.side:hover > .title {
+  background: #223;
+}
+
+.trends_menu .group.side > .title::before {
+  content: '\2713';
+  float: left;
+
+  opacity: 0;
+
+  padding-right: 1ch;
+}
+
+.trends_menu .group.side > .title::after {
+  content: '\2C3';
+  float: right;
+
+  color: white;
+
+  font-size: 1.25em;
+
+  padding-left: 1ch;
+  padding-right: 1ch;
+}
+
+.trends_menu .group.side:has(.trend[data-selected=true]) > .title::before {
+  opacity: 1;
+}
+
+.trends_menu .group.side > .content {
+  pointer-events: none;
+
+  display: inline-block;
+  position: fixed;
+  max-height: calc(100vh - calc(4vmin + 2.68em));
+
+  border: 1px solid #33a;
+  border-radius: 1vmin;
+
+  white-space: nowrap;
+
+  opacity: 0;
+  background: #112;
+}
+
+.trends_menu .group.side > .content:not(.group.side) {
+  overflow: auto;
+}
+
+.trends_menu .group.side:hover > .content, .trends_menu .group.side > .content:hover {
+  pointer-events: all;
+
+  opacity: 1;
+}
+
+.trends_menu .trend {
+  cursor: pointer;
+
+  min-width: 15vw;
+
+  padding: calc(1vmin + 0.33em) 1vmin calc(1vmin + 0.5em) 1vmin;
+}
+
+.trends_menu .trend:hover {
+  background: #223;
+}
+
+.trends_menu .trend::before {
+  content: '\2713';
+  float: left;
+
+  opacity: 0;
+
+  padding-right: 1ch;
+}
+
+.trends_menu .trend::after {
+  content: '\2713';
+  float: right;
+
+  opacity: 0;
+
+  padding-left: 1ch;
+}
+
+.trends_menu .trend[data-selected=true]::before {
+  opacity: 1;
+}
+
+.trends_menu .trend > .log {
+  pointer-events: none;
+
+  float: right;
+
+  padding-left: 1ch;
+
+  opacity: 0;
+}
+
+.trends_menu .trend > .log::after {
+  content: '\2610';
+
+  padding: 0px 1ch 0px 0.5ch;
+}
+
+.trends_menu .trend > .log[data-selected=true]::after {
+  content: '\2611';
+}
+
+.trends_menu .trend[data-selected=true] > .log {
+  pointer-events: all;
+
+  opacity: 1;
+}

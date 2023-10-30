@@ -317,185 +317,6 @@ body[data-trends=true] #top_buttons > #trends_button::after {
   z-index: 2147483640;
 }
 
-#isotopic_trends_menu {
-  right: 30vw;
-  display: none;
-}
-
-.trends_menu {
-  -webkit-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-
-  position: fixed;
-  max-height: calc(100vh - calc(4vmin + 2.68em));
-
-  border: 1px solid #33a;
-  border-radius: 1vmin;
-
-  white-space: nowrap;
-  overflow: auto;
-
-  background: #112;
-
-  z-index: 2147483641;
-
-  transition: opacity 300ms;
-}
-
-.trends_menu * {
-  transition: opacity 300ms;
-}
-
-.trends_menu .template {
-  display: none;
-}
-
-.trends_menu > .title {
-  text-align: center;
-
-  padding: 0px 3ch 0.67em 3ch;
-  margin-bottom: 0px;
-  border-bottom: 1px solid #33a;
-}
-
-.trends_menu .group.divider {
-  border-top: 1px solid #33a;
-  border-bottom: 1px solid #33a;
-}
-
-.trends_menu .group.divider > .title {
-  border-bottom: 1px solid #33a;
-  padding-bottom: 1em;
-  margin-bottom: 0px;
-
-  text-align: center;
-  font-weight: bold;
-}
-
-.trends_menu .group.side > .title {
-  cursor: pointer;
-
-  display: inline-block;
-  width: calc(100% - 2vmin);
-
-  margin: 0px;
-  padding: calc(1vmin + 0.33em) 1vmin calc(1vmin + 0.5em) 1vmin;
-}
-
-.trends_menu .group.side:hover > .title {
-  background: #223;
-}
-
-.trends_menu .group.side > .title::before {
-  content: '\2713';
-  float: left;
-
-  opacity: 0;
-
-  padding-right: 1ch;
-}
-
-.trends_menu .group.side > .title::after {
-  content: '\2C3';
-  float: right;
-
-  color: white;
-
-  font-size: 1.25em;
-
-  padding-left: 1ch;
-  padding-right: 1ch;
-}
-
-.trends_menu .group.side:has(.trend[data-selected=true]) > .title::before {
-  opacity: 1;
-}
-
-.trends_menu .group.side > .content {
-  pointer-events: none;
-
-  display: inline-block;
-  position: fixed;
-  max-height: calc(100vh - calc(4vmin + 2.68em));
-
-  border: 1px solid #33a;
-  border-radius: 1vmin;
-
-  overflow: auto;
-
-  opacity: 0;
-  background: #112;
-
-  transform: translate(0px, 0px);
-}
-
-.trends_menu .group.side:hover > .content {
-  pointer-events: all;
-
-  opacity: 1;
-}
-
-.trends_menu .trend {
-  cursor: pointer;
-
-  min-width: 15vw;
-
-  padding: calc(1vmin + 0.33em) 1vmin calc(1vmin + 0.5em) 1vmin;
-}
-
-.trends_menu .trend:hover {
-  background: #223;
-}
-
-.trends_menu .trend::before {
-  content: '\2713';
-  float: left;
-
-  opacity: 0;
-
-  padding-right: 1ch;
-}
-
-.trends_menu .trend::after {
-  content: '\2713';
-  float: right;
-
-  opacity: 0;
-
-  padding-left: 1ch;
-}
-
-.trends_menu .trend[data-selected=true]::before {
-  opacity: 1;
-}
-
-.trends_menu .trend > .log {
-  pointer-events: none;
-
-  float: right;
-
-  padding-left: 1ch;
-
-  opacity: 0;
-}
-
-.trends_menu .trend > .log::after {
-  content: '\2610';
-
-  padding: 0px 1ch 0px 0.5ch;
-}
-
-.trends_menu .trend > .log[data-selected=true]::after {
-  content: '\2611';
-}
-
-.trends_menu .trend[data-selected=true] > .log {
-  pointer-events: all;
-
-  opacity: 1;
-}
-
 #decay_chain[data-hidden=false] ~ #copyright {
   pointer-events: none;
 
@@ -570,15 +391,16 @@ body[data-trends=true] #top_buttons > #trends_button::after {
   user-select: none;
 
   position: fixed;
-  left: 0px;
-  top: 0px;
-  width: calc(var(--center) * 2);
+  left: calc(var(--center) - var(--elementScale) * 9 + var(--elementScale) * 7);
+  top: calc(50vh - var(--elementScale) * 4.5);
 
   text-align: center;
   font-size: calc(var(--elementScale));
   font-family: 'Dancing Script', cursive;
 
   opacity: 0;
+
+  transform: translate(-50%, -50%);
 
   transition: 500ms all;
 }
@@ -615,7 +437,7 @@ body[data-trends=true] #top_buttons > #trends_button::after {
   background: #585868;
 }
 
-.sidebar .tempature {
+/* .sidebar .temperature {
   -webkit-user-select: none;
   -ms-user-select: none;
   user-select: none;
@@ -623,13 +445,13 @@ body[data-trends=true] #top_buttons > #trends_button::after {
   margin: 1.5em 3vmin;
 }
 
-.sidebar .tempature .key {
+.sidebar .temperature .key {
   display: inline-block;
 
   width: 11ch;
 }
 
-.sidebar .tempature .data {
+.sidebar .temperature .data {
   cursor: text;
   -webkit-user-select: all;
   -ms-user-select: all;
@@ -645,7 +467,7 @@ body[data-trends=true] #top_buttons > #trends_button::after {
   background: #334;
 }
 
-.sidebar .tempature .kelvin {
+.sidebar .temperature .kelvin {
 
   display: inline-block;
   cursor: pointer;
@@ -656,11 +478,11 @@ body[data-trends=true] #top_buttons > #trends_button::after {
   background: #334;
 }
 
-.sidebar .tempature[data-selected='k'] .kelvin {
+.sidebar .temperature[data-selected='k'] .kelvin {
   background: #337;
 }
 
-.sidebar .tempature .celsius {
+.sidebar .temperature .celsius {
   cursor: pointer;
 
   display: inline-block;
@@ -671,11 +493,11 @@ body[data-trends=true] #top_buttons > #trends_button::after {
   background: #334;
 }
 
-.sidebar .tempature[data-selected='c'] .celsius {
+.sidebar .temperature[data-selected='c'] .celsius {
   background: #337;
 }
 
-.sidebar .tempature .fahrenheit {
+.sidebar .temperature .fahrenheit {
   cursor: pointer;
 
   display: inline-block;
@@ -686,11 +508,15 @@ body[data-trends=true] #top_buttons > #trends_button::after {
   background: #334;
 }
 
-.sidebar .tempature[data-selected='f'] .fahrenheit {
+.sidebar .temperature[data-selected='f'] .fahrenheit {
   background: #337;
+} */
+
+.sidebar .title {
+  text-align: center;
 }
 
-#sidebar .half_life {
+/* #sidebar .half_life {
   -webkit-user-select: none;
   -ms-user-select: none;
   user-select: none;
@@ -752,10 +578,6 @@ body[data-trends=true] #top_buttons > #trends_button::after {
 
 #sidebar .half_life[data-selected='s'] .second {
   background: #337;
-}
-
-.sidebar .title {
-  text-align: center;
 }
 
 #sidebar {
@@ -873,7 +695,7 @@ body[data-trends=true] #top_buttons > #trends_button::after {
   overflow: auto;
 }
 
-#sidebar .information > :not(.title):not(.summary).tempature {
+#sidebar .information > :not(.title):not(.summary).temperature {
   margin: 1.5em 3vmin;
 }
 
@@ -979,7 +801,7 @@ body[data-trends=true] #top_buttons > #trends_button::after {
 
   text-align: right;
   font-style: italic;
-}
+} */
 
 #nuclide_sidebar {
   pointer-events: all;
@@ -1306,12 +1128,6 @@ body[data-trends=true] #top_buttons > #trends_button::after {
   margin-right: 5px;
 }
 
-#sidebar:has(.information .isotopes:hover) + #nuclide_sidebar[data-hidden=true] + #abundance_chart {
-  pointer-events: all;
-
-  opacity: 1;
-}
-
 #abundance_chart {
   pointer-events: none;
 
@@ -1359,18 +1175,23 @@ body[data-trends=true] #top_buttons > #trends_button::after {
   top: 0px;
 }
 
-.period {
+body > table > tbody > .period {
+  pointer-events: none;
+
   position: fixed;
   left: calc(var(--center) - var(--elementScale) * 9);
   width: calc(var(--elementScale) * 18);
   height: var(--elementScale);
 }
 
-.period.inter-period {
+body > table > tbody > .period.inter-period {
   left: calc(var(--center) - var(--elementScale) * 9 + var(--elementScale) * 3);
   width: calc(var(--elementScale) * 14);
 }
 
+#period0 {
+  top: calc(50vh - var(--elementScale) * 4.75 - var(--elementScale));
+}
 #period1 {
   top: calc(50vh - var(--elementScale) * 4.75);
 }
@@ -1412,18 +1233,34 @@ body[data-trends=true] #top_buttons > #trends_button::after {
   text-align: center;
   font-weight: bold;
 
+  border-radius: 20%;
+}
+
+.element:not(.fake_element) {
   margin-left: calc(var(--elementPadding) - 10px);
   margin-top: -10px;
-  border-radius: 20%;
 
   background: #112;
 }
 
-body[data-saturated=false] .element:not(.fallen), body[data-saturated=false] .element.fallen:hover {
+.element.hidden_element, .element.fake_element {
+  pointer-events: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.element.fake_element {
+  opacity: 0;
+
+  transition: 500ms all;
+}
+
+.element:not(.fake_element)[data-saturated=false]:not(.fallen), .element[data-saturated=false].fallen:hover {
   box-shadow: 1px 1px #131326, 2px 2px #131326, 3px 3px #131326, 4px 4px #131326, 5px 5px #131326, 6px 6px #131326, 7px 7px #131326, 8px 8px #131326, 9px 9px #131326, 10px 10px #131326;
 }
 
-[data-saturated=true] .element.fallen:not(:hover) {
+.element.fallen[data-saturated=true]:not(:hover) {
   box-shadow: none !important;
 }
 
@@ -1448,20 +1285,97 @@ body[data-saturated=false] .element:not(.fallen), body[data-saturated=false] .el
   height: 100%;
 }
 
-.element:hover > .hoverable {
+.element:not(.fake_element):hover > .hoverable {
   margin-left: 15px;
   margin-top: 15px;
 }
 
-.element > p.symbol {
+.element > p.symbol, .fake_element > p {
   position: absolute;
-  top: 10%;
   width: 100%;
 
   margin: 0px;
 
   font-size: calc(calc(var(--elementScale) - var(--elementPadding) * 2) * 0.35);
-  line-height: calc(var(--elementScale) - var(--elementPadding) * 2 - 10%);
+  line-height: calc(var(--elementScale) - var(--elementPadding) * 2);
+}
+
+.element > p.symbol {
+  top: 10%;
+
+  line-height: calc(var(--elementScale) - var(--elementPadding) * 2);
+}
+
+.fake_element > p.star {
+  font-size: xx-large;
+  color: rgb(255, 255, 255);
+}
+
+body:has(#lanthanum.element.hidden_element) .fake_element.star1 {
+  display: none;
+}
+
+body:has(#actinium.element.hidden_element) .fake_element.star2 {
+  display: none;
+}
+
+body:has(#scandium.element.hidden_element) .fake_element.group3 {
+  display: none;
+}
+
+body:has(#titanium.element.hidden_element) .fake_element.group4 {
+  display: none;
+}
+
+body:has(#vanadium.element.hidden_element) .fake_element.group5 {
+  display: none;
+}
+
+body:has(#chromium.element.hidden_element) .fake_element.group6 {
+  display: none;
+}
+
+body:has(#manganese.element.hidden_element) .fake_element.group7 {
+  display: none;
+}
+
+body:has(#iron.element.hidden_element) .fake_element.group8 {
+  display: none;
+}
+
+body:has(#cobalt.element.hidden_element) .fake_element.group9 {
+  display: none;
+}
+
+body:has(#nickel.element.hidden_element) .fake_element.group10 {
+  display: none;
+}
+
+body:has(#copper.element.hidden_element) .fake_element.group11 {
+  display: none;
+}
+
+body:has(#zinc.element.hidden_element) .fake_element.group12 {
+  display: none;
+}
+
+.fake_element > span.period_number {
+  position: absolute;
+  right: 0px;
+
+  color: rgb(128, 0, 0);
+
+  font-size: calc(calc(var(--elementScale) - var(--elementPadding) * 2) * 0.3);
+  line-height: calc(var(--elementScale) - var(--elementPadding) * 2);
+}
+
+.fake_element > span.group_number {
+  position: absolute;
+  bottom: 0px;
+
+  color: rgb(128, 0, 0);
+
+  font-size: calc(calc(var(--elementScale) - var(--elementPadding) * 2) * 0.3);
 }
 
 .element > p.atomic_number {
@@ -1484,6 +1398,9 @@ body[data-saturated=false] .element:not(.fallen), body[data-saturated=false] .el
   font-size: calc(calc(var(--elementScale) - var(--elementPadding) * 2) * 0.15);
 }
 
+.element.group0 {
+  left: calc(var(--center) - var(--elementScale) * 9 - var(--elementScale));
+}
 .element.group1 {
   left: calc(var(--center) - var(--elementScale) * 9);
 }

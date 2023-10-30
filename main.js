@@ -2,17 +2,84 @@ const colors = [
   '#4D8066','#FF4D4D','#999966','#B33300','#B3B31A','#809980','#4D80CC','#CCFF1A','#FF99E6','#80B300','#00B3E6','#1AFF33','#99E6E6','#CC9999','#33FFCC','#FFB399','#6666FF','#66991A','#00E680','#E6B333','#E666B3','#E6331A','#E64D66','#B366CC','#4D8000','#B34D4D','#E6B3B3','#999933','#4DB380','#33991A','#809900','#66664D','#FF33FF','#4DB3FF','#E666FF','#66E64D','#6680B3','#CCCC00','#FF3380','#CC80CC','#FFFF99','#991AFF','#FF6633','#66994D','#E6FF80','#FF1A66','#3366E6','#1AB399','#99FF99','#9900B3'
 ];
 
-const groupColors = {
-  'diatomic nonmetal': [ 128, 0, 0 ],
-  'noble gas': [ 128, 128, 0 ],
-  'alkali metal': [ 0, 128, 0 ],
-  'alkaline earth metal': [ 0, 128, 128 ],
-  'metalloid': [ 0, 0, 128 ],
-  'polyatomic nonmetal': [ 128, 0, 128 ],
-  'post-transition metal': [ 128, 64, 0 ],
-  'transition metal': [ 0, 128, 64 ],
-  'lanthanide': [ 64, 0, 128 ],
-  'actinide': [ 128, 0, 64 ],
+const colorizeColors = {
+  Normal_Series: {
+    'diatomic nonmetal': [ 128, 0, 0 ],
+    'noble gas': [ 128, 128, 0 ],
+    'alkali metal': [ 0, 128, 0 ],
+    'alkaline earth metal': [ 0, 128, 128 ],
+    'metalloid': [ 0, 0, 128 ],
+    'polyatomic nonmetal': [ 128, 0, 128 ],
+    'post-transition metal': [ 128, 64, 0 ],
+    'transition metal': [ 0, 128, 64 ],
+    'lanthanide': [ 64, 0, 128 ],
+    'actinide': [ 128, 0, 64 ],
+  },
+  Simple_Series: {
+    'nonmetal': [ 128, 0, 0 ],
+    'gas': [ 128, 128, 0 ],
+    'metal': [ 0, 128, 0 ],
+    'earth metal': [ 0, 128, 128 ],
+    'metalloid': [ 0, 0, 128 ],
+    'lanthanide': [ 64, 0, 128 ],
+    'actinide': [ 128, 0, 64 ],
+  },
+  Advanced_Series: {
+    'nonmetal': [ 128, 0, 0 ],
+    'noble gas': [ 128, 128, 0 ],
+    'alkali metal': [ 0, 128, 0 ],
+    'alkaline earth metal': [ 0, 128, 128 ],
+    'metalloid': [ 0, 0, 128 ],
+    'poor metal': [ 128, 64, 0 ],
+    'transition metal': [ 0, 128, 64 ],
+    'lanthanide': [ 64, 0, 128 ],
+    'actinide': [ 128, 0, 64 ],
+    'chalcogen': [ 128, 0, 128 ],
+    'halogen': [ 0, 64, 128 ],
+  },
+  Electron_Block: {
+    's': [ 128, 0, 0 ],
+    'p': [ 0, 128, 0 ],
+    'd': [ 0, 0, 128 ],
+    'f': [ 128, 128, 0 ],
+  },
+  Hide_Inter: {
+    'nonmetal': [ null, null, null, null ],
+    'noble gas': [ null, null, null, null ],
+    'alkali metal': [ null, null, null, null ],
+    'alkaline earth metal': [ null, null, null, null ],
+    'metalloid': [ null, null, null, null ],
+    'poor metal': [ null, null, null, null ],
+    'transition metal': [ -1, -1, -1, -1 ],
+    'lanthanide': [ -1, -1, -1, -1 ],
+    'actinide': [ -1, -1, -1, -1 ],
+    'chalcogen': [ null, null, null, null ],
+    'halogen': [ null, null, null, null ],
+  },
+  Phase: {
+    'solid': [ 128, 0, 0 ],
+    'liquid': [ 0, 0, 128 ],
+    'gas': [ 0, 128, 0 ],
+  },
+  Advanced_Phase: {
+    'solid': [ 128, 0, 0 ],
+    'liquid': [ 0, 0, 128 ],
+    'gas monoatomic': [ 0, 128, 128 ],
+    'gas diatomic': [ 128, 128, 0 ],
+    '': [ null, null, null, null ],
+  },
+  /* Simple_Series: {
+    'diatomic nonmetal': [ 128, 0, 0 ],
+    'noble gas': [ 128, 128, 0 ],
+    'alkali metal': [ 0, 128, 0 ],
+    'alkaline earth metal': [ 0, 128, 128 ],
+    'metalloid': [ 0, 0, 128 ],
+    'polyatomic nonmetal': [ 128, 0, 128 ],
+    'post-transition metal': [ 128, 64, 0 ],
+    'transition metal': [ 0, 128, 64 ],
+    'lanthanide': [ 64, 0, 128 ],
+    'actinide': [ 128, 0, 64 ],
+  } */
 };
 
 const Mouse = {
@@ -109,9 +176,9 @@ Object.range = function(object, logarithmic) {
   const max = Math.max(...values);
 
   return Object.fromEntries(Object.entries(object).filter(
-    ([ _, value ]) => Number.isFinite(value) && !(logarithmic && values === 0)
+    ([ _, value ]) => !(logarithmic && values === 0)
   ).map(
-    ([ key, value ]) => [ key, ((logarithmic ? Math.log10(value - trueMin) : value) - min) / (max - min) ]
+    ([ key, value ]) => [ key, Number.isFinite(value) ? (((logarithmic ? Math.log10(value - trueMin) : value) - min) / (max - min)) * 0.9 + 0.1 : value ]
   ));
 };
 
@@ -163,6 +230,13 @@ Element.prototype.particle = function(particles, size, time) {
 };
 Element.prototype.child = function(className) {
   return this.getElementsByClassName(className)[0];
+};
+Element.prototype.vChild = function(className) {
+  let child = this.getElementsByClassName(className)[0];
+  if (child)
+    child = child.getElementsByClassName('value')[0] ?? child;
+
+  return child;
 };
 Element.prototype.template = function() {
   const newElement = this.cloneNode(true);
@@ -220,7 +294,7 @@ window.onresize = function() {
   abundanceCanvasKey.width = innerWidth;
 
   if (loadedElement !== undefined)
-    DrawAbundanceChart(pTable[loadedElement]);
+    DrawAbundanceChart(Wolfram.elements[loadedElement]);
 };
 
 const sidebar = document.getElementById('sidebar');
@@ -257,10 +331,10 @@ decayChainElement.onclick = function(e) {
 window.onclick = function(e) {
   if (nSidebar.dataset.hidden === 'true') {
     let element = e.target;
-    let result = element.classList.contains('isotope') || element.classList.contains('no_close') || (element.classList.contains('searchable') && element.dataset.search == 'true') || element === credits || element === decayChainElement || element === nSidebar ? -1 : (element === document.body ? 1 : 0);
+    let result = element.classList.contains('trends_menu') || element.id === 'top_nav' || element.classList.contains('isotope') || element.classList.contains('no_close') || (element.classList.contains('searchable') && element.dataset.search == 'true') || element === credits || element === decayChainElement || element === nSidebar ? -1 : (element === document.body ? 1 : 0);
     while (element.parentElement && !result) {
       element = element.parentElement;
-      result = element.classList.contains('isotope') || element.classList.contains('no_close') || (element.classList.contains('searchable') && element.dataset.search == 'true') || element === credits || element === decayChainElement || element === nSidebar || element === sidebar || element.classList.contains('element') || element.id === 'top_buttons' ? -1 : (element === document.body ? 1 : 0);
+      result = element.classList.contains('trends_menu') || element.id === 'top_nav' || element.classList.contains('isotope') || element.classList.contains('no_close') || (element.classList.contains('searchable') && element.dataset.search == 'true') || element === credits || element === decayChainElement || element === nSidebar || element === sidebar || element.classList.contains('element') || element.id === 'top_buttons' ? -1 : (element === document.body ? 1 : 0);
     }
 
     if (result !== 1)
@@ -269,17 +343,17 @@ window.onclick = function(e) {
     sidebar.dataset.hidden = true;
   } else {
     let element = e.target;
-    let result = element.classList.contains('isotope') || element.classList.contains('no_close') || (element.classList.contains('searchable') && element.dataset.search == 'true') || element === credits || element === decayChainElement || element === nSidebar ? -1 : (element === document.body ? 1 : 0);
+    let result = element.classList.contains('trends_menu') || element.id === 'top_nav' || element.classList.contains('isotope') || element.classList.contains('no_close') || (element.classList.contains('searchable') && element.dataset.search == 'true') || element === credits || element === decayChainElement || element === nSidebar ? -1 : (element === document.body ? 1 : 0);
     while (element.parentElement && !result) {
       element = element.parentElement;
-      result = element.classList.contains('isotope') || element.classList.contains('no_close') || (element.classList.contains('searchable') && element.dataset.search == 'true') || element === credits || element === decayChainElement || element === nSidebar || element.id === 'top_buttons' ? -1 : (element === document.body ? 1 : 0);
+      result = element.classList.contains('trends_menu') || element.id === 'top_nav' || element.classList.contains('isotope') || element.classList.contains('no_close') || (element.classList.contains('searchable') && element.dataset.search == 'true') || element === credits || element === decayChainElement || element === nSidebar || element.id === 'top_buttons' ? -1 : (element === document.body ? 1 : 0);
     }
 
     if (result !== 1)
       return;
 
     nSidebar.dataset.stuckOpen = null;
-    [...sidebar.child('information').child('isotopes').getElementsByClassName('isotope')].forEach(
+    [...sidebar.child('content').child('isotopes').getElementsByClassName('isotope')].forEach(
       element => element.classList.remove('selected')
     );
 
@@ -292,88 +366,138 @@ creditsButton.onmouseup = function(e) {
   credits.dataset.hidden = false;
 };
 
-const colorButton = document.getElementById('color_button');
-colorButton.onmouseup = function(e) {
-  document.body.dataset.saturated = {
-    true: 'false',
-    false: 'true',
-  }[document.body.dataset.saturated];
-
-  if (document.body.dataset.saturated == 'true')
-    pTable.forEach(element => {
-      const html = document.getElementById(element.name.toLowerCase());
-      if (html) {
-        html.style.background = `rgb(${(groupColors[element.series] ?? [ 16, 16, 32 ]).join(', ')})`;
-        const shadow = `rgb(${(groupColors[element.series] ?? [ 16, 16, 32 ]).map(
-          value => value * 1.25
-        ).join(', ')})`;
-        html.style.boxShadow = `1px 1px ${shadow}, 2px 2px ${shadow}, 3px 3px ${shadow}, 4px 4px ${shadow}, 5px 5px ${shadow}, 6px 6px ${shadow}, 7px 7px ${shadow}, 8px 8px ${shadow}, 9px 9px ${shadow}, 10px 10px ${shadow}`;
-      }
-    });
-  else
-    pTable.forEach(element => {
-      const html = document.getElementById(element.name.toLowerCase());
-      if (html) {
-        html.style.background = null;
-        html.style.boxShadow = null;
-      }
-    });
-};
-
+const loadedElementTrends = {};
 const loadedElementColors = {};
 
+const evalMathEquation = angle => {
+  return Function(`'use strict'; return (${angle.toString().replace(/(?<=\d)\s/g, '*').replace(/&pi;/g, Math.PI)})`)();
+};
+
 const elementalTrends = {
-  'group:divider::1': 7,
-  'group:side:Electrons': 4,
-  '#_Electrons:electrons': function(log) {
-    const elements = Object.fromEntries(pTable.map(
-      element => [ element.symbol, element.electrons_per_shell ? element.electrons_per_shell.sum() : undefined ]
+  'group:divider:Pinned': 4,
+  'pin:Covalent:radius': 'Atomic_Radius',
+  'pin:Electronegativity:reactivity:electrons': 'Electronnegativity',
+  'pin:Electron_Affinity:reactivity:electrons': 'Electron_Affinity',
+  'pin:Average:ionization_energies': 'Ionization_Energies',
+  'group:side:More': 82,
+  'group:divider::1': 40,
+  'group:side:Identifiers': 7,
+  'group:divider::identifiers:1': 2,
+  'Group:identifiers': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.identifiers.group.value ]
     ).filter(
       ([ _, value ]) => value !== undefined
     ));
 
     return Object.range(elements, log);
   },
-  '#_Electron_Shells:electrons': function(log) {
-    const elements = Object.fromEntries(pTable.map(
-      element => [ element.symbol, element.electrons_per_shell?.length ]
+  'Period:identifiers': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.identifiers.period.value ]
     ).filter(
       ([ _, value ]) => value !== undefined
     ));
 
     return Object.range(elements, log);
   },
-  'Electronegativity:electrons': function(log) {
-    const elements = Object.fromEntries(pTable.map(
-      element => [ element.symbol, element.electronegativity_pauling ]
+  'group:divider::identifiers:2': 1,
+  'Name_Length:identifiers': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.identifiers.name.value?.length ]
     ).filter(
       ([ _, value ]) => value !== undefined
     ));
 
     return Object.range(elements, log);
   },
-  'Electron_Affinity:electrons': function(log) {
-    const elements = Object.fromEntries(pTable.map(
-      element => [ element.symbol, element.electron_affinity ]
+  'group:divider::identifiers:3': 4,
+  'group:side:Alternate_Names': 2,
+  '#_Alternate_Names:identifiers': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.identifiers.alternate_names.value?.length ]
     ).filter(
       ([ _, value ]) => value !== undefined
     ));
 
     return Object.range(elements, log);
   },
+  'Combined_Alternate_Name_Lengths:identifiers': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.identifiers.alternate_names.value && element.identifiers.alternate_names.value.reduce(
+        (sum, name) => sum + name?.length, 0
+      ) ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'group:side:Allotropes': 2,
+  '#_Allotropes:allotropes': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.allotropes.value?.length ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'Combined_Allotrope_Name_Lengths:electrons': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.allotropes.value && element.allotropes.value.reduce(
+        (sum, name) => sum + name?.length, 0
+      ) ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'group:side:Atomic_Structure': 15,
+  'group:divider::atomic_structure:1': 4,
+  'Atomic_Mass:atomic_structure': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.atomic_structure.atomic_mass.value ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'group:side:Protons_&_Neutrons': 3,
+  '#_Protons:atomic_structure': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.identifiers.atomic_number.value ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  '#_Neutrons:atomic_structure': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.atomic_structure.neutrons.value ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'Neutrons_per_Proton:atomic_structure': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, (element.atomic_structure.neutrons.value ?? element.identifiers.atomic_number.value) === undefined ? undefined : element.atomic_structure.neutrons.value / element.identifiers.atomic_number.value ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'group:divider::atomic_structure:2': 3,
   'group:side:Radius': 3,
   'Calculated:radius': function(log) {
-    const elements = Object.fromEntries(pTable.map(
-      element => [ element.symbol, element.radius?.calculated ]
-    ).filter(
-      ([ _, value ]) => value !== undefined
-    ));
-
-    return Object.range(elements, log);
-  },
-  'Empirical:radius': function(log) {
-    const elements = Object.fromEntries(pTable.map(
-      element => [ element.symbol, element.radius?.empirical ]
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.atomic_structure.radius.atomic.value ]
     ).filter(
       ([ _, value ]) => value !== undefined
     ));
@@ -381,112 +505,702 @@ const elementalTrends = {
     return Object.range(elements, log);
   },
   'Covalent:radius': function(log) {
-    const elements = Object.fromEntries(pTable.map(
-      element => [ element.symbol, element.radius?.covalent ]
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.atomic_structure.radius.covalent.value ]
     ).filter(
       ([ _, value ]) => value !== undefined
     ));
 
     return Object.range(elements, log);
   },
-  'group:divider::2': 8,
-  'group:side:Tempature': 4,
-  'Boiling:tempature': function(log) {
-    const elements = Object.fromEntries(pTable.map(
-      element => [ element.symbol, element.boiling_point ]
+  'van_der_Waals:radius': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.atomic_structure.radius.van_der_waals.value ]
     ).filter(
       ([ _, value ]) => value !== undefined
     ));
 
     return Object.range(elements, log);
   },
-  'Critical:tempature': function(log) {
-    const elements = Object.fromEntries(pTable.map(
-      element => [ element.symbol, element.critical_temperature ]
+  'group:divider::atomic_structure:3': 8,
+  'group:side:Lattice_Angles:lattice': 4,
+  'group:divider::atomic_structure:lattice:angles:1': 1,
+  '#_Lattice_Angles:lattice:angles': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.atomic_structure.lattice.angles.value?.length ]
     ).filter(
       ([ _, value ]) => value !== undefined
     ));
 
     return Object.range(elements, log);
   },
-  'Melting:tempature': function(log) {
-    const elements = Object.fromEntries(pTable.map(
-      element => [ element.symbol, element.melting_point ]
+  'group:divider::atomic_structure:lattice:angles:2': 3,
+  'Minimum:lattice:angles': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.atomic_structure.lattice.angles.value && Math.min(...element.atomic_structure.lattice.angles.value.map(
+        value => evalMathEquation(value)
+      )) ]
     ).filter(
       ([ _, value ]) => value !== undefined
     ));
 
     return Object.range(elements, log);
   },
-  'Superconducting:tempature': function(log) {
-    const elements = Object.fromEntries(pTable.map(
-      element => [ element.symbol, element.superconducting_point ]
+  'Average:lattice:angles': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.atomic_structure.lattice.angles.value && element.atomic_structure.lattice.angles.value.map(
+        value => evalMathEquation(value)
+      ).avg() ]
     ).filter(
       ([ _, value ]) => value !== undefined
     ));
 
     return Object.range(elements, log);
   },
-  'group:side:Heat': 4,
-  'Specific:heat': function(log) {
-    const elements = Object.fromEntries(pTable.map(
-      element => [ element.symbol, element.heat?.specific ]
+  'Maximum:lattice:angles': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.atomic_structure.lattice.angles.value && Math.max(...element.atomic_structure.lattice.angles.value.map(
+        value => evalMathEquation(value)
+      )) ]
     ).filter(
       ([ _, value ]) => value !== undefined
     ));
 
     return Object.range(elements, log);
   },
-  'Vaporization:heat': function(log) {
-    const elements = Object.fromEntries(pTable.map(
-      element => [ element.symbol, element.heat?.vaporization ]
+  'group:side:Lattice_Constants:lattice': 4,
+  'group:divider::atomic_structure:lattice:constants:1': 1,
+  '#_Lattice_Constants:lattice:constants': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.atomic_structure.lattice.constants.value?.length ]
     ).filter(
       ([ _, value ]) => value !== undefined
     ));
 
     return Object.range(elements, log);
   },
-  'Fusion:heat': function(log) {
-    const elements = Object.fromEntries(pTable.map(
-      element => [ element.symbol, element.heat?.fusion ]
+  'group:divider::atomic_structure:lattice:constants:2': 3,
+  'Minimum:lattice:constants': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.atomic_structure.lattice.constants.value && Math.min(...element.atomic_structure.lattice.constants.value) ]
     ).filter(
       ([ _, value ]) => value !== undefined
     ));
 
     return Object.range(elements, log);
   },
-  'Molar:heat': function(log) {
-    const elements = Object.fromEntries(pTable.map(
-      element => [ element.symbol, element.heat?.molar ]
+  'Average:lattice:constants': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.atomic_structure.lattice.constants.value && element.atomic_structure.lattice.constants.value.avg() ]
     ).filter(
       ([ _, value ]) => value !== undefined
     ));
 
     return Object.range(elements, log);
   },
-  'group:divider::3': 5,
-  'group:side:Conductivity': 2,
-  'Thermal:conductivity': function(log) {
-    const elements = Object.fromEntries(pTable.map(
-      element => [ element.symbol, element.conductivity?.thermal ]
+  'Maximum:lattice:constants': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.atomic_structure.lattice.constants.value && Math.max(...element.atomic_structure.lattice.constants.value) ]
     ).filter(
       ([ _, value ]) => value !== undefined
     ));
 
     return Object.range(elements, log);
   },
-  'Electric:conductivity': function(log) {
-    const elements = Object.fromEntries(pTable.map(
-      element => [ element.symbol, element.conductivity?.electric ]
+  'group:side:Electron': 12,
+  'group:side:Amounts': 3,
+  'group:divider::electron:number:1': 2,
+  '#_Electrons:electrons': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.electron.shells.value && element.electron.shells.value.sum() ]
     ).filter(
       ([ _, value ]) => value !== undefined
     ));
 
     return Object.range(elements, log);
   },
-  'Magnetic_Susceptibility': function(log) {
-    const elements = Object.fromEntries(pTable.map(
-      element => [ element.symbol, element.magnetic_susceptibility?.mass ]
+  '#_Valence:electrons': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.electron.valence.value ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'group:divider::electron:number:2': 1,
+  '#_Electron_Shells:electrons': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.electron.shells.value?.length ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'group:divider::electron:1': 6,
+  'Electronegativity:reactivity:electrons': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.electron.reactivity.electronegativity.value ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'Electron_Affinity:reactivity:electrons': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.electron.reactivity.electron_affinity.value ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'group:side:Ionization_Energies': 4,
+  'group:divider::electron:ionization_energies:1': 1,
+  '#_Ionization_Energies:ionization_energies': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.electron.reactivity.ionization_energies.value?.length ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'group:divider::electron:ionization_energies:2': 3,
+  'Minimum:ionization_energies': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.electron.reactivity.ionization_energies.value && Math.min(...element.electron.reactivity.ionization_energies.value) ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'Average:ionization_energies': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.electron.reactivity.ionization_energies.value && element.electron.reactivity.ionization_energies.value.avg() ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'Maximum:ionization_energies': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.electron.reactivity.ionization_energies.value && Math.max(...element.electron.reactivity.ionization_energies.value) ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'group:divider::electron:2': 3,
+  'group:side:Length_of_Configuration': 2,
+  'Standard:length_of_configuration': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.electron.configuration.value?.length ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'Semantic:length_of_configuration': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.electron.semantic_configuration.value?.length ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  '#_Oxidation_States': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.electron.oxidation_states.value?.length ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'group:side:Abundance': 6,
+  'The_Universe:abundance': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.abundance.universe.value ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'Meteorites:abundance': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.abundance.meteorites.value ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'The_Sun:abundance': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.abundance.sun.value ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  "Earth's_crust:abundance": function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.abundance.earth_crust.value ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'Oceans:abundance': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.abundance.oceans.value ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'Humans:abundance': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.abundance.humans.value ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'group:divider:Properties': 42,
+  'group:side:Nuclear': 12,
+  'group:divider::nuclear:1': 4,
+  'group:side:Half_Life:decay:nuclear': 2,
+  'Exclude_Stable:half_life:decay:nuclear': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, [ undefined, 'Stable' ].includes(element.properties.nuclear.half_life.value) ? undefined : TimeToSeconds(element.properties.nuclear.half_life.value, element.properties.nuclear.half_life.tags?.unit) ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'Include_Stable:half_life:decay:nuclear': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.properties.nuclear.half_life.value === undefined ? undefined : (element.properties.nuclear.half_life.value === 'Stable' ? Infinity : TimeToSeconds(element.properties.nuclear.half_life.value, element.properties.nuclear.half_life.tags?.unit)) ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'group:side:Lifetime:decay:nuclear': 2,
+  'Exclude_Stable:lifetime:nuclear:decay': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, [ undefined, 'Stable' ].includes(element.properties.nuclear.lifetime.value) ? undefined : TimeToSeconds(element.properties.nuclear.lifetime.value, element.properties.nuclear.lifetime.tags?.unit) ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'Include_Stable:lifetime:decay:nuclear': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.properties.nuclear.lifetime.value === undefined ? undefined : (element.properties.nuclear.lifetime.value === 'Stable' ? Infinity : TimeToSeconds(element.properties.nuclear.lifetime.value, element.properties.nuclear.lifetime.tags?.unit)) ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'group:divider::nuclear:2': 2,
+  'Neutron_Cross_Section:neutron:nuclear:decay': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.properties.nuclear.neutron.cross_section.value ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'Neutron_Mass_Absorption:neutron:decay:nuclear': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.properties.nuclear.neutron.mass_absorption.value ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'group:side:Isotopes_&_Isomers:nuclear': 6,
+  'group:side:#_Known:isotopes_&_isomers:nuclear': 2,
+  'Isotopes:#_known:isotopes_&_isomers:nuclear': function(log) {
+    const elements = Object.fromEntries(Object.keys(Wolfram.elements).map(
+      symbol => [ symbol, Object.values(Nubase2020.nuclides[symbol])?.length ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'Isomers:#_known:isotopes_&_isomers:nuclear': function(log) {
+    const elements = Object.fromEntries(Object.keys(Wolfram.elements).map(
+      symbol => [ symbol, (Object.values(Nubase2020.nuclides[symbol]) ?? []).map(
+        isotope => isotope.isomers
+      ).flat(Infinity).filter(
+        value => value !== undefined
+      )?.length ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'group:side:#_Natural:isotopes_&_isomers:nuclear': 2,
+  'Isotopes:#_natural:isotopes_&_isomers:nuclear': function(log) {
+    const elements = Object.fromEntries(Object.keys(Wolfram.elements).map(
+      symbol => [ symbol, (Object.values(Nubase2020.nuclides[symbol]) ?? []).filter(
+        isotope => isotope.abundance !== undefined
+      )?.length ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'Isomers:#_natural:isotopes_&_isomers:nuclear': function(log) {
+    const elements = Object.fromEntries(Object.keys(Wolfram.elements).map(
+      symbol => [ symbol, (Object.values(Nubase2020.nuclides[symbol]) ?? []).map(
+        isotope => isotope.isomers && isotope.isomers.map(
+          isomer => isomer.abundance
+        )
+      ).flat(Infinity).filter(
+        abundance => abundance !== undefined
+      )?.length ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'group:side:#_Stable:isotopes_&_isomers:nuclear': 2,
+  'Isotopes:#_stable:isotopes_&_isomers:nuclear': function(log) {
+    const elements = Object.fromEntries(Object.keys(Wolfram.elements).map(
+      symbol => [ symbol, (Object.values(Nubase2020.nuclides[symbol]) ?? []).filter(
+        isotope => isotope.half_life?.value?.value === 'Stable'
+      )?.length ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'Isomers:#_stable:isotopes_&_isomers:nuclear': function(log) {
+    const elements = Object.fromEntries(Object.keys(Wolfram.elements).map(
+      symbol => [ symbol, (Object.values(Nubase2020.nuclides[symbol]) ?? []).map(
+        isotope => isotope.isomers && isotope.isomers.map(
+          isomer => isomer.half_life
+        )
+      ).flat(Infinity).filter(
+        half_life => half_life?.value?.value === 'Stable'
+      )?.length ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'group:side:Physical': 12,
+  'group:divider::physical:1': 3,
+  'group:side:Density:density:physical:1': 2,
+  'Standard:density:density:physical': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.properties.physical.density.standard.value ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'Liquid:density:density:physical': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.properties.physical.density.liquid.value ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'Molar_Volume:density:physical': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.properties.physical.molar_volume.value ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'group:divider::physical:2': 7,
+  'group:side:Hardness:strength:physical:1': 3,
+  'Brinell:hardness:strength:physical': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.properties.physical.hardness.brinell.value ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'Mohs:hardness:strength:physical': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.properties.physical.hardness.mohs.value ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'Vickers:hardness:strength:physical': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.properties.physical.hardness.vickers.value ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'group:side:Modulus:strength:physical:1': 3,
+  'Bulk:modulus:strength:physical': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.properties.physical.modulus.bulk.value ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'Shear:modulus:strength:physical': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.properties.physical.modulus.shear.value ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'Young:modulus:strength:physical': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.properties.physical.modulus.young.value ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'Poisson_Ratio:strength:physical': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.properties.physical.poisson_ratio.value ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'group:divider::physical:3': 2,
+  'Speed_of_Sound:misc:physical': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.properties.physical.speed_of_sound.value ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'Refractive_Index:density:misc:physical': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.properties.physical.refractive_index.value ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'group:side:Thermal': 11,
+  'group:divider::thermal:1': 2,
+  'Conductivity:expansion:thermal': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.properties.thermal.conductivity.value ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'Expansion:expansion:thermal': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.properties.thermal.expansion.value ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'group:divider::thermal:2': 5,
+  'group:side:Temperature_Points:temperatures:thermal:1': 3,
+  'Melting_point:temperature_points:temperatures:thermal': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.properties.thermal.melting_point.value ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'Boiling_point:temperature_points:temperatures:thermal': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.properties.thermal.boiling_point.value ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'Neel_point:temperature_points:temperatures:thermal': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.properties.thermal.neel_point.value ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'group:side:Critical_Points:thermal:1': 2,
+  'Pressure:critical_points:thermal': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.properties.thermal.critical.pressure.value ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'Temperature:critical_points:thermal': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.properties.thermal.critical.temperature.value ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'group:divider::thermal:3': 4,
+  'group:side:Heat:heat:thermal:1': 3,
+  'Specific_Heat:heat:heat:thermal': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.properties.thermal.heat.specific.value ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'Heat_of_Fusion:heat:heat:thermal': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.properties.thermal.heat.fusion.value ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'Heat_of_Vaporization:heat:heat:thermal': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.properties.thermal.heat.vaporization.value ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'Adiabatic_Index:heat:thermal': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.properties.thermal.adiabatic_index.value && evalMathEquation(element.properties.thermal.adiabatic_index.value) ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'group:side:Electrical': 3,
+  'group:divider::electrical:1': 2,
+  'Conductivity:conduction:electrical': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.properties.electrical.conductivity.value ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'Resistivity:conduction:electrical': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.properties.electrical.resistivity.value ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'group:divider::electrical:2': 1,
+  'Superconducting_Point:superconducting:electrical': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.properties.electrical.superconducting_point.value ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'group:side:Magnetic': 4,
+  'group:side:Magnetic_Susceptibility:magnetic:1': 3,
+  'Mass:susceptibility:magnetic': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.properties.magnetic.susceptibility.mass.value ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'Molar:susceptibility:magnetic': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.properties.magnetic.susceptibility.molar.value ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'Volume:susceptibility:magnetic': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.properties.magnetic.susceptibility.volume.value ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+
+    return Object.range(elements, log);
+  },
+  'Curie_Point:magnetic': function(log) {
+    const elements = Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.properties.magnetic.curie_point.value ]
     ).filter(
       ([ _, value ]) => value !== undefined
     ));
@@ -509,7 +1223,7 @@ const isotopicTrends = {
   'Stable:#_isotopes': function(log) {
     const amounts = Object.fromEntries(Object.entries(Nubase2020.nuclides).map(
       ([ key, element ]) => [ key, Object.values(element).filter(
-        isotope => isotope.half_life?.value?.value === 'Stable'
+        isotope => isotope.half_life.value.value === 'Stable'
       ).length ]
     ));
 
@@ -529,7 +1243,7 @@ const isotopicTrends = {
     const amounts = Object.fromEntries(Object.entries(Nubase2020.nuclides).map(
       ([ key, element ]) => [ key, Object.values(element).map(
         isotope => Object.values(isotope.isomers ?? {}).filter(
-          isomer => isomer.half_life?.value?.value === 'Stable'
+          isomer => isomer.half_life.value.value === 'Stable'
         ).length
       ).sum() ]
     ));
@@ -1114,13 +1828,75 @@ const isotopicTrends = {
   },
 };
 
-const computeTrends = function([ trend, thisFunction ]) {
+const colorizeFunctions = {
+  'group:side:Series:1': 3,
+  'Normal:series': [ 'Normal_Series', function() {
+    return Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.classifications.traditional_series.value ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+  } ],
+  'Simple:series': [ 'Simple_Series', function() {
+    return Object.fromEntries(Object.entries(Wolfram.elements).map(([ symbol, element ]) => {
+      const series = element.classifications.traditional_series.value;
+      if (!series)
+        return [ symbol, series ];
+
+      return [ symbol, series.includes(' ') ? element.classifications.traditional_series.value.split(' ').slice(1).join(' ') : element.classifications.traditional_series.value ]
+    }).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+  } ],
+  'Advanced_Series:series': [ 'Advanced_Series', function() {
+    return Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.classifications.series.value ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+  } ],
+  'Electron_Block:other': [ 'Electron_Block', function() {
+    return Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.electron.block.value ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+  } ],
+  'group:divider::1': 2,
+  'Phase:phase': [ 'Phase', function() {
+    return Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.classifications.phase.value ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+  } ],
+  'Advanced_Phase:phase': [ 'Advanced_Phase', function() {
+    return Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, `${element.classifications.phase.value} ${element.classifications.gas_phase.value}`.replace(/\s?undefined/g, '') ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+  } ],
+  'group:divider::2': 1,
+  'Hide_Inter:other': [ 'Hide_Inter', function() {
+    return Object.fromEntries(Object.entries(Wolfram.elements).map(
+      ([ symbol, element ]) => [ symbol, element.classifications.series.value ]
+    ).filter(
+      ([ _, value ]) => value !== undefined
+    ));
+  } ],
+};
+
+const computeTrends = function([ trend, thisFunction ], _, array) {
   const index = groupSize.reduce(
     (currentIndex, size, index) => !size ? index : currentIndex,
   undefined);
 
   if (index !== undefined) {
     for (let a = 0;a <= index;a++) {
+      if (groupSize[0])
+        console.error('ended early!', groupSize);
+
       groupSize.shift();
       groupElement.shift();
     }
@@ -1130,7 +1906,14 @@ const computeTrends = function([ trend, thisFunction ]) {
     size => --size
   );
 
-  const [ command, commandDat, key ] = trend.split(':');
+  let [ command, commandDat, key, ...extra ] = trend.split(':');
+  if (command === 'pin') {
+    command = thisFunction;
+    thisFunction = Object.fromEntries(array)[[ commandDat, key, ...extra ].filter(
+      value => value !== undefined
+    ).join(':')];
+  }
+
   if (command === 'group') {
     const group = currentMenu.child('group template').cloneNode(true);
     group.classList.remove('template');
@@ -1139,6 +1922,7 @@ const computeTrends = function([ trend, thisFunction ]) {
     if (key?.length) {
       group.classList.add(key);
       group.child('title').innerHTML = '<sup></sup>' + key.replace(/_/g, ' ').trim();
+      group.child('title').style.minWidth = `${key.replace(/_/g, ' ').trim().length + 7}ch`;
     } else
       group.child('title').remove();
 
@@ -1157,68 +1941,85 @@ const computeTrends = function([ trend, thisFunction ]) {
   const trendElement = currentMenu.child('trend template').cloneNode(true);
   trendElement.classList.remove('template');
   trendElement.classList.add(command);
-  trendElement.innerHTML = '<sup></sup>' + command.replace(/_/g, ' ').trim() + '<span class="log" data-selected=false>log</span>';
+  trendElement.innerHTML = '<sup></sup>' + command.replace(/_/g, ' ').trim() + (thisFunction instanceof Array ? '' : '<span class="log" data-selected=false>log</span>');
   trendElement.onclick = function(event) {
     if (event.target.classList.contains('log'))
       return;
 
     if (this.dataset.selected === 'true') {
       this.dataset.selected = false;
-      delete loadedElementColors[trend];
+
+      if (thisFunction instanceof Array)
+        delete loadedElementColors[trend];
+      else
+        delete loadedElementTrends[trend];
     } else {
       this.dataset.selected = true;
-      loadedElementColors[trend] = thisFunction(this.child('log').dataset.selected === 'true');
+
+      if (thisFunction instanceof Array) {
+        const colors = Object.fromEntries(Object.entries(thisFunction[1]()).map(
+          ([ key, value ]) => [ key, colorizeColors[thisFunction[0]][value.toString().toLowerCase()] ]
+        ));
+
+        let badValue = [];
+        let badIndex = [];
+        Object.entries(colors).forEach(([ key, value ]) => {
+          if (!value) {
+            const realValue = thisFunction[1]()[key];
+            if (!badValue.includes(realValue))
+              badValue.push(realValue);
+
+            badIndex .push({
+              element: key,
+              value: realValue,
+              color: value
+            });
+          }
+        });
+
+        if (badValue.length || badIndex.length)
+          console.error( { object_name: thisFunction[0], object: colorizeColors[thisFunction[0]] }, badValue, badIndex);
+
+        loadedElementColors[trend] = colors;
+      } else
+        loadedElementTrends[trend] = thisFunction(this.child('log').dataset.selected === 'true');
     }
   };
 
-  groupElement[0].appendChild(trendElement);
-  trendElement.child('log').onclick = function(event) {
-    this.dataset.selected = this.dataset.selected === 'true' ? false : true;
+  groupElement[0].dataset.width ??= 0;
+  const width = command.trim().length;
+  if (+groupElement[0].dataset.width < width) {
+    groupElement[0].dataset.width = width;
+    groupElement[0].style.minWidth = `${width + 2}ch`;
+  }
 
-    if (this.parentElement.dataset.selected === 'true')
-      loadedElementColors[trend] = thisFunction(this.dataset.selected === 'true');
-  };
+  groupElement[0].appendChild(trendElement);
+  if (trendElement.child('log'))
+    trendElement.child('log').onclick = function(event) {
+      this.dataset.selected = this.dataset.selected === 'true' ? false : true;
+
+      if (this.parentElement.dataset.selected === 'true')
+        loadedElementTrends[trend] = thisFunction(this.dataset.selected === 'true');
+    };
 };
 
 const isotopicTrendsMenu = document.getElementById('isotopic_trends_menu');
 const elementalTrendsMenu = document.getElementById('elemental_trends_menu');
+const colorizeMenu = document.getElementById('colorize_menu');
 
 let currentMenu, groupSize, groupElement;
-[ [ isotopicTrendsMenu, isotopicTrends ], [ elementalTrendsMenu, elementalTrends ] ].forEach(([ menu, trends ]) => {
+[ [ isotopicTrendsMenu, isotopicTrends ], [ elementalTrendsMenu, elementalTrends ], [ colorizeMenu, colorizeFunctions ] ].forEach(([ menu, trends ]) => {
   currentMenu = menu;
   groupSize = [ Infinity ];
   groupElement = [ currentMenu ];
 
   Object.entries(trends).forEach(computeTrends);
+
+  if (groupSize.filter(
+    value => value !== 0
+  )[0] !== Infinity)
+    console.error('ended late!', groupSize);
 });
-
-const trendsButton = document.getElementById('trends_button');
-trendsButton.onmouseup = function(e) {
-  document.body.dataset.trends = {
-    true: 'false',
-    false: 'true',
-  }[document.body.dataset.trends];
-
-  if (document.body.dataset.trends == 'true')
-    pTable.forEach(element => {
-      const html = document.getElementById(element.name.toLowerCase());
-      if (html) {
-        html.style.background = `rgb(${(groupColors[element.series] ?? [ 16, 16, 32 ]).join(', ')})`;
-        const shadow = `rgb(${(groupColors[element.series] ?? [ 16, 16, 32 ]).map(
-          value => value * 1.25
-        ).join(', ')})`;
-        html.style.boxShadow = `1px 1px ${shadow}, 2px 2px ${shadow}, 3px 3px ${shadow}, 4px 4px ${shadow}, 5px 5px ${shadow}, 6px 6px ${shadow}, 7px 7px ${shadow}, 8px 8px ${shadow}, 9px 9px ${shadow}, 10px 10px ${shadow}`;
-      }
-    });
-  else
-    pTable.forEach(element => {
-      const html = document.getElementById(element.name.toLowerCase());
-      if (html) {
-        html.style.background = null;
-        html.style.boxShadow = null;
-      }
-    });
-};
 
 const bottomText = document.getElementById('bottom_text');
 const bottomInnerText = bottomText.child('text');
@@ -1235,22 +2036,31 @@ const toFahrenheit = kelvin => {
 
   return Math.round(((kelvin - 273.15) * (9 / 5) + 32) * roundFactor) / roundFactor;
 };
+const toPerFahrenheit = kelvin => {
+  let roundFactor = kelvin.toString().split('.');
+  roundFactor = 10 ** Math.max((roundFactor[1] ?? '').length + 1, 1);
 
-[...sidebar.getElementsByClassName('tempature')].forEach(element => {
-  element.child('kelvin').onclick = function() {
-    element.dataset.selected = 'k';
-    element.child('data').innerHTML = element.dataset.kelvin;
-  };
+  return Math.round(kelvin * 1.8 * roundFactor) / roundFactor;
+};
 
-  element.child('celsius').onclick = function() {
-    element.dataset.selected = 'c';
-    element.child('data').innerHTML = toCelcius(+element.dataset.kelvin);
-  };
+[ ...sidebar.getElementsByClassName('temperature') ].forEach(element => {
+  if (element.child('kelvin'))
+    element.child('kelvin').onclick = function() {
+      element.dataset.selected = 'k';
+      element.child('value').innerHTML = element.dataset.kelvin;
+    };
 
-  element.child('fahrenheit').onclick = function() {
-    element.dataset.selected = 'f';
-    element.child('data').innerHTML = toFahrenheit(+element.dataset.kelvin);
-  };
+  if (element.child('celsius'))
+    element.child('celsius').onclick = function() {
+      element.dataset.selected = 'c';
+      element.child('value').innerHTML = element.classList.contains('per_temperature') ? element.dataset.kelvin : toCelcius(+element.dataset.kelvin);
+    };
+
+  if (element.child('fahrenheit'))
+    element.child('fahrenheit').onclick = function() {
+      element.dataset.selected = 'f';
+      element.child('value').innerHTML = element.classList.contains('per_temperature') ? toPerFahrenheit(element.dataset.kelvin) : toFahrenheit(+element.dataset.kelvin);
+    };
 });
 
 const nSidebar = document.getElementById('nuclide_sidebar');
@@ -1326,47 +2136,44 @@ animation.maxTime = GetAnimationTime(shownElements - 1) + 1;
   stabilityBandPen.fillRect(iso.n * 2, stabilityBand.height - iso.z * 2, 2, -2);
 });*/
 
-pTable.forEach(element => {
-  const html = document.getElementById(element.name.toLowerCase());
+[ ...document.getElementsByClassName('fake_element') ].forEach(element => {
+  const { parentElement: parent } = element;
+  element.style.top = `${parent.getBoundingClientRect().top}px`;
+});
+
+Object.entries(Wolfram.elements).forEach(([ symbol, element ]) => {
+  const html = document.getElementById(element.identifiers.name.value.toLowerCase());
   if (html) {
     const { parentElement: parent } = html;
     html.dataset.tableRow = parent.id;
-    html.dataset.symbol = element.symbol;
+    html.dataset.symbol = symbol;
 
     html.style.top = `${parent.getBoundingClientRect().top}px`;
 
-    if (document.body.dataset.saturated === true) {
-      html.style.background = `rgb(${(groupColors[element.series] ?? [ 16, 16, 32 ]).join(', ')})`;
-      const shadow = `rgb(${(groupColors[element.series] ?? [ 16, 16, 32 ]).map(
-        value => value * 1.25
-      ).join(', ')})`;
-      html.style.boxShadow = `1px 1px ${shadow}, 2px 2px ${shadow}, 3px 3px ${shadow}, 4px 4px ${shadow}, 5px 5px ${shadow}, 6px 6px ${shadow}, 7px 7px ${shadow}, 8px 8px ${shadow}, 9px 9px ${shadow}, 10px 10px ${shadow}`;
-    }
-
-    html.innerHTML = `<p class='atomic_number'>${element.atomic_number}</p><p class='atomic_mass'>${element.atomic_mass.toDecimals(2)}</p><p class='symbol'>${element.symbol}</p><div class='hoverable'></div>`;
+    html.innerHTML = `<p class='atomic_number'>${element.identifiers.atomic_number.value}</p><p class='atomic_mass'>${(element.atomic_structure.atomic_mass.value ?? 0).toDecimals(2)}</p><p class='symbol'>${symbol}</p><div class='hoverable'></div>`;
 
     html.onmouseover = function() {
       if (!html.classList.contains('fallen'))
         return;
 
-      zoomedElement.dataset.atomic_number = element.atomic_number;
+      zoomedElement.dataset.symbol = symbol;
       zoomedElement.style.background = html.style.background;
 
       zoomedElement.innerHTML = html.innerHTML;
-      zoomedElement.innerHTML += `<p class='name'>${element.name}</p>`
+      zoomedElement.innerHTML += `<p class='name'>${element.identifiers.name.value}</p>`
 
-      zoomedElement.child('atomic_mass').innerHTML = element.atomic_mass.toDecimals(4);
+      zoomedElement.child('atomic_mass').innerHTML = element.atomic_structure.atomic_mass.value.toDecimals(4);
 
       zoomedElement.hidden = false;
     };
 
     html.onmouseout = function() {
-      if (zoomedElement.dataset.atomic_number == element.atomic_number)
+      if (zoomedElement.dataset.symbol == symbol)
         zoomedElement.hidden = true;
     };
 
     html.onclick = function() {
-      LoadElement(element.atomic_number - 1);
+      LoadElement.call(element);
     };
 
     document.body.appendChild(html);
@@ -1388,9 +2195,11 @@ function Update() {
 
   FPS = (performance.now() - startTime) / ++frames;
 
-  TestUpdate();
   DPIUpdate();
-  UpdateTrendsContent();
+  TrendsUpdate();
+  UpdateTrendsContent(elementalTrendsMenu);
+  UpdateTrendsContent(isotopicTrendsMenu);
+  UpdateTrendsContent(colorizeMenu);
   UpdateElementPositions();
   FollowIsotopes(nSidebar);
   FollowIsotopes(abundanceChart);
@@ -1407,12 +2216,60 @@ function Update() {
 }
 requestAnimationFrame(Update);
 
-function TestUpdate() {
-  [...document.getElementsByClassName('element')].forEach(
-    element => element.style.filter = `brightness(${Object.values(loadedElementColors ?? {}).length ? Object.values(loadedElementColors).reduce(
+function TrendsUpdate() {
+  [...document.getElementsByClassName('element')].forEach(element => {
+    if (element.classList.contains('fake_element'))
+      return;
+
+    element.style.filter = `brightness(${Object.values(loadedElementTrends ?? {}).length ? Object.values(loadedElementTrends).reduce(
       (avg, trend, _, array) => avg + (trend[element.dataset.symbol] ?? 0) / (array.length || 1), 0
-    ) * 100 : 100}%)`
-  );
+    ) * 100 : 100}%)`;
+
+    const [ r, g, b, a ] = (Object.values(loadedElementColors ?? {}).length ? (Object.values(loadedElementColors).reduce((avg, color) => {
+      const thisColor = color[element.dataset.symbol];
+      if (thisColor === undefined)
+        return avg;
+
+      if (thisColor.length === 3)
+        thisColor.push(1);
+
+      if (avg === null)
+        return thisColor.map(
+          value => value === -1 ? -1 : [ value ]
+        );
+      else
+        return avg.map(
+          (value, index) => value === -1 || thisColor[index] === -1 ? -1 : [ ...value, thisColor[index] ]
+        );
+    }, [ [], [], [], [] ]) ?? [ [], [], [], [] ]).map(
+      value => value === -1 ? 0 : value.filter(
+        value => value !== null
+      ).avg()
+    ) : [ null, null, null, null ]).map(
+      value => Number.isNaN(value) ? null : value
+    );
+
+    const rgb = r === null || g === null || b === null ? null : `rgb(${[ r, g, b ].join(', ')})`;
+    const shadowRgb = r === null || g === null || b === null ? null : `rgb(${[ r, g, b ].map(
+      value => value / 1.25
+    ).join(', ')})`;
+
+    element.style.background = rgb;
+    if (shadowRgb) {
+      element.style.boxShadow = `1px 1px ${shadowRgb}, 2px 2px ${shadowRgb}, 3px 3px ${shadowRgb}, 4px 4px ${shadowRgb}, 5px 5px ${shadowRgb}, 6px 6px ${shadowRgb}, 7px 7px ${shadowRgb}, 8px 8px ${shadowRgb}, 9px 9px ${shadowRgb}, 10px 10px ${shadowRgb}`;
+      element.dataset.saturated = true;
+    } else {
+      element.style.boxShadow = '';
+      element.dataset.saturated = false;
+    }
+
+    element.style.opacity = a;
+
+    if (a == 0)
+      element.classList.add('hidden_element');
+    else
+      element.classList.remove('hidden_element');
+  });
 }
 
 function DPIUpdate() {
@@ -1436,31 +2293,54 @@ function UpdateScale() {
   bg.height = innerHeight;
 }
 
-function UpdateTrendsContent() {
-  [ ...isotopicTrendsMenu.getElementsByClassName('content') ].forEach(element => {
+const topNav = document.getElementById('top_nav');
+function UpdateTrendsContent(menu) {
+  const topNavButton = topNav.getElementsByClassName(`button ${menu.id.replace('_menu', '')}`)[0];
+  const buttonPosition = topNavButton.getBoundingClientRect();
+
+  menu.style.top = `${buttonPosition.bottom}px`;
+  menu.style.left = `${buttonPosition.left}px`;
+  menu.style.width = `${buttonPosition.width - 2}px`;
+
+  const { top: menuTop } = menu.getBoundingClientRect();
+
+  [ ...menu.getElementsByClassName('content') ].forEach(element => {
+    const cs = getComputedStyle(element);
+    if (cs.getPropertyValue('display') === 'none')
+      return;
+
     const { parentElement } = element;
     if (!parentElement.classList.contains('side'))
       return;
 
-    let { bottom, height } = element.getBoundingClientRect();
-    bottom += +(element.dataset.vOffset ?? 0);
+    const { top: grandParentTop, height: grandParentHeight } = element.parentElement.getBoundingClientRect();
+    const maxHeight = grandParentTop + grandParentHeight;
 
-    const vOffset = (innerHeight - bottom).clamp(-height + element.previousElementSibling.getBoundingClientRect().height, 0);
-    element.dataset.vOffset = -vOffset;
-    element.style.transform = `translate(0px, ${vOffset}px)`;
+    element.style.position = 'fixed';
+
+    const { width: thisWidth, height: thisHeight } = element.getBoundingClientRect();
+    const { left: parentLeft, top: parentTop, width: parentWidth, height: parentHeight } = parentElement.getBoundingClientRect();
+
+    element.style.left = `calc(${parentLeft + parentWidth}px)`;
+
+    let top = Math.max(parentTop, menuTop);
+    if (top + thisHeight > innerHeight)
+      top = maxHeight - thisHeight > 0 ? maxHeight - thisHeight : innerHeight - thisHeight;
+
+    element.style.top = `${top}px`;
   });
 }
 
 function UpdateElementPositions() {
-  [...document.getElementsByClassName('element')].forEach(
-    element => element.style.top = `${document.getElementById(element.dataset.tableRow)?.getBoundingClientRect().top}px`
+  [ ...document.getElementsByClassName('element') ].forEach(
+    element => element.style.top = `${(element.classList.contains('fake_element') ? element.parentElement : document.getElementById(element.dataset.tableRow))?.getBoundingClientRect().top}px`
   );
 }
 
 function FollowIsotopes(element) {
   const computedStyle = getComputedStyle(element);
 
-  const isotopes = sidebar.child('information').child('isotopes');
+  const isotopes = sidebar.child('isotopes');
 
   const { width: thisWidth, height: thisHeight } = element.getBoundingClientRect();
   const { left: sidebarLeft } = sidebar.getBoundingClientRect();
@@ -1536,7 +2416,9 @@ async function Animate() {
 
         element.style.transition = 'all 0s';
         element.style.animation = 'none';
-        element.classList.add('fallen');
+
+        if (!element.classList.contains('fake_element'))
+          element.classList.add('fallen');
 
         setTimeout(
           () => element.style.transition = null,
@@ -1547,6 +2429,10 @@ async function Animate() {
         particle => !(particle instanceof Particle)
       )) {
         document.body.particle(particleInfo.count, Math.random() * 1 + 1);
+
+        [ ...document.getElementsByClassName('fake_element') ].forEach(
+          element => element.style.opacity = 1
+        );
 
         bg.style.opacity = 1;
 
@@ -1573,7 +2459,7 @@ async function Animate() {
     animation.time = (animation.time + animation.speed).clamp(0, animation.maxTime);
 
     if (animation.triggers.reduce((done, trigger) => {
-      const element = document.getElementById(pTable[trigger.index].name.toLowerCase());
+      const element = document.getElementById(Object.values(Wolfram.elements)[trigger.index].identifiers.name.value.toLowerCase());
       if (!element)
         return;
 
@@ -1587,7 +2473,7 @@ async function Animate() {
           element.style.scale = null;
           element.style.zIndex = null;
 
-          if (!element.classList.contains('fallen')) {
+          if (!element.classList.contains('fallen') && !element.classList.contains('fake_element')) {
             element.spark(10, Math.random() * 2 + 2, 75);
             new Audio('block_fall.mp3').play().catch(
               error => {}
@@ -1623,7 +2509,7 @@ async function Animate() {
       zoomedElement.style.display = null;
 
       let elements = [...document.getElementsByClassName('element')];
-      let offset = document.getElementById(pTable[animation.lastElement].name.toLowerCase()).getBoundingClientRect();
+      let offset = document.getElementById(Object.values(Wolfram.elements)[animation.lastElement].identifiers.name.value.toLowerCase()).getBoundingClientRect();
 
       let threshold = 0;
       while (elements.length) {
@@ -1653,8 +2539,15 @@ async function Animate() {
 
           const periodicText = document.getElementById('periodicText');
           for (let i = 0;i < 1000;i++) {
-            bg.style.opacity = i / 1000;
-            periodicText.style.opacity = i / 1000;
+            const opacity = i / 1000;
+
+            bg.style.opacity = opacity;
+            periodicText.style.opacity = opacity;
+
+            [ ...document.getElementsByClassName('fake_element') ].forEach(
+              element => element.style.opacity = opacity
+            );
+
             await sleep(1);
           }
         }, 500);
@@ -1664,7 +2557,7 @@ async function Animate() {
       animation.time = (animation.time - animation.speed * -animation.direction).clamp(0, animation.maxTime);
 
     animation.triggers.forEach(trigger => {
-      const element = document.getElementById(pTable[trigger.index].name.toLowerCase());
+      const element = document.getElementById(Object.values(Wolfram.elements)[trigger.index].identifiers.name.value.toLowerCase());
       if (!element)
         return;
 
@@ -1678,7 +2571,7 @@ async function Animate() {
           element.style.scale = null;
           element.style.zIndex = null;
 
-          if (!element.classList.contains('fallen')) {
+          if (!element.classList.contains('fallen') && !element.classList.contains('fake_element')) {
             element.spark(10, Math.random() * 2 + 2, 75);
             new Audio('block_fall.mp3').play().catch(
               error => {}
@@ -1725,98 +2618,466 @@ function GetAnimationPosition(delta, start) {
   return { x: height * start.x, y: height * start.y, scale: (delta * 2) ** (2/3) + 1, zIndex: Math.round(delta * 1000 + 1), done: !delta };
 }
 
-function LoadElement(index) {
+async function LoadElement() {
+  const fixRounding = num => +(num).toFixed(13);
+
+  [ ...sidebar.getElementsByClassName('hidden') ].forEach(
+    element => element.classList.remove('hidden')
+  );
+
+  [ ...sidebar.getElementsByClassName('temperature') ].forEach(
+    element => element.dataset.selected = 'k'
+  );
+
+  [ ...sidebar.getElementsByClassName('collapsible') ].forEach(element => {
+    element.dataset.expanded = false;
+    if (!element.child('title').child('collapse_button')) {
+      const button = document.createElement('img');
+      button.classList.add('collapse_button');
+      button.src = 'data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNiIgaGVpZ2h0PSIzNiIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSIjNzc4IiBkPSJNMTEuNjUgMTQuNjVxLjE1LjE1LjM1LjE1dC4zNS0uMTVsMi44LTIuOHEuMjUtLjI1LjEyNS0uNTVUMTQuOCAxMUg5LjJxLS4zNSAwLS40NzUuM3QuMTI1LjU1bDIuOCAyLjhaTTEyIDIycS0yLjA3NSAwLTMuOS0uNzg4dC0zLjE3NS0yLjEzN3EtMS4zNS0xLjM1LTIuMTM3LTMuMTc1VDIgMTJxMC0yLjA3NS43ODgtMy45dDIuMTM3LTMuMTc1cTEuMzUtMS4zNSAzLjE3NS0yLjEzN1QxMiAycTIuMDc1IDAgMy45Ljc4OHQzLjE3NSAyLjEzN3ExLjM1IDEuMzUgMi4xMzggMy4xNzVUMjIgMTJxMCAyLjA3NS0uNzg4IDMuOXQtMi4xMzcgMy4xNzVxLTEuMzUgMS4zNS0zLjE3NSAyLjEzOFQxMiAyMlptMC0ycTMuMzUgMCA1LjY3NS0yLjMyNVQyMCAxMnEwLTMuMzUtMi4zMjUtNS42NzVUMTIgNFE4LjY1IDQgNi4zMjUgNi4zMjVUNCAxMnEwIDMuMzUgMi4zMjUgNS42NzVUMTIgMjBabTAtOFoiLz48L3N2Zz4=';
+
+      element.child('title').appendChild(button);
+    }
+
+    element.child('title').child('collapse_button').onclick = function() {
+      this.classList.add('animate');
+      element.dataset.expanded = {
+        true: 'false',
+        false: 'true',
+      }[element.dataset.expanded];
+    };
+  });
+
   sidebar.dataset.hidden = false;
-  loadedElement = index;
+  loadedElement = this.identifiers.symbol.value;
 
-  const element = pTable[index];
-  sidebar.dataset.atomic_number = element.atomic_number;
-  sidebar.dataset.symbol = element.symbol;
-  sidebar.dataset.name = element.name;
-  sidebar.child('atomic_number').innerHTML = element.atomic_number;
-  sidebar.child('atomic_mass').innerHTML = element.atomic_mass;
-  sidebar.child('symbol').innerHTML = element.symbol;
-  sidebar.child('name').innerHTML = element.name + (element.alternate_names ? ` (${element.alternate_names})` : '');
+  sidebar.dataset.atomic_number = this.identifiers.atomic_number.value;
+  sidebar.dataset.symbol = this.identifiers.symbol.value;
+  sidebar.dataset.name = this.identifiers.name.value;
 
-  sidebar.child('discovery').child('by').innerHTML = element.discovered.by ?? 'Unknown';
-  sidebar.child('discovery').child('by').dataset.search = element.discovered.by !== undefined;
-  sidebar.child('discovery').child('date').innerHTML = (element.discovered.year < 0 ? `${-element.discovered.year} BCE` : `${element.discovered.year} CE`) ?? 'Unknown';
-  sidebar.child('discovery').child('at').innerHTML = element.discovered.location ?? 'Unknown';
-  sidebar.child('discovery').child('at').dataset.search = element.discovered.location !== undefined;
+  sidebar.vChild('atomic_mass').innerHTML = this.atomic_structure.atomic_mass.value;
 
-	sidebar.child('information').child('appearance').child('data').innerHTML = `<span class='searchable' data-search='false'>${element.appearance ? element.appearance.toUpperCaseWords() : 'Unknown'}</span>`;
+  {
+    const content = sidebar.child('content');
 
-  sidebar.child('information').child('phase').child('data').innerHTML = element.phase.toUpperCaseWords();
-  sidebar.child('information').child('series').child('data').innerHTML = element.series.toUpperCaseWords();
+    {
+      const overview = content.child('overview');
 
-  const tempaturePointLength = Math.max(...[ 'boiling_point', 'melting_point' ].map(
-    key => element[key] === undefined ? 0 : Math.max(element[key].toString().length, toCelcius(element[key]).toString().length, toFahrenheit(element[key]).toString().length)
-  )) + 0.5;
+      overview.child('protons').innerHTML = `${this.identifiers.atomic_number.value} p<sup>+</sup>`;
+      overview.child('neutrons').innerHTML = `${this.atomic_structure.neutrons.value} n<sup>0</sup>`;
+      overview.child('electrons').innerHTML = `${(this.electron.shells.value ?? []).sum() || undefined} e<sup>-</sup>`;
 
-	if (element.boiling_point) {
-		[...sidebar.child('information').child('boiling_point').getElementsByClassName('button')].forEach(
-			element => element.hidden = false
-		);
+      overview.vChild('block').innerHTML = this.electron.block.value;
 
-    sidebar.child('information').child('boiling_point').child('data').style.width = `${tempaturePointLength}ch`;
-		sidebar.child('information').child('boiling_point').dataset.kelvin = element.boiling_point;
-  	switch (sidebar.child('information').child('boiling_point').dataset.selected) {
-    	case 'k':
-    	default:
-      	sidebar.child('information').child('boiling_point').child('data').innerHTML = element.boiling_point;
-      	break;
-    	case 'c':
-      	sidebar.child('information').child('boiling_point').child('data').innerHTML = toCelcius(element.boiling_point);
-      	break;
-    	case 'f':
-      	sidebar.child('information').child('boiling_point').child('data').innerHTML = toFahrenheit(element.boiling_point);
-      	break;
-  	}
-	} else {
-		[...sidebar.child('information').child('boiling_point').getElementsByClassName('button')].forEach(
-			element => element.hidden = true
-		);
+      overview.vChild('group').innerHTML = this.identifiers.group.value;
+      overview.vChild('group').dataset.searchQuery = `periodic table group ${this.identifiers.group.value}`;
 
-		sidebar.child('information').child('boiling_point').child('data').innerHTML = 'Unknown';
-	}
+      overview.vChild('period').innerHTML = this.identifiers.period.value;
+      overview.vChild('period').dataset.searchQuery = `periodic table period ${this.identifiers.period.value}`;
 
-	if (element.melting_point) {
-		[...sidebar.child('information').child('melting_point').getElementsByClassName('button')].forEach(
-			element => element.hidden = false
-		);
+      overview.vChild('phase').innerHTML = this.classifications.phase.value;
+      overview.vChild('phase').dataset.searchQuery = `periodic table ${this.classifications.phase.value} phase`;
 
-    sidebar.child('information').child('melting_point').child('data').style.width = `${tempaturePointLength}ch`;
-		sidebar.child('information').child('melting_point').dataset.kelvin = element.melting_point;
-  	switch (sidebar.child('information').child('melting_point').dataset.selected) {
-    	case 'k':
-    	default:
-      	sidebar.child('information').child('melting_point').child('data').innerHTML = element.melting_point;
-      	break;
-    	case 'c':
-      	sidebar.child('information').child('melting_point').child('data').innerHTML = toCelcius(element.melting_point);
-      	break;
-    	case 'f':
-      	sidebar.child('information').child('melting_point').child('data').innerHTML = toFahrenheit(element.melting_point);
-      	break;
-  	}
-	} else {
-		[...sidebar.child('information').child('melting_point').getElementsByClassName('button')].forEach(
-			element => element.hidden = true
-		);
+      overview.vChild('gas_phase').innerHTML = this.classifications.gas_phase.value;
+      overview.vChild('gas_phase').dataset.searchQuery = `periodic table ${this.classifications.gas_phase.value} gas phase`;
 
-		sidebar.child('information').child('melting_point').child('data').innerHTML = 'Unknown';
-	}
+      overview.child('series').child('traditional').innerHTML = this.classifications.traditional_series.value;
+      overview.child('series').child('traditional').dataset.searchQuery = `periodic table ${this.classifications.traditional_series.value} series`;
 
-  DrawAbundanceChart(element);
+      if ((this.classifications.series.value && this.classifications.series.value.toLowerCase()) !== (this.classifications.traditional_series.value && this.classifications.traditional_series.value.toLowerCase())) {
+        overview.child('series').child('advanced').innerHTML = this.classifications.series.value;
+        overview.child('series').child('advanced').dataset.searchQuery = `periodic table ${this.classifications.series.value} series`;
+      } else
+        overview.child('series').child('advanced').innerHTML = undefined;
 
-  sidebar.child('information').child('summary').child('text').innerHTML = element.summary.replace(/<p>/g, '<p>&emsp;&emsp;');
-  sidebar.child('information').child('summary').child('citation').child('source').innerHTML = element.source;
-  sidebar.child('information').child('summary').child('citation').child('source').href = element.source;
-  // sidebar.child('information').child('').innerHTML = element.;
-  // sidebar.child('').innerHTML = element.;
+      overview.vChild('valence_electrons').innerHTML = this.electron.valence.value;
 
-	LoadSearchableElments();
+      overview.vChild('configuration').innerHTML = this.electron.configuration.value;
+      overview.vChild('semantic_configuration').innerHTML = this.electron.semantic_configuration.value;
+
+      {
+        const shells = overview.child('electrons_per_shell').child('wrap_array');
+        [ ...shells.getElementsByClassName('subshell data_point') ].forEach(
+          element => element.remove()
+        );
+
+        (this.electron.shells.value ?? []).reverse().forEach(subshell => {
+          const element = shells.child('subshell template').template();
+          element.classList.add('data_point');
+          element.innerHTML = subshell;
+        });
+      }
+
+      overview.vChild('electronegativity').innerHTML = this.electron.reactivity.electronegativity.value;
+      overview.vChild('electron_affinity').innerHTML = this.electron.reactivity.electron_affinity.value;
+    }
+
+    {
+      const element = content.child('elementText');
+      element.child('atomic_number').innerHTML = this.identifiers.atomic_number.value;
+      element.child('symbol').innerHTML = this.identifiers.symbol.value;
+    }
+
+    {
+      const name = content.child('name');
+      name.child('name').innerHTML = this.identifiers.name.value;
+      name.child('alternate_names').child('names').innerHTML = this.identifiers.alternate_names.value ? this.identifiers.alternate_names.value.join(', ') : this.identifiers.alternate_names.value;
+    }
+
+    {
+      const discovery = content.child('discovery');
+      discovery.child('date').innerHTML = this.discovery.date.value;
+      discovery.child('by').innerHTML = this.discovery.by.value;
+
+      [ ...discovery.getElementsByClassName('location data_point') ].forEach(
+        element => element.remove()
+      );
+
+      (this.discovery.location.value ?? []).sort((a, b) => b.localeCompare(a)).forEach(location => {
+        const element = discovery.child('location template').template();
+        element.classList.add('data_point');
+        element.innerHTML = location;
+      });
+    }
+
+    {
+      const allotropes = content.child('allotropes');
+      [ ...allotropes.getElementsByClassName('allotrope data_point') ].forEach(
+        element => element.remove()
+      );
+
+      (this.allotropes.value ?? []).sort((a, b) => b.localeCompare(a)).forEach(allotrope => {
+        const element = allotropes.child('allotrope template').template();
+        element.classList.add('data_point');
+        element.dataset.searchQuery = allotrope.replace(/\;-/g, ' ').replace(/(&|\;)/g, '').toLowerCase();
+        element.innerHTML = allotrope;
+      });
+    }
+
+    {
+      const abundance = content.child('abundance section');
+      [ ...abundance.getElementsByClassName('type') ].forEach(
+        element => element.child('value').innerHTML = this.abundance[element.classList.item(0)].value && (fixRounding(this.abundance[element.classList.item(0)].value * 100) || undefined)
+      )
+    }
+
+    {
+      const classifications = content.child('classifications section');
+      classifications.vChild('group').innerHTML = this.identifiers.group.value;
+      classifications.vChild('group').dataset.searchQuery = `periodic table group ${this.identifiers.group.value}`;
+
+      classifications.vChild('period').innerHTML = this.identifiers.period.value;
+      classifications.vChild('period').dataset.searchQuery = `periodic table period ${this.identifiers.period.value}`;
+
+      classifications.child('series').child('traditional').innerHTML = this.classifications.traditional_series.value;
+      classifications.child('series').child('traditional').dataset.searchQuery = `periodic table ${this.classifications.traditional_series.value} series`;
+
+      if ((this.classifications.series.value && this.classifications.series.value.toLowerCase()) !== (this.classifications.traditional_series.value && this.classifications.traditional_series.value.toLowerCase())) {
+        classifications.child('series').child('advanced').innerHTML = this.classifications.series.value;
+        classifications.child('series').child('advanced').dataset.searchQuery = `periodic table ${this.classifications.series.value} series`;
+      } else
+        classifications.child('series').child('advanced').innerHTML = undefined;
+
+      classifications.vChild('phase').innerHTML = this.classifications.phase.value;
+      classifications.vChild('phase').dataset.searchQuery = `periodic table ${this.classifications.phase.value} phase`;
+
+      classifications.vChild('gas_phase').innerHTML = this.classifications.gas_phase.value;
+      classifications.vChild('gas_phase').dataset.searchQuery = `periodic table ${this.classifications.gas_phase.value} gas phase`;
+
+      {
+        const advanced = classifications.child('advanced section');
+
+        advanced.vChild('cpk_hex').innerHTML = this.cpk_hex.value;
+
+        advanced.child('cpk_hex').child('box').style.background = `#${this.cpk_hex.value}`;
+        advanced.child('cpk_hex').child('box').dataset.searchQuery = `%23${this.cpk_hex.value}`;
+
+        advanced.vChild('CAS_number').innerHTML = this.classifications.CAS_number.value;
+        advanced.vChild('CID_number').innerHTML = this.classifications.CID_number.value;
+        advanced.vChild('RTECS_number').innerHTML = this.classifications.RTECS_number.value;
+
+        const dotNumbers = advanced.child('DOT_numbers').child('array');
+        [ ...dotNumbers.getElementsByClassName('dot_number data_point') ].forEach(
+          element => element.remove()
+        );
+
+        (this.classifications.DOT_numbers.value ?? []).sort((a, b) => b - a).forEach(dotNumber => {
+          const element = dotNumbers.child('dot_number template').template();
+          element.classList.add('data_point');
+          element.dataset.searchQuery = `DOT-${dotNumber}`;
+          element.innerHTML = dotNumber;
+        });
+
+        advanced.vChild('DOT_hazard_class').innerHTML = this.classifications.DOT_hazard_class.value;
+        advanced.vChild('DOT_hazard_class').dataset.searchQuery = `DOT hazard class ${this.classifications.DOT_hazard_class.value}`;
+      }
+    }
+
+    {
+      const atomicStructure = content.child('atomic_structure');
+
+      atomicStructure.vChild('atomic_mass').innerHTML = this.atomic_structure.atomic_mass.value;
+
+      atomicStructure.vChild('crystal_structure').innerHTML = this.atomic_structure.crystal_structure.value;
+      atomicStructure.vChild('crystal_structure').dataset.searchQuery = `${this.atomic_structure.crystal_structure.value} crystal structure`;
+
+      atomicStructure.vChild('atomic_radius').innerHTML = this.atomic_structure.radius.atomic.value;
+      atomicStructure.vChild('covalent_radius').innerHTML = this.atomic_structure.radius.covalent.value;
+      atomicStructure.vChild('van_der_waals_radius').innerHTML = this.atomic_structure.radius.van_der_waals.value;
+
+      const latticeAngles = atomicStructure.child('lattice_angles').child('array');
+      [ ...latticeAngles.getElementsByClassName('lattice_angle data_point') ].forEach(
+        element => element.remove()
+      );
+
+      (this.atomic_structure.lattice.angles.value ?? []).sort((a, b) => b.toString().localeCompare(a.toString())).forEach(angle => {
+        const element = latticeAngles.child('lattice_angle template').template();
+        element.classList.add('data_point');
+        element.innerHTML = angle;
+      });
+
+      const latticeConstansts = atomicStructure.child('lattice_constants').child('array');
+      [ ...latticeConstansts.getElementsByClassName('lattice_constant data_point') ].forEach(
+        element => element.remove()
+      );
+
+      (this.atomic_structure.lattice.constants.value ?? []).sort((a, b) => b - a).forEach(constant => {
+        const element = latticeConstansts.child('lattice_constant template').template();
+        element.classList.add('data_point');
+        element.innerHTML = constant;
+      });
+
+      atomicStructure.vChild('space_groups_name').innerHTML = this.atomic_structure.space_group.name.value;
+      atomicStructure.vChild('space_groups_name').dataset.searchQuery = this.atomic_structure.space_group.name.value && `space group ${this.atomic_structure.space_group.name.value.replace(/(<sub>|<sup>)/g, '(').replace(/(<\/sub>|<\/sup>)/g, ')')}`;
+
+      atomicStructure.vChild('space_groups_number').innerHTML = this.atomic_structure.space_group.number.value;
+      atomicStructure.vChild('space_groups_number').dataset.searchQuery = `space group number ${this.atomic_structure.space_group.number.value}`;
+
+      /* fetch(`https://www.googleapis.com/customsearch/v1?key=AIzaSyAjFMo4C16t5mNrd3YoSf7ksGC6ZIhmJlA&cx=4544a8b3b42864c9a&q=space%20group%20number%20${this.atomic_structure.space_group.number}%20"site:img.chem.ucl.ac.uk"`).then(
+        response => response.json()
+      ).then(data => {
+        const index = (data?.items ?? []).reduce(
+          (returnIndex, item, index) => item?.link && item.link.includes(`/${this.atomic_structure.space_group.number}`) && item.link.includes(`1.htm`) ? index : returnIndex, -1
+        );
+
+        if (index > -1) {
+          advanced.vChild('space_groups_number').dataset.search = true;
+          advanced.vChild('space_groups_number').dataset.link = data.items[index].link;
+        }
+      }); */
+    }
+
+    {
+      const electron = content.child('electron section');
+
+      electron.vChild('number').innerHTML = (this.electron.shells.value ?? []).sum() || undefined;
+      electron.vChild('valence').innerHTML = this.electron.valence.value;
+
+      electron.vChild('block').innerHTML = this.electron.block.value;
+      electron.vChild('configuration').innerHTML = this.electron.configuration.value;
+      electron.vChild('semantic_configuration').innerHTML = this.electron.semantic_configuration.value;
+
+      electron.vChild('quantum_numbers').innerHTML = this.electron.quantum_numbers.value;
+
+      {
+        const shells = electron.child('electrons_per_shell').child('wrap_array');
+        [ ...shells.getElementsByClassName('subshell data_point') ].forEach(
+          element => element.remove()
+        );
+
+        (this.electron.shells.value ?? []).reverse().forEach(subshell => {
+          const element = shells.child('subshell template').template();
+          element.classList.add('data_point');
+          element.innerHTML = subshell;
+        });
+      }
+
+      {
+        const reactivity = electron.child('reactivity section');
+
+        reactivity.vChild('electronegativity').innerHTML = this.electron.reactivity.electronegativity.value;
+        reactivity.vChild('electron_affinity').innerHTML = this.electron.reactivity.electron_affinity.value;
+
+        const ionizationEnergies = reactivity.child('ionization_energies').child('wrap_array');
+        [ ...ionizationEnergies.getElementsByClassName('ionization_energy data_point') ].forEach(
+          element => element.remove()
+        );
+
+        (this.electron.reactivity.ionization_energies.value ?? []).sort((a, b) => b - a).forEach(energy => {
+          const element = ionizationEnergies.child('ionization_energy template').template();
+          element.classList.add('data_point');
+          element.innerHTML = energy;
+        });
+      }
+
+      const oxidationStates = electron.child('oxidation_states').child('wrap_array');
+      [ ...oxidationStates.getElementsByClassName('oxidation_state data_point') ].forEach(
+        element => element.remove()
+      );
+
+      (this.electron.oxidation_states.value ?? []).sort((a, b) => b - a).forEach(state => {
+        const element = oxidationStates.child('oxidation_state template').template();
+        element.classList.add('data_point');
+        element.innerHTML = state;
+      });
+    }
+
+    DrawAbundanceChart(this);
+
+    {
+      const properties = content.child('properties section');
+
+      {
+        const nuclear = properties.child('nuclear section');
+
+        nuclear.vChild('half_life').innerHTML = this.properties.nuclear.half_life.value;
+        nuclear.vChild('half_life').dataset.unit = this.properties.nuclear.half_life.tags.unit;
+
+        nuclear.vChild('lifetime').innerHTML = this.properties.nuclear.lifetime.value;
+        nuclear.vChild('lifetime').dataset.unit = this.properties.nuclear.lifetime.tags.unit;
+
+        {
+          const decayMode = nuclear.vChild('decay_mode');
+
+          decayMode.innerHTML = this.properties.nuclear.decay_mode.symbol.value;
+          decayMode.dataset.searchQuery = `${this.properties.nuclear.decay_mode.name.value} decay mode`;
+
+          decayMode.onmouseenter = () => {
+            const { left, bottom, top, width } = decayMode.getBoundingClientRect();
+            const y = bottom + 0.04 * Math.min(innerWidth, innerHeight) + 21 < innerHeight ? { position: bottom + 5, anchor: 'top' } : { position: top - 5, anchor: 'bottom' };
+            new Tooltip('text', this.properties.nuclear.decay_mode.name.value, left + width / 2, y.position, 'center', y.anchor, 250, { leave: decayMode, time: { min: 100 } }, null, 'decay_type_tooltip').create(content);
+          };
+        }
+
+        nuclear.vChild('neutron_cross_section').innerHTML = this.properties.nuclear.neutron.cross_section.value;
+        nuclear.vChild('neutron_mass_absorption').innerHTML = this.properties.nuclear.neutron.mass_absorption.value;
+      }
+
+      {
+        const physical = properties.child('physical section');
+
+        physical.vChild('color').innerHTML = this.properties.physical.color.value;
+        physical.vChild('appearance').innerHTML = this.properties.physical.appearance.value && this.properties.physical.appearance.value.split('').map(
+          (char, index) => index ? char : char.toUpperCase()
+        ).join('');
+
+        physical.vChild('refractive_index').innerHTML = this.properties.physical.refractive_index.value;
+        physical.vChild('speed_of_sound').innerHTML = this.properties.physical.speed_of_sound.value;
+
+        physical.vChild('standard_density').innerHTML = this.properties.physical.density.standard.value;
+        physical.vChild('liquid_density').innerHTML = this.properties.physical.density.liquid.value;
+        physical.vChild('molar_volume').innerHTML = this.properties.physical.molar_volume.value;
+
+        physical.vChild('mohs_hardness').innerHTML = this.properties.physical.hardness.mohs.value;
+        physical.vChild('brinell_hardness').innerHTML = this.properties.physical.hardness.brinell.value;
+        physical.vChild('vickers_hardness').innerHTML = this.properties.physical.hardness.vickers.value;
+
+        physical.vChild('poisson_ratio').innerHTML = this.properties.physical.poisson_ratio.value;
+        physical.vChild('bulk_modulus').innerHTML = this.properties.physical.modulus.bulk.value;
+        physical.vChild('shear_modulus').innerHTML = this.properties.physical.modulus.shear.value;
+        physical.vChild('yound_modulus').innerHTML = this.properties.physical.modulus.young.value;
+      }
+
+      {
+        const thermal = properties.child('thermal section');
+
+        thermal.vChild('conductivity').innerHTML = this.properties.thermal.conductivity.value;
+
+        Object.entries({
+          melting_point: this.properties.thermal.melting_point,
+          boiling_point: this.properties.thermal.boiling_point,
+          neel_point: this.properties.thermal.neel_point,
+          thermal_expansion: this.properties.thermal.expansion,
+          critical_temperature: this.properties.thermal.critical.temperature,
+        }).forEach(([ name, data ]) => {
+          const element = thermal.child(name);
+          element.dataset.kelvin = data.value;
+
+          element.child('value').innerHTML = data.value;
+          if (data.value !== undefined)
+            element.child('value').style.width = `${element.classList.contains('per_temperature') ? Math.max(data.value.toString().length, toPerFahrenheit(data.value).toString().length) : Math.max(data.value.toString().length, toCelcius(data.value).toString().length, toFahrenheit(data.value).toString().length)}ch`;
+        });
+
+        thermal.vChild('critical_pressure').innerHTML = this.properties.thermal.critical.pressure.value;
+        thermal.vChild('critical_pressure').innerHTML = this.properties.thermal.critical.temperature.value;
+
+        thermal.vChild('specific_heat').innerHTML = this.properties.thermal.heat.specific.value;
+        thermal.vChild('fusion_heat').innerHTML = this.properties.thermal.heat.fusion.value;
+        thermal.vChild('vaporization_heat').innerHTML = this.properties.thermal.heat.vaporization.value;
+        thermal.vChild('adiabatic_index').innerHTML = this.properties.thermal.adiabatic_index.value;
+      }
+
+      {
+        const electrical = properties.child('electrical section');
+
+        electrical.vChild('type').innerHTML = this.properties.electrical.type.value;
+        electrical.vChild('type').dataset.searchQuery = `periodic table ${this.properties.electrical.type.value}s`;
+
+        electrical.vChild('conductivity').innerHTML = this.properties.electrical.conductivity.value;
+        electrical.vChild('resistivity').innerHTML = this.properties.electrical.resistivity.value;
+
+        electrical.vChild('superconducting_point').innerHTML = this.properties.electrical.superconducting_point.value;
+      }
+
+      {
+        const magnetic = properties.child('magnetic section');
+
+        magnetic.vChild('type').innerHTML = this.properties.magnetic.type.value;
+        magnetic.vChild('type').dataset.searchQuery = `periodic table ${this.properties.magnetic.type.value} magnets`;
+
+        Object.entries({
+          curie_point: this.properties.magnetic.curie_point,
+        }).forEach(([ name, data ]) => {
+          const element = magnetic.child(name);
+          element.dataset.kelvin = data.value;
+
+          element.child('value').innerHTML = data.value;
+          if (data.value !== undefined)
+            element.child('value').style.width = `${element.classList.contains('per_temperature') ? Math.max(data.value.toString().length, toPerFahrenheit(data.value).toString().length) : Math.max(data.value.toString().length, toCelcius(data.value).toString().length, toFahrenheit(data.value).toString().length)}ch`;
+        });
+
+        {
+          const susceptibility = magnetic.child('susceptibility');
+
+          susceptibility.vChild('mass').innerHTML = this.properties.magnetic.susceptibility.mass.value;
+          susceptibility.vChild('molar').innerHTML = this.properties.magnetic.susceptibility.molar.value;
+          susceptibility.vChild('volume').innerHTML = this.properties.magnetic.susceptibility.volume.value;
+        }
+      }
+
+      {
+        const summary = content.child('summary');
+
+        summary.child('text').innerHTML = this.summary.text.value;
+        summary.child('citation').child('source').innerHTML = this.summary.source.value;
+        summary.child('citation').child('source').href = this.summary.source.value;
+      }
+    }
+
+    /* .vChild('').innerHTML = this.properties.;
+    .vChild('').dataset.searchQuery = `${this.properties.}`; */
+  }
+
+  [ ...sidebar.getElementsByClassName('data_point') ].forEach(dataPoint => {
+    if (dataPoint.innerHTML === 'undefined') {
+      dataPoint.style.display = 'none';
+      dataPoint.innerHTML = '';
+    } else
+      dataPoint.style.display = '';
+  });
+
+  [ ...sidebar.getElementsByClassName('parent_data_point') ].forEach(parent => {
+    const dataPoints = [ ...parent.getElementsByClassName('data_point') ];
+
+    parent.style.display = dataPoints.some(
+      dataPoint => dataPoint.innerHTML?.length > 0
+    ) ? null : 'none';
+  });
+
+  LoadSearchableElments();
 }
+
+setTimeout(() => LoadElement.call(Wolfram.elements.C), 50);
 
 function DrawAbundanceChart(element) {
   const NoNaturalIsotopes = function() {
@@ -1843,16 +3104,16 @@ function DrawAbundanceChart(element) {
   acPen.clearRect(0, 0, 1, 1);
   ackPen.clearRect(0, 0, abundanceCanvasKey.width, abundanceCanvasKey.height);
 
-  sidebar.child('information').child('isotopes').child('title').child('text').innerHTML = `Isotopes of ${element.name}`;
+  sidebar.child('content').child('isotopes').child('title').child('text').innerHTML = `Isotopes of ${element.identifiers.name.value}`;
 
-  sidebar.child('information').child('isotopes').child('title').child('text').onmouseenter = async function() {
+  sidebar.child('content').child('isotopes').child('title').child('text').onmouseenter = async function() {
     const tooltip = new Tooltip('text', `<h2 class='title'></h2><br><p class='text'></p><br><div class='citation'>Source: <a target='_blank' class='source'>Wikipedia</a></div>`, 0, innerHeight, 'left', 'bottom', 250, { leave: this, time: { min: 100 } }, null, 'isotopes_of').create();
 
     await fetch(`https://en.wikipedia.org/w/api.php?origin=*&format=json&action=query&prop=extracts&exintro=&explaintext=&titles=${this.innerHTML.replace(/ /g, '_').toLowerCase()}`).then(
       response => response.json()
     ).then(data => {
       const page = Object.values(data.query.pages)[0];
-      sidebar.child('information').child('isotopes').child('title').child('text').dataset.link = `https://en.wikipedia.org/?curid=${page.pageid}`;
+      sidebar.child('content').child('isotopes').child('title').child('text').dataset.link = `https://en.wikipedia.org/?curid=${page.pageid}`;
 
       tooltip.child('title').innerHTML = page.title;
       tooltip.child('citation').child('source').href = `href='https://en.wikipedia.org/?curid=${page.pageid}'`;
@@ -1870,24 +3131,26 @@ function DrawAbundanceChart(element) {
 
           text.innerHTML += fullText.shift();
       }
-      text.innerHTML = `${lastLine.text.split(' ').slice(0, 0).join(' ')}&mldr;</span>`;
+
+      lastLine.text = lastLine.text.split(' ');
+      text.innerHTML = `${lastLine.text.slice(0, lastLine.text.length - 1).join(' ')}&mldr;</span>`;
     });
   };
 
-  [...sidebar.child('information').child('isotopes').getElementsByClassName('temporary')].forEach(
+  [...sidebar.child('content').child('isotopes').getElementsByClassName('temporary')].forEach(
     element => element.remove()
   );
 
-	const isotopes = Nubase2020.nuclides[element.symbol];
+	const isotopes = Nubase2020.nuclides[element.identifiers.symbol.value];
   if (isotopes) {
     abundanceCanvasKey.style.display = 'block';
 
-    const stable = Object.fromEntries(Object.entries(Nubase2020.nuclides[element.symbol]).filter(
-      ([ _, value ]) => value.half_life?.value?.value === 'Stable'
+    const stable = Object.fromEntries(Object.entries(Nubase2020.nuclides[element.identifiers.symbol.value]).filter(
+      ([ _, value ]) => value.half_life?.value.value === 'Stable'
     ) ?? []);
 
-    const abundances = Object.fromEntries(Object.entries(Nubase2020.nuclides[element.symbol]).map(
-      ([ key, value ]) => [ key, value.abundance?.value?.value ]
+    const abundances = Object.fromEntries(Object.entries(Nubase2020.nuclides[element.identifiers.symbol.value]).map(
+      ([ key, value ]) => [ key, value.abundance?.value.value ]
     ).filter(
       ([ _, value ]) => value
     ) ?? []);
@@ -1907,7 +3170,7 @@ function DrawAbundanceChart(element) {
     let abundanceKeyY = 0;
     Object.values(isotopes).forEach((isotope, index) => {
       const isotopeElement = document.createElement('span');
-      isotopeElement.classList.add('temporary', 'isotope', 'searchable', 'no_event_update');
+      isotopeElement.classList.add('temporary', 'isotope', 'data_point', 'searchable', 'no_event_update');
       isotopeElement.style.background = isotope.half_life?.color;
 
       isotopeElement.innerHTML = isotope.formatted_symbol;
@@ -1915,24 +3178,24 @@ function DrawAbundanceChart(element) {
       isotopeElement.addEventListener('click', function() {
         if (nSidebar.dataset.stuckOpen === isotope.symbol) {
           nSidebar.dataset.stuckOpen = null;
-          [...sidebar.child('information').child('isotopes').getElementsByClassName('isotope')].forEach(
+          [...sidebar.child('content').child('isotopes').getElementsByClassName('isotope')].forEach(
             element => element.classList.remove('selected')
           );
 
           nSidebar.dataset.hidden = true;
         } else {
           nSidebar.dataset.stuckOpen = isotope.symbol;
-          [...sidebar.child('information').child('isotopes').getElementsByClassName('isotope')].forEach(
+          [...sidebar.child('content').child('isotopes').getElementsByClassName('isotope')].forEach(
             element => isotopeElement === element ? element.classList.add('selected') : element.classList.remove('selected')
           );
 
-          LoadIsotope.call(isotope, element);
+          LoadIsotope.call(isotope);
         }
       });
 
       if (stable[isotope.symbol])
         isotopeElement.classList.add('stable');
-      else if (isotope.half_life?.value?.value === 'Particle Unstable')
+      else if (isotope.half_life?.value.value === 'Particle Unstable')
         isotopeElement.classList.add('unstable');
       else if (isotope.half_life?.color === undefined)
         isotopeElement.classList.add('unknown');
@@ -1975,8 +3238,8 @@ function DrawAbundanceChart(element) {
 
           acPen.clearRect(0, 0, 1, 1);
           let startRadians = -Math.PI / 2;
-          Object.entries(abundances).forEach(([drawIsotope, abundance], index) => {
-            const color = colors[Object.keys(Nubase2020.nuclides[element.symbol]).indexOf(drawIsotope)];
+          Object.entries(abundances).forEach(([ drawIsotope, abundance ], index) => {
+            const color = colors[Object.keys(Nubase2020.nuclides[element.identifiers.symbol.value]).indexOf(drawIsotope)];
             acPen.fillStyle = color;
 
             const radians = 2 * Math.PI * (+abundance / 100) || 0;
@@ -2025,11 +3288,11 @@ function DrawAbundanceChart(element) {
         abundanceKeyY += 16 + padding;
       }
 
-      sidebar.child('information').child('isotopes').appendChild(isotopeElement);
+      sidebar.child('content').child('isotopes').appendChild(isotopeElement);
 
       const wbr = document.createElement('wbr');
       wbr.classList.add('temporary');
-      sidebar.child('information').child('isotopes').appendChild(wbr);
+      sidebar.child('content').child('isotopes').appendChild(wbr);
     });
   } else {
     abundanceCanvasKey.style.display = 'none';
@@ -2038,24 +3301,22 @@ function DrawAbundanceChart(element) {
     error.classList.add('no_known_isotopes', 'temporary');
     error.innerHTML = 'No known isotopes';
 
-    sidebar.child('information').child('isotopes').appendChild(error);
+    sidebar.child('content').child('isotopes').appendChild(error);
     Array.from({ length: 2 }, () => {
       const br = document.createElement('br');
       br.classList.add('temporary');
-      sidebar.child('information').child('isotopes').appendChild(br);
+      sidebar.child('content').child('isotopes').appendChild(br);
     });
 
     NoNaturalIsotopes();
   }
 }
 
-function LoadIso(parentThis, iso) {
+function LoadIso(iso) {
   {
     const title = iso.child('title');
     title.dataset.searchQuery = this.search_query.split('-').map(
-      (value, index) => index ? value : pTable.reduce(
-        (foundElement, element) => element.symbol === value ? element.name : foundElement, value
-      )
+      (value, index) => index ? value : (Wolfram.elements[this.element].identifiers.name.value ?? value)
     ).join('-');
 
     title.child('symbol').innerHTML = this.formatted_symbol && `<u>${this.formatted_symbol}</u>`;
@@ -2085,12 +3346,12 @@ function LoadIso(parentThis, iso) {
       const container = information.child(key);
       {
         const value = container.child('value');
-        if (this[key]?.value?.value) {
+        if (this[key].value.value) {
           const innerValue = value.child('value');
 
-          innerValue.innerHTML = `${(this[key]?.symbol ?? '').replace('=', '')}${this[key]?.value?.value}`;
-          innerValue.dataset.estimated = this[key]?.value?.estimated;
-          if (this[key]?.value?.estimated)
+          innerValue.innerHTML = `${(this[key]?.symbol ?? '').replace('=', '')}${this[key].value.value}`;
+          innerValue.dataset.estimated = this[key].value?.estimated;
+          if (this[key].value?.estimated)
             innerValue.onmouseenter = () => {
               const { left, bottom, top, width } = innerValue.getBoundingClientRect();
               const y = bottom + 0.04 * Math.min(innerWidth, innerHeight) + 21 < innerHeight ? { position: bottom + 5, anchor: 'top' } : { position: top - 5, anchor: 'bottom' };
@@ -2294,7 +3555,7 @@ function LoadIso(parentThis, iso) {
   };
 }
 
-function LoadIsotope(element) {
+function LoadIsotope() {
   nSidebar.dataset.hidden = false;
 
 	const getDecimals = function(value) {
@@ -2311,12 +3572,12 @@ function LoadIsotope(element) {
     dataPoint => dataPoint.innerHTML = ''
   );
 
-  LoadIso.call(this, globalThis, nuclide);
+  LoadIso.call(this, nuclide);
 
   (this.isomers ?? []).forEach(isomerObject => {
     const isomer = nuclide.child('isomers').child('template').template();
 
-    LoadIso.call(isomerObject, this, isomer);
+    LoadIso.call(isomerObject, isomer);
   });
 
   [...nuclide.getElementsByClassName('collapse_button')].forEach(button => {
@@ -2349,6 +3610,41 @@ function LoadIsotope(element) {
 
   LoadSearchableElments();
 }
+
+/*let index = 0;
+setTimeout(async function() {
+  for (const [ symbol, element ] of Object.entries(Nubase2020.nuclides)) {
+    if (symbol === 'n')
+      continue;
+
+    for (const isotope of Object.values(element)) {
+      console.log(++index);
+      LoadIsotope.call(isotope);
+      await new Promise((resolve, reject) => {
+        setTimeout(resolve, 0);
+      });
+
+      for (const isomer of isotope.isomers ?? []) {
+        console.log(++index);
+        LoadIsotope.call(isotope);
+        await new Promise((resolve, reject) => {
+          setTimeout(resolve, 0);
+        });
+      }
+    }
+  }
+}, 100);*/
+
+/*let index = 0;
+setTimeout(async function() {
+  for (const [ symbol, element ] of Object.entries(Wolfram.elements)) {
+    console.log(++index);
+    LoadElement.call(element);
+    await new Promise((resolve, reject) => {
+      setTimeout(resolve, 0);
+    });
+  }
+}, 100);*/
 
 function CalculateDecayChain(compact = false) {
   const maxChain = 1000;
@@ -2797,209 +4093,13 @@ function FindIsotopesWithAZ(a, z, include_isomers, base_isomer) {
     if (isomer) {
       if (!include_isomers)
         return false;
-      else if (iso.symbol === base_isomer?.symbol || iso.excitation_energy?.value?.value > base_isomer?.excitation_energy?.value?.value)
+      else if (iso.symbol === base_isomer?.symbol || iso.excitation_energy.value?.value > base_isomer?.excitation_energy?.value?.value)
         return false;
     }
 
     return true;
   });
 }
-
-/*function LoadIsotope2(element, isotope) {
-  const getDecimals = function(value) {
-    value = (+value).noExponents().toString();
-    return (value.split('.')[1] ?? '').length;
-  };
-
-  const calcUncertainty = function(value, uncertainty) {
-    const range = [];
-    let uncertaintyRange = [];
-
-    value = +value;
-    if (uncertainty[0] === '+')
-      uncertaintyRange = uncertainty.split('-').reverse();
-    else if (uncertainty[0] === '-')
-      uncertaintyRange = uncertainty.split('+');
-    else
-      uncertaintyRange = [ uncertainty, uncertainty ];
-
-    uncertaintyRange = uncertaintyRange.map(
-      value => +value
-    );
-
-    const roundFactor = 10 ** Math.max(getDecimals(value), ...uncertaintyRange.map(
-      value => getDecimals(value)
-    ));
-
-    range[0] = Math.round((value - uncertaintyRange[0]) * roundFactor) / roundFactor;
-    range[1] = Math.round((value + uncertaintyRange[1]) * roundFactor) / roundFactor;
-
-    return range;
-  };
-
-  isotope = isotope.replace(/(<sup>|<\/sup>)/g, '').toLowerCase();
-
-  let nuclide;
-  if (!nuclide_data.some(thisNuclide => {
-    if (thisNuclide.name.toLowerCase() === isotope) {
-      nuclide = thisNuclide;
-      return true;
-    }
-  }))
-    return;
-
-  nSidebar.dataset.hidden = false;
-
-  nSidebar.child('title').child('mass_number').innerHTML = nuclide.a;
-  nSidebar.child('title').child('atomic_symbol').innerHTML = element.symbol;
-  nSidebar.child('title').child('alternate_names').innerHTML = nuclide.alternate_names ? `(${nuclide.alternate_names.join(', ')})` : '';
-
-  nSidebar.child('nucleons').child('protons').child('value').innerHTML = nuclide.z;
-  nSidebar.child('nucleons').child('neutrons').child('value').innerHTML = nuclide.n;
-
-  [...nSidebar.child('energy_levels').getElementsByClassName('level')].forEach(
-    level => level.remove()
-  );
-
-  nuclide.levels.forEach(level => {
-    const levelDiv = document.createElement('div');
-    levelDiv.classList.add('level');
-    nSidebar.child('energy_levels').appendChild(levelDiv);
-
-    {
-      const title = document.createElement('h3');
-      title.classList.add('title', 'energy');
-      levelDiv.appendChild(title);
-
-      const value = document.createElement('span');
-      value.classList.add('value', 'searchable');
-      value.innerHTML = level.energy?.value?.length ? `${level.energy.value} ${level.energy.unit}` : 'Unknown';
-      title.appendChild(value);
-
-      levelDiv.appendChild(document.createElement('br'));
-    }
-
-    if (level.spinAndParity) {
-      const spinParity = document.createElement('span');
-      spinParity.classList.add('spin_parity');
-      spinParity.innerHTML = 'Spin and Parity: ';
-      levelDiv.appendChild(spinParity);
-
-      const value = document.createElement('span');
-      value.classList.add('value', 'searchable');
-
-      const [ spin, parity ] = level.spinAndParity.replace('(', '').replace(/\)$/, '').split(/[\/,]/);
-      if (!parity) {
-        spinParity.innerHTML = 'Spin: ';
-        value.innerHTML = spin;
-      } else
-        value.innerHTML = `${spin} / ${parity}`;
-
-      spinParity.appendChild(value);
-
-      Array.from({ length: 3 }, () => levelDiv.appendChild(document.createElement('br')));
-    }
-
-    if (level.massExcess) {
-      const massExcess = document.createElement('span');
-      massExcess.classList.add('mass_excess');
-      massExcess.innerHTML = 'Mass Excess: ';
-      levelDiv.appendChild(massExcess);
-
-      let index = 0;
-      const values = [
-        [ 'Raw', level.massExcess.value ],
-        ...Object.entries(level.massExcess.formats ?? {}),
-      ];
-
-      const format = document.createElement('span');
-      format.classList.add('format', 'searchable', 'no_event_update');
-      format.innerHTML = values[0][0];
-      format.onclick = function() {
-        index = ++index % values.length;
-        [ format.innerHTML, value.innerHTML ] = values[index];
-      };
-      massExcess.appendChild(format);
-
-      const value = document.createElement('span');
-      value.classList.add('value', 'searchable');
-      value.innerHTML = values[0][1];
-      massExcess.appendChild(value);
-
-      const unit = document.createElement('span');
-      unit.classList.add('unit', 'searchable');
-      unit.innerHTML = level.massExcess.unit;
-      massExcess.appendChild(unit);
-
-      Array.from({ length: 2 }, () => levelDiv.appendChild(document.createElement('br')));
-    }
-
-    if (level.halflife) {
-      const halfLife = document.createElement('div');
-      halfLife.classList.add('half_life');
-      halfLife.dataset.selected = 'o';
-      halfLife.innerHTML = 'Half Life: ';
-      levelDiv.appendChild(halfLife);
-
-      if (Object.keys(level.halflife).toString() === 'value') {
-        const value = document.createElement('span');
-        value.classList.add('value', 'searchable');
-        value.innerHTML = level.halflife.value.toLowerCase().toUpperCaseWords();
-        halfLife.appendChild(value);
-      } else {
-        let index = 0;
-        const values = [
-          [ 'Raw', level.halflife.value ],
-          ...Object.entries(level.halflife.formats ?? {}),
-        ];
-
-        const format = document.createElement('span');
-        format.classList.add('format', 'searchable', 'no_event_update');
-        format.innerHTML = values[0][0];
-        format.onclick = function() {
-          index = ++index % values.length;
-          [ format.innerHTML, value.innerHTML ] = values[index];
-        };
-        halfLife.appendChild(format);
-
-        const value = document.createElement('span');
-        value.classList.add('value', 'searchable');
-        value.innerHTML = values[0][1];
-        halfLife.appendChild(value);
-
-        Array.from({ length: 2 }, () => halfLife.appendChild(document.createElement('br')));
-
-        const otherButton = document.createElement('span');
-        otherButton.classList.add('other', 'button');
-        otherButton.innerHTML = level.halflife.unit;
-        otherButton.onclick = function() {
-          halfLife.dataset.selected = 'o';
-
-          format.hidden = false;
-          value.innerHTML = values[index][1];
-        };
-        halfLife.appendChild(otherButton);
-
-        if (level.halflife.unit !== 'S') {
-          const secondButton = document.createElement('span');
-          secondButton.classList.add('second', 'button');
-          secondButton.innerHTML = 'S';
-          secondButton.onclick = function() {
-            halfLife.dataset.selected = 's';
-
-            format.hidden = true;
-            value.innerHTML = level.halflife.inSeconds.value;
-          };
-          halfLife.appendChild(secondButton);
-        }
-      }
-
-      Array.from({ length: 0 }, () => levelDiv.appendChild(document.createElement('br')));
-    }
-  });
-
-  LoadSearchableElments();
-}*/
 
 function LoadSearchableElments() {
   [...document.getElementsByClassName('searchable')].forEach(searchable => {
@@ -3015,20 +4115,20 @@ function LoadSearchableElments() {
               const [ massNumber, element ] = path.split('.');
               const iso = Nubase2020.nuclides[element][`${massNumber}${element}`];
 
-              LoadElement(iso.protons - 1);
+              LoadElement.call(Wolfram.elements[iso.element]);
               nSidebar.dataset.stuckOpen = iso.symbol;
               [...sidebar.child('information').child('isotopes').getElementsByClassName('isotope')].forEach(
                 element => iso.formatted_symbol === element.innerHTML ? element.classList.add('selected') : element.classList.remove('selected')
               );
 
-              LoadIsotope.call(iso, pTable[iso.protons - 1]);
+              LoadIsotope.call(iso);
               break;
             };
             case 'isomer': {
               const [ massNumber, isomerCharacter, element ] = path.split('.');
               const iso = Nubase2020.nuclides[element][`${massNumber}${element}`]
 
-              LoadElement(iso.protons - 1);
+              LoadElement.call(Wolfram.elements[iso.element]);
               nSidebar.dataset.stuckOpen = iso.symbol;
               [...sidebar.child('information').child('isotopes').getElementsByClassName('isotope')].forEach(
                 element => iso.formatted_symbol === element.innerHTML ? element.classList.add('selected') : element.classList.remove('selected')
@@ -3036,17 +4136,17 @@ function LoadSearchableElments() {
 
               LoadIsotope.call(iso.isomers.reduce(
                 (match, iso) => iso?.isomer_id?.character === isomerCharacter ? iso : match
-              ), pTable[iso.protons - 1]);
+              ));
               break;
             };
           }
+        } else if (searchable.dataset.link) {
+          window.open(searchable.dataset.link, '_blank');
         } else if (searchable.dataset.searchQuery)
           window.open(`https://www.google.com/search?q=${searchable.dataset.searchQuery}`, '_blank');
         else if (searchable.classList.contains('title') && searchable.parentElement === nSidebar) {
           const symbol = searchable.child('atomic_symbol').innerHTML;
-          window.open(`https://www.google.com/search?q=${pTable.reduce(
-            (name, element) => element.symbol === symbol ? element.name : name, null
-          )}+isotope+${searchable.child('mass_number').innerHTML}`, '_blank');
+          window.open(`https://www.google.com/search?q=${Wolfram.elements[symbol].identifiers.name.value}+isotope+${searchable.child('mass_number').innerHTML}`, '_blank');
         } else if (searchable.parentElement?.classList.contains('title') && searchable.parentElement?.parentElement?.classList.contains('isotopes'))
           window.open(searchable.dataset.link ?? `https://en.wikipedia.org/wiki/${searchable.innerHTML.replace(/ /g, '_').toLocaleLowerCase()}`, '_blank');
         else
@@ -3096,10 +4196,10 @@ window.addEventListener('keyup', function(event) {
 
 window.onwheel = function(event) {
   let element = event.target;
-  let result = element.classList.contains('isotope') || element === credits || element === decayChainElement || element === nSidebar ? -1 : (element === document.body ? 1 : 0);
+  let result = element.classList.contains('trends_menu') || element.id === 'top_nav' || element.classList.contains('isotope') || element === credits || element === decayChainElement || element === nSidebar ? -1 : (element === document.body ? 1 : 0);
   while (element.parentElement && !result) {
     element = element.parentElement;
-    result = element === sidebar || element === credits || element === decayChainElement || element === nSidebar || element === abundanceChart ? -1 : (element === document.body ? 1 : 0);
+    result = element.classList.contains('trends_menu') || element.id === 'top_nav' || element === sidebar || element === credits || element === decayChainElement || element === nSidebar || element === abundanceChart ? -1 : (element === document.body ? 1 : 0);
   }
 
   if (animation.canScroll && result === 1)
@@ -3568,119 +4668,90 @@ class Tooltip {
   }
 }
 
-/**
- * Web Scraper
- */
+function TimeToSeconds(time, unit) {
+  time = +time.toString().replace(/[^\d\.\-\+e]/g, '');
 
-/*
-const objectFinal = [];
-for (let i = 1;i <= 118;i++) {
-  await fetch(`https://periodictable.com/Elements/${Array.from({ length: 3 - i.toString().length }, () => '0').join('') + i}/data.html`).then(
-    response => response.text()
-  ).then(data => {
-    const div = document.createElement('div');
-    div.innerHTML = data;
-
-    document.body.appendChild(div);
-    const object = Object.fromEntries([ ...div.getElementsByTagName('a') ].filter(
-      ({ parentElement }) => parentElement.tagName === 'FONT'
-    ).map(element => {
-      let key = element.innerHTML.trim();
-      let value = element.parentElement.parentElement.nextElementSibling.innerText.trim();
-
-      value = value.replace(/\[note\]/g, '');
-      if (value === 'N/A' || value === 'None' || key.includes('Isotop'))
-        return [ key, undefined ];
-
-      // critical temp, critical pressure, curie point
-
-      let unit = [];
-      switch (key) {
-        case 'Absolute Melting Point':
-        case 'Absolute Boiling Point':
-          key = key.replace('Absolute ', '');
-        case 'Critical Pressure':
-        case 'Critical Temperature':
-        case 'Density':
-        case 'Heat of Fusion':
-        case 'Heat of Vaporization':
-        case 'Specific Heat':
-        case 'Neel Point':
-        case 'Thermal Conductivity':
-        case 'Thermal Expansion':
-        case 'Density':
-        case 'Density (Liquid)':
-        case 'Brinell Hardness':
-        case 'Vickers Hardness':
-        case 'Bulk Modulus':
-        case 'Shear Modulus':
-        case 'Speed of Sound':
-        case 'Thermal Conductivity':
-        case 'Thermal Expansion':
-        case 'ElectronAffinity':
-        case 'Electrical Conductivity':
-        case 'Resistivity':
-        case 'Curie Point':
-        case 'Mass Magnetic Susceptibility':
-        case 'Molar Magnetic Susceptibility':
-        case 'Volume Magnetic Susceptibility':
-        case 'Atomic Radius':
-        case 'Covalent Radius':
-        case 'Van der Waals Radius':
-        case 'Half-life':
-        case 'Lifetime':
-          [ value, ...unit] = value.split(/\s/);
-          break;
-        case 'Lattice Angles':
-          value = value.replace(', ', '').split(', ');
-          break;
-        case 'Ionization Energies':
-          [ value, unit ] = [ value.replace(' kJ/mol', '').split(', '), { unit: 'kJ/mol' } ];
-          break;
-        case 'Latice Constants':
-          [ value, unit ] = [ value.replace(' pm', '').split(', '), { unit: 'pm' } ];
-          break;
-        case 'Discovery':
-          value = value.split(' in ');
-          break;
-        case 'Melting Point':
-        case 'Boiling Point':
-          return undefined;
-      }
-
-      if (key.includes('%'))
-        [ value, unit ] = [ value.replace('%', ''), { unit: '%' } ];
-
-      if (value instanceof Array) {
-        value = value.map(thisValue => {
-          if (!Number.isNaN(+thisValue))
-            thisValue = +thisValue;
-          else if (thisValue.includes('×')) {
-            let [ number, exponent ] = thisValue.split('×');
-            exponent = exponent.replace('10', '');
-
-            thisValue = `${number}e${(exponent > 0 ? '+' : '') + exponent}`
-          }
-
-          return thisValue;
-        });
-      } else if (!Number.isNaN(+value))
-        value = +value;
-      else if (value.includes('×')) {
-        let [ number, exponent ] = value.split('×');
-        exponent = exponent.replace('10', '');
-
-        value = `${number}e${(exponent > 0 ? '+' : '') + exponent}`
-      }
-
-      return [ key.replace(/(\s|-)/g, '_'), value, { unit: unit ? [ unit ].flat(Infinity).join(' ') : undefined } ];
-    }).filter(
-      value => value !== undefined
-    ));
-
-    objectFinal.push(object);
-
-    div.remove();
-  });
+  switch (unit) {
+    case 'qs':
+      return +`${time}e-30`;
+    case 'rs':
+      return +`${time}e-27`;
+    case 'ys':
+      return +`${time}e-24`;
+    case 'zs':
+      return +`${time}e-21`;
+    case 'as':
+      return +`${time}e-18`;
+    case 'fs':
+      return +`${time}e-15`;
+    case 'ps':
+      return +`${time}e-12`;
+    case 'ns':
+      return +`${time}e-9`;
+    case '&mu;s':
+      return +`${time}e-6`;
+    case 'ms':
+      return +`${time}e-3`;
+    case 'cs':
+      return +`${time}e-2`;
+    case 'ds':
+      return +`${time}e-1`;
+    case 's':
+      return time;
+    case 'das':
+      return +`${time}3+1`;
+    case 'm':
+      return Math.floor(time * 60 * 10 ** getDecimals(time)) / 10 ** getDecimals(time);
+    case 'hs':
+      return +`${time}e+2`;
+    case 'ks':
+      return +`${time}e+3`;
+    case 'h':
+    case 'hr':
+      return Math.floor(time * 3600 * 10 ** getDecimals(time)) / 10 ** getDecimals(time);
+    case 'Qy':
+      return Math.floor(time * 3.15576e+37 * 10 ** getDecimals(time)) / 10 ** getDecimals(time);
+    case 'Ry':
+      return Math.floor(time * 3.15576e+34 * 10 ** getDecimals(time)) / 10 ** getDecimals(time);
+    case 'Yy':
+      return Math.floor(time * 3.15576e+31 * 10 ** getDecimals(time)) / 10 ** getDecimals(time);
+    case 'Zy':
+      return Math.floor(time * 3.15576e+28 * 10 ** getDecimals(time)) / 10 ** getDecimals(time);
+    case 'Ey':
+      return Math.floor(time * 3.15576e+25 * 10 ** getDecimals(time)) / 10 ** getDecimals(time);
+    case 'Py':
+      return Math.floor(time * 3.15576e+22 * 10 ** getDecimals(time)) / 10 ** getDecimals(time);
+    case 'Ty':
+      return Math.floor(time * 3.15576e+19 * 10 ** getDecimals(time)) / 10 ** getDecimals(time);
+    case 'Gy':
+      return Math.floor(time * 3.15576e+16 * 10 ** getDecimals(time)) / 10 ** getDecimals(time);
+    case 'My':
+      return Math.floor(time * 3.15576e+13 * 10 ** getDecimals(time)) / 10 ** getDecimals(time);
+    case 'ky':
+      return Math.floor(time * 3.15576e+10 * 10 ** getDecimals(time)) / 10 ** getDecimals(time);
+    case 'y':
+      return Math.floor(time * 31557600 * 10 ** getDecimals(time)) / 10 ** getDecimals(time);
+    case 'd':
+      return Math.floor(time * 86400 * 10 ** getDecimals(time)) / 10 ** getDecimals(time);
+    case 'Ms':
+      return +`${time}e+6`;
+    case 'Gs':
+      return +`${time}e+9`;
+    case 'Ts':
+      return +`${time}e+12`;
+    case 'Ps':
+      return +`${time}e+15`;
+    case 'Es':
+      return +`${time}e+18`;
+    case 'Zs':
+      return +`${time}e+21`;
+    case 'Ys':
+      return +`${time}e+24`;
+    case 'Rs':
+      return +`${time}e+27`;
+    case 'Qs':
+      return +`${time}e+30`;
+    default:
+      return time;
+  }
 }
-*/
