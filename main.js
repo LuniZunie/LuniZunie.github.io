@@ -2846,9 +2846,11 @@ function TrendsUpdate() {
       return;
 
     if (loadedElementExtras.Colored_Gradient || loadedElementExtras['Colored_&_Brightness_Gradient']) {
-      const color = Object.values(loadedElementTrends ?? {}).length ? (Object.values(loadedElementTrends).reduce(
-        (avg, trend, _, array) => avg + trend[element.dataset.symbol] / array.length, 0
-      ) * 255) : undefined;
+      const color = Object.values(loadedElementTrends ?? {}).length ? ((Object.values(loadedElementTrends).map(
+        trend => trend[element.dataset.symbol]
+      ).filter(
+	trend => trend !== undefined
+      ) ?? []).avg() * 255) : undefined;
 
       loadedElementColors.Colored_Gradient ??= {};
       if (color === undefined || Number.isNaN(color))
