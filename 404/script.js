@@ -19,7 +19,7 @@
 */
 
 const pages = {
-  '/pages/projects/periodic-table/_index.html': [
+  '/pages/projects/periodic-table/': [
     '/periodic-table',
     '/p-table',
     '/pt',
@@ -43,7 +43,6 @@ addEventListener('load', function() {
 
   const destination = pages[page][0];
   if (path != destination.replace(/-/g, '').toLowerCase()) {
-    console.log(destination, path)
     window.open(destination, '_self');
     return;
   }
@@ -52,8 +51,8 @@ addEventListener('load', function() {
     fetch(page).then(
       result => result.text()
     ).then(() => {
-      document.querySelector('title').innerHTML = frames[0].document.querySelector('title')?.innerHTML ?? destination;
       document.querySelector('iframe').src = page;
+      document.querySelector('title').innerHTML = frames[0].document.querySelector('title')?.innerHTML ?? destination;
     }).catch(
       error => console.error(error, 'fecth_error')
     );
