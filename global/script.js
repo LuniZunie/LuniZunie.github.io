@@ -15,19 +15,79 @@
 */
 
 /**
- * HASH
+ * DECLARATIONS
  */
 
+const { body, documentElement: doc } = document;
+
+/**
+ * EVENT LISTENER
+ */
+
+const Mouse = {};
+addEventListener('mousemove', e => {
+  Mouse.x = e.pageX;
+  Mouse.y = e.pageY;
+});
+
+/**
+ * UPDATE
+ */
+
+const Update = {
+  fixed: [],
+  loose: [],
+};
+
+function _looseUpdate() {
+  Update.loose.forEach(
+    Function => Function()
+  );
+
+  requestIdleCallback(_looseUpdate);
+}
+requestIdleCallback(_looseUpdate);
+
+function _fixedUpdate() {
+  Update.fixed.forEach(
+    Function => Function()
+  );
+
+  requestAnimationFrame(_fixedUpdate);
+}
+requestAnimationFrame(_fixedUpdate);
+
+function LooseUpdate(Function) {
+  Update.loose.push(Function);
+}
+
+function FixedUpdate(Function) {
+  Update.fixed.push(Function);
+}
+
+/**
+ * LINKS
+ */
+
+LooseUpdate(function() {
+  doc.qsa('span[href]').forEach(span => {
+    span.style.cursor = 'pointer';
+    span.onclick = function() {
+      window.open(this.getAttribute('href'), this.getAttribute('target'));
+    }
+  });
+});
+
 FixedUpdate(function() {
-  document.querySelectorAll('.hash.false_hidden:not([data-false-hidden])').forEach(
+  doc.qsa('.hash.false_hidden:not([data-false-hidden])').forEach(
     element => element.dataset.falseHidden = true
   );
 
-  document.querySelectorAll('.hash[data-false-hidden]:not(.false_hidden)').forEach(
+  doc.qsa('.hash[data-false-hidden]:not(.false_hidden)').forEach(
     element => delete element.dataset.falseHidden
   );
 
-  const hash = document.querySelectorAll('.hash:not(.hidden, .false_hidden)').map(
+  const hash = doc.qsa('.hash:not(.hidden, .false_hidden)').map(
     (element) => element.id
   ).join(',');
 
@@ -36,7 +96,7 @@ FixedUpdate(function() {
 
 addEventListener('hashchange', function(event) {
   const hashes = event.newURL.replace(location.origin + location.pathname, '').replace('#', '').split(',');
-  document.querySelectorAll('.hash').forEach(
+  doc.qsa('.hash').forEach(
     element => element.classList[hashes.includes(element.id) ? 'remove' : 'add'](element.dataset.falseHidden ? 'false_hidden' : 'hidden')
   );
 });

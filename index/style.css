@@ -1,0 +1,82 @@
+/*
+  Copyright 2023 LuniZunie
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+*/
+
+body {
+  overflow: hidden;
+
+  background: #001;
+}
+
+#top_nav {
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  width: auto;
+  height: 100vh;
+
+  font-size: 0.9em;
+  white-space: nowrap;
+  overflow: hidden hidden;
+
+  background: #000;
+
+  z-index: 2;
+
+  transition: all 250ms;
+}
+
+#top_nav > h1 {
+  display: inline-block;
+  width: 20vw;
+
+  margin: 0px 1vmin;
+  padding: calc(12em / 4 - 0.1em) 0.5em;
+
+  text-align: center;
+
+  transition: all 250ms;
+}
+
+#top_nav > h1 > span {
+  cursor: pointer;
+}
+
+#menu_bar {
+  pointer-events: none;
+
+  position: fixed;
+  display: block;
+  width: 22vw;
+  height: 0.5vh;
+
+  background: linear-gradient(90deg, rgba(70,70,70,1) 0%, rgba(70,70,70,0.8) 15%, rgba(70,70,70,0) 35%, rgba(70,70,70,0) 65%, rgba(70,70,70,0.8) 85%, rgba(70,70,70,1) 100%);
+
+  z-index: 3;
+
+  transition: all 1s;
+}
+
+#content {
+  position: fixed;
+  left: 20vw;
+  top: 0px;
+  width: 80vw;
+  height: 100vh;
+
+  overflow: auto;
+
+  z-index: 1;
+}

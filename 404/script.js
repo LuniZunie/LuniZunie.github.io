@@ -20,8 +20,11 @@
 
 const pages = {
   '/pages/projects/periodic-table/': [
-    '/periodic-table',
-    '/p-table',
+    '/periodictable',
+    '/pdtable',
+    '/ptable',
+    '/pdt',
+    '/pd',
     '/pt',
   ],
 };
@@ -48,11 +51,12 @@ addEventListener('load', function() {
   }
 
   if (page)
-    fetch(page).then(
-      result => result.text()
-    ).then(() => {
-      document.querySelector('iframe').src = page;
-      document.querySelector('title').innerHTML = frames[0].document.querySelector('title')?.innerHTML ?? destination;
+    fetch(page).then(() => {
+      const iframe = document.querySelector('iframe') ?? document.body.appendChild('iframe');
+      iframe.src = page;
+
+      const title = document.querySelector('title') ?? document.body.appendChild('title');
+      title.innerHTML = frames[0].document.querySelector('title')?.innerHTML ?? destination;
     }).catch(
       error => console.error(error, 'fecth_error')
     );
