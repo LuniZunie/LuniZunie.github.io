@@ -1,4 +1,4 @@
-<!--
+/*
   Copyright 2023 LuniZunie
 
   Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,24 +12,35 @@
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
   limitations under the License.
--->
+*/
 
-<!DOCTYPE html>
-<html>
-  <head>
-    <link rel='stylesheet' href='global/style.css' />
+* {
+  cursor: default;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
 
-    <link rel='stylesheet' href='404/style.css' />
+.select, .select * {
+  cursor: auto;
+  -webkit-user-select: all;
+  -ms-user-select: all;
+  user-select: all;
+}
 
-    <script src='global/prototype.js'></script>
-    <script src='global/script.js' defer></script>
+.select .noselect, .select .noselect * {
+  cursor: default;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
 
-    <script src='404/script.js'></script>
+.hidden {
+  display: none;
+}
 
-    <title></title>
-  </head>
-  <body>
-    <p>Hello 404!</p>
-    <iframe></iframe>
-  </body>
-</html>
+.false_hidden {
+  pointer-events: none;
+
+  opacity: 0;
+}

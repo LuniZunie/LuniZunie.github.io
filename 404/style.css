@@ -1,0 +1,15 @@
+body {
+  overflow: hidden;
+}
+
+iframe {
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  width: 100vw;
+  height: 100vh;
+
+  border: none;
+
+  z-index: 2147483647;
+}
