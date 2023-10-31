@@ -41,8 +41,9 @@ addEventListener('load', function() {
     return;
   }
 
-  const destination = pages[page][0].replace(/-/g, '').toLowerCase();
-  if (path != destination) {
+  const destination = pages[page][0];
+  if (path != destination.replace(/-/g, '').toLowerCase()) {
+    console.log(destination, path)
     window.open(destination, '_self');
     return;
   }
@@ -54,6 +55,6 @@ addEventListener('load', function() {
       document.querySelector('title').innerHTML = frames[0].document.querySelector('title')?.innerHTML ?? destination;
       document.querySelector('iframe').src = page;
     }).catch(
-      error => console.error(error)
+      error => console.error(error, 'fecth_error')
     );
 });
