@@ -41,7 +41,7 @@ addEventListener('load', function() {
     return;
   }
 
-  const destination = pages[page][0];
+  const destination = pages[page][0].replace(/-/g, '').toLowerCase();
   if (path != destination) {
     window.open(destination, '_self');
     return;
