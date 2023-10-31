@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
+
+    <link rel='stylesheet' href='style.css' />
+    <link rel='stylesheet' href='sidebar.css' />
+    <link rel='stylesheet' href='trends.css' />
+
+    <script src='element_data.js'></script>
+    <script src='nuclide_data.js'></script>
+    <script src='main.js' defer></script>
+  </head>
+  <body data-saturated=false data-trends=false data-hide-everything=false>
+    <div id='top_nav'>
+      <span class='button elemental_trends'>Elemental Trends</span>
+      <span class='button isotopic_trends'>Isotopic Trends</span>
+      <span class='button colorize'>Colorize</span>
+    </div>
+    <canvas id='stability_band' width='500' height='500'></canvas>
+    <div id='credits' data-hidden=true>
+      <h1>Element Data</h1>
+      <h2>Collator</h2>
+      <p>
+        Scott Weaver (GitHub: <a class='open_in_new' href='https://github.com/sweaver2112' target='_blank'>&commat;sweaver2112</a>)
+        <br>
+        <br>
+        GitHub repository: <a class='open_in_new' href='https://github.com/sweaver2112/periodic-table-data' target='_blank'>periodic-table-data</a>
+      </p>
+      <br>
+      <h2>Sources</h2>
+      <p>
+        GitHub: <a class='open_in_new' href='https://github.com/Bowserinator' target='_blank'>&commat;Bowserinator</a>
+        <br>
+        <br>
+        GitHub repository: <a class='open_in_new' href='https://github.com/Bowserinator/Periodic-Table-JSON' target='_blank'>Periodic-Table-JSON</a>
+      </p>
+      <br>
+      <p>
+        <a class='open_in_new' href='https://www.wikipedia.org/' target='_blank'>Wikipedia</a>
+      </p>
+      <br>
+      <p>
+        Dayah, Michael. "Ptable." Ptable, <a class='open_in_new' href='https://dayah.com/' target='_blank'>Michael Dayah</a>, 12 Oct. 2022, <a class='open_in_new' href='https://ptable.com/' target='_blank'>ptable.com</a>. Accessed 15 Oct. 2023.
+      </p>
+      <br>
+      <p>
+        "Periodic Table." Periodic Table, edited by Theodore Gray, Max Whitby, <a class='open_in_new' href='https://www.oihdesigns.com/' target='_blank'>Nick Mann</a>., 28 Oct. 2017, <a class='open_in_new' href='https://periodictable.com/' target='_blank'>periodictable.com</a>. Accessed 15 Oct. 2023.
+      </p>
+      <p>
+        "Examples for Chemistry." WolframAlpha, Wolfram, <a class='open_in_new' href='https://www.wolframalpha.com/examples/science-and-technology/chemistry' target='_blank'>wolframalpha.com/examples/science-and-technology/chemistry</a>., Accessed 29 Oct. 2023.
+      </p>
+      <br>
+      <h1>Isotope Data</h1>
+      <h2>Sources</h2>
+      <p>
+        <a class='open_in_new' href='https://www-nds.iaea.org/relnsd/nubase/nubase_min.html' target='_blank'>Nubase2020</a> <a class='open_in_new' href='https://www.anl.gov/sites/www/files/2022-11/nubase_4.mas20.txt' target='_blank'>nubase_4.mas20</a> Kondev, M. Wang, W.J. Huang, S. Naimi, and G. Audi, <a class='open_in_new' href='https://iopscience.iop.org/article/10.1088/1674-1137/abddae' target='_blank'>Chinese Phys, C 45, 030001 (2021)</a>
+      </p>
+    </div>
+    <div id='decay_chain' data-hidden=true data-collapsed=true>
+      <div class='collapse_button searchable no_close'>Expand</div>
+      <div class='content'></div>
+      <div class='element_count searchable'>0 / 0</div>
+    </div>
+    <div id='top_buttons'>
+      <div id='credits_button' class='searchable no_select'>
+        Credits
+      </div>
+    </div>
+    <div id='copyright'>
+      &copy; 2023 by Cedric Hotopp | All rights reserved.<br><small>Contributions from: Samuel Lee, Sebastian L</small>
+    </div>
+    <div id='elemental_trends_menu' class='trends_menu'>
+      <div class='trend template' data-selected=false>[Trend]</div>
+      <div class='group template'>
+        <p class='title'>[Group]</p>
+        <div class='content'>
+
+        </div>
+      </div>
+    </div>
+    <div id='isotopic_trends_menu' class='trends_menu'>
+      <div class='trend template' data-selected=false>[Trend]</div>
+      <div class='group template'>
+        <p class='title'>[Group]</p>
+        <div class='content'>
+
+        </div>
+      </div>
+    </div>
+    <div id='colorize_menu' class='trends_menu'>
+      <div class='trend template' data-selected=false>[Trend]</div>
+      <div class='group template'>
+        <p class='title'>[Group]</p>
+        <div class='content'>
+
+        </div>
+      </div>
+    </div>
+    <div id='bottom_text' data-hidden=true>
+      <h3 class='text searchable'></h3>
+    </div>
+    <canvas id='foreground'></canvas>
+    <canvas id='background'></canvas>
+    <p id='periodicText'>The Periodic Table</p>
+    <table id='periodicTable'>
+      <tr class='period' id='period0'>
+        <td class='element fake_element group1'><span class='group_number'>1</span></td>
+        <td class='element fake_element group15'><span class='electron_block'>p</span></td>
+        <td class='element fake_element group18'><span class='group_number'>18</span></td>
+      </tr>
+      <tr class='period' id='period1'>
+        <td class='element fake_element group0'><span class='period_number'>1</span></td>
+        <td class='element group1' id='hydrogen'></td>
+        <td class='element fake_element group2'><span class='group_number'>2</span></td>
+        <td class='element fake_element group13'><span class='group_number'>13</span></td>
+        <td class='element fake_element group14'><span class='group_number'>14</span></td>
+        <td class='element fake_element group15'><span class='group_number'>15</span></td>
+        <td class='element fake_element group16'><span class='group_number'>16</span></td>
+        <td class='element fake_element group17'><span class='group_number'>17</span></td>
+        <td class='element group18' id='helium'></td>
+      </tr>
+      <tr class='period' id='period2'>
+        <td class='element fake_element group0'><span class='period_number'>2</span></td>
+        <td class='element group1' id='lithium'></td>
+        <td class='element group2' id='beryllium'></td>
+        <td class='element fake_element group7'><span class='electron_block'>d (n-1)</span></td>
+        <td class='element group13' id='boron'></td>
+        <td class='element group14' id='carbon'></td>
+        <td class='element group15' id='nitrogen'></td>
+        <td class='element group16' id='oxygen'></td>
+        <td class='element group17' id='fluorine'></td>
+        <td class='element group18' id='neon'></td>
+      </tr>
+      <tr class='period' id='period3'>
+        <td class='element fake_element group0'><span class='electron_block'>s</span></td>
+        <td class='element fake_element group0'><span class='period_number'>3</span></td>
+        <td class='element group1' id='sodium'></td>
+        <td class='element group2' id='magnesium'></td>
+        <td class='element fake_element group3'><span class='group_number'>3</span></td>
+        <td class='element fake_element group4'><span class='group_number'>4</span></td>
+        <td class='element fake_element group5'><span class='group_number'>5</span></td>
+        <td class='element fake_element group6'><span class='group_number'>6</span></td>
+        <td class='element fake_element group7'><span class='group_number'>7</span></td>
+        <td class='element fake_element group8'><span class='group_number'>8</span></td>
+        <td class='element fake_element group9'><span class='group_number'>9</span></td>
+        <td class='element fake_element group10'><span class='group_number'>10</span></td>
+        <td class='element fake_element group11'><span class='group_number'>11</span></td>
+        <td class='element fake_element group12'><span class='group_number'>12</span></td>
+        <td class='element group13' id='aluminum'></td>
+        <td class='element group14' id='silicon'></td>
+        <td class='element group15' id='phosphorus'></td>
+        <td class='element group16' id='sulfur'></td>
+        <td class='element group17' id='chlorine'></td>
+        <td class='element group18' id='argon'></td>
+      </tr>
+      <tr class='period' id='period4'>
+        <td class='element fake_element group0'><span class='period_number'>4</span></td>
+        <td class='element group1' id='potassium'></td>
+        <td class='element group2' id='calcium'></td>
+        <td class='element group3' id='scandium'></td>
+        <td class='element group4' id='titanium'></td>
+        <td class='element group5' id='vanadium'></td>
+        <td class='element group6' id='chromium'></td>
+        <td class='element group7' id='manganese'></td>
+        <td class='element group8' id='iron'></td>
+        <td class='element group9' id='cobalt'></td>
+        <td class='element group10' id='nickel'></td>
+        <td class='element group11' id='copper'></td>
+        <td class='element group12' id='zinc'></td>
+        <td class='element group13' id='gallium'></td>
+        <td class='element group14' id='germanium'></td>
+        <td class='element group15' id='arsenic'></td>
+        <td class='element group16' id='selenium'></td>
+        <td class='element group17' id='bromine'></td>
+        <td class='element group18' id='krypton'></td>
+      </tr>
+      <tr class='period' id='period5'>
+        <td class='element fake_element group0'><span class='period_number'>5</span></td>
+        <td class='element group1' id='rubidium'></td>
+        <td class='element group2' id='strontium'></td>
+        <td class='element group3' id='yttrium'></td>
+        <td class='element group4' id='zirconium'></td>
+        <td class='element group5' id='niobium'></td>
+        <td class='element group6' id='molybdenum'></td>
+        <td class='element group7' id='technetium'></td>
+        <td class='element group8' id='ruthenium'></td>
+        <td class='element group9' id='rhodium'></td>
+        <td class='element group10' id='palladium'></td>
+        <td class='element group11' id='silver'></td>
+        <td class='element group12' id='cadmium'></td>
+        <td class='element group13' id='indium'></td>
+        <td class='element group14' id='tin'></td>
+        <td class='element group15' id='antimony'></td>
+        <td class='element group16' id='tellurium'></td>
+        <td class='element group17' id='iodine'></td>
+        <td class='element group18' id='xenon'></td>
+      </tr>
+      <tr class='period' id='period6'>
+        <td class='element fake_element group0'><span class='period_number'>6</span></td>
+        <td class='element group1' id='cesium'></td>
+        <td class='element group2' id='barium'></td>
+        <td class='element fake_element group3 star1'><p class='star'>&Star;</p></td>
+        <td class='element group4' id='hafnium'></td>
+        <td class='element group5' id='tantalum'></td>
+        <td class='element group6' id='tungsten'></td>
+        <td class='element group7' id='rhenium'></td>
+        <td class='element group8' id='osmium'></td>
+        <td class='element group9' id='iridium'></td>
+        <td class='element group10' id='platinum'></td>
+        <td class='element group11' id='gold'></td>
+        <td class='element group12' id='mercury'></td>
+        <td class='element group13' id='thallium'></td>
+        <td class='element group14' id='lead'></td>
+        <td class='element group15' id='bismuth'></td>
+        <td class='element group16' id='polonium'></td>
+        <td class='element group17' id='astatine'></td>
+        <td class='element group18' id='radon'></td>
+      </tr>
+      <tr class='period' id='period7'>
+        <td class='element fake_element group0'><span class='period_number'>7</span></td>
+        <td class='element group1' id='francium'></td>
+        <td class='element group2' id='radium'></td>
+        <td class='element fake_element group3 star2'><p class='star'>&Star;&Star;</p></td>
+        <td class='element group4' id='rutherfordium'></td>
+        <td class='element group5' id='dubnium'></td>
+        <td class='element group6' id='seaborgium'></td>
+        <td class='element group7' id='bohrium'></td>
+        <td class='element group8' id='hassium'></td>
+        <td class='element group9' id='meitnerium'></td>
+        <td class='element group10' id='darmstadtium'></td>
+        <td class='element group11' id='roentgenium'></td>
+        <td class='element group12' id='copernicium'></td>
+        <td class='element group13' id='nihonium'></td>
+        <td class='element group14' id='flerovium'></td>
+        <td class='element group15' id='moscovium'></td>
+        <td class='element group16' id='livermorium'></td>
+        <td class='element group17' id='tennessine'></td>
+        <td class='element group18' id='oganesson'></td>
+      </tr>
+      <tr class='period inter-period' id='inter-period1'>
+        <td class='element fake_element group2 star1'><p class='star'>&Star;</p></td>
+        <td class='element inter-element group3 inter-group1' id='lanthanum'></td>
+        <td class='element inter-element group3 inter-group2' id='cerium'></td>
+        <td class='element inter-element group3 inter-group3' id='praseodymium'></td>
+        <td class='element inter-element group3 inter-group4' id='neodymium'></td>
+        <td class='element inter-element group3 inter-group5' id='promethium'></td>
+        <td class='element inter-element group3 inter-group6' id='samarium'></td>
+        <td class='element inter-element group3 inter-group7' id='europium'></td>
+        <td class='element inter-element group3 inter-group8' id='gadolinium'></td>
+        <td class='element inter-element group3 inter-group9' id='terbium'></td>
+        <td class='element inter-element group3 inter-group10' id='dysprosium'></td>
+        <td class='element inter-element group3 inter-group11' id='holmium'></td>
+        <td class='element inter-element group3 inter-group12' id='erbium'></td>
+        <td class='element inter-element group3 inter-group13' id='thulium'></td>
+        <td class='element inter-element group3 inter-group14' id='ytterbium'></td>
+        <td class='element inter-element group3 inter-group15' id='lutetium'></td>
+      </tr>
+      <tr class='period inter-period' id='inter-period2'>
+        <td class='element fake_element group2 star2'><p class='star'>&Star;&Star;</p></td>
+        <td class='element inter-element group3 inter-group1' id='actinium'></td>
+        <td class='element inter-element group3 inter-group2' id='thorium'></td>
+        <td class='element inter-element group3 inter-group3' id='protactinium'></td>
+        <td class='element inter-element group3 inter-group4' id='uranium'></td>
+        <td class='element inter-element group3 inter-group5' id='neptunium'></td>
+        <td class='element inter-element group3 inter-group6' id='plutonium'></td>
+        <td class='element inter-element group3 inter-group7' id='americium'></td>
+        <td class='element inter-element group3 inter-group8' id='curium'></td>
+        <td class='element fake_element group9'><span class='electron_block'>f (n-2)</span></td>
+        <td class='element inter-element group3 inter-group9' id='berkelium'></td>
+        <td class='element inter-element group3 inter-group10' id='californium'></td>
+        <td class='element inter-element group3 inter-group11' id='einsteinium'></td>
+        <td class='element inter-element group3 inter-group12' id='fermium'></td>
+        <td class='element inter-element group3 inter-group13' id='mendelevium'></td>
+        <td class='element inter-element group3 inter-group14' id='nobelium'></td>
+        <td class='element inter-element group3 inter-group15' id='lawrencium'></td>
+      </tr>
+    </table>
+    <div id='zoomed_element' hidden></div>
+    <div id='sidebar' class='sidebar' data-hidden=true>
+      <span class='top'></span>
+      <img class='close' src='x-icon.png' />
+      <h2 class='atomic_mass parent_data_point'><span class='value data_point'>[Atmoic Mass]</span> amu</h2>
+      <div class='content'>
+        <h1 class='elementText data_point'><sup class='atomic_number data_point'></sup><span class='symbol data_point'>[Symbol]</span></h1>
+        <h2 class='name parent_data_point'>
+          <span class='name data_point'>[Name]</span>
+          <span class='alternate_names parent_data_point'>&lpar;<span class='names data_point'>[Alternate Names]</span>&rpar;</span>
+        </h2>
+        <div class='discovery parent_data_point'>
+          <span class='date value searchable data_point' data-search=false>[Date]</span>
+          <span class='by value searchable data_point' data-search=true>[By]</span>
+          <span class='location value searchable template' data-search=true>[Location]</span>
+        </div>
+        <div class='allotropes section parent_data_point'>
+          <h3 class='title'>Allotropes</h3>
+          <span class='array parent_data_point'><span class='allotrope template searchable' data-search=true>[Allotrope]</span></span>
+        </div>
+        <p></p>
+        <div class='overview section parent_data_point'>
+          <h3 class='title'>Overview</h3>
+          <p class='p_n_e parent_data_point'><span class='protons data_point searchable'></span><span class='neutrons data_point searchable'></span><span class='electrons data_point searchable'></span></p>
+          <div class='section parent_data_point'>
+            <p class='block parent_data_point'>Block: <span class='value data_point searchable'></span></p>
+            <p class='group parent_data_point'>Group: <span class='value data_point searchable' data-search=true></span></p>
+            <p class='period parent_data_point'>Period: <span class='value data_point searchable' data-search=true></span></p>
+            <p class='phase parent_data_point'>Phase: <span class='value data_point searchable' data-search=true></span></p>
+            <p class='gas_phase parent_data_point'>Gas Phase: <span class='value data_point searchable' data-search=true></span></p>
+            <p class='series parent_data_point'>Series: <span class='array parent_data_point'>
+             <span class='traditional value data_point searchable' data-search=true></span>
+              <span class='advanced value data_point searchable' data-search=true></span>
+            </span></p>
+          </div>
+          <div class='section parent_data_point'>
+            <p class='configuration parent_data_point'>Electron Configuration: <span class='value data_point searchable'></span></p>
+            <p class='semantic_configuration parent_data_point'>Semantic Electron Configuration: <span class='value data_point searchable'></span></p>
+            <p class='valence_electrons parent_data_point'>Valence Electrons: <span class='value data_point searchable'></span></p>
+            <p class='electronegativity parent_data_point'>Electronegativity: <span class='value data_point searchable'></span></p>
+            <p class='electron_affinity parent_data_point'>Electron Affinity: <span class='value data_point searchable'></span></p>
+            <div class='section parent_data_point'>
+              <h4 class='title'>Ionization Energies</h4>
+              <p class='ionization_energies parent_data_point'><span class='wrap_array parent_data_point'><span class='ionization_energy value searchable template'></span></span></p>
+            </div>
+            <div class='section parent_data_point'>
+              <h4 class='title'>Electrons per Shell</h4>
+              <p class='electrons_per_shell parent_data_point'><span class='wrap_array parent_data_point'><span class='subshell value searchable template'></span></span></p>
+            </div>
+          </div>
+        </div>
+        <div class='isotopes section parent_data_point'>
+          <h3 class='title'>
+            <span class='text searchable no_background' data-search=true>Isotopes of [Name]</span>
+          </h3>
+          <span class='key unknown searchable'>Unknown</span>
+          <span class='key unstable searchable'>Unstable</span>
+          <span class='key natural searchable'>Natural</span>
+          <span class='key stable searchable'>Stable</span>
+          <br>
+          <br>
+        </div>
+        <div class='classifications section collapsible parent_data_point'>
+          <h2 class='title'>Classifications</h2>
+          <div class='section parent_data_point'>
+            <h3 class='title'>Position</h3>
+            <p class='group parent_data_point'>Group: <span class='value data_point searchable' data-search=true></span></p>
+            <p class='period parent_data_point'>Period: <span class='value data_point searchable' data-search=true></span></p>
+          </div>
+          <div class='section parent_data_point'>
+            <h3 class='title'>Type</h3>
+            <p class='phase parent_data_point'>Phase: <span class='value data_point searchable' data-search=true></span></p>
+            <p class='gas_phase parent_data_point'>Gas Phase: <span class='value data_point searchable' data-search=true></span></p>
+            <p class='series parent_data_point'>Series: <span class='array parent_data_point'>
+              <span class='traditional value data_point searchable' data-search=true></span>
+              <span class='advanced value data_point searchable' data-search=true></span>
+            </span></p>
+          </div>
+          <div class='advanced section collapsible parent_data_point' data-expanded=false>
+            <h2 class='title'>
+              Miscellaneous
+            </h2>
+            <div class='cpk_hex parent_data_point'>
+              CPK Hex:
+              <span class='value data_point searchable'></span>
+              <span class='box searchable no_decoration' data-search=true></span>
+            </div>
+            <p class='CAS_number parent_data_point'>CAS Number: <span class='value data_point searchable' data-search=true></span></p>
+            <p class='CID_number parent_data_point'>CID Number: <span class='value data_point searchable' data-search=true></span></p>
+            <p class='RTECS_number parent_data_point'>RTECS Number: <span class='value data_point searchable' data-search=true></span></p>
+            <p class='DOT_numbers parent_data_point'>DOT Numbers: <span class='array parent_data_point'><span class='dot_number value searchable template' data-search=true></span></span></p>
+            <p class='DOT_hazard_class parent_data_point'>DOT Hazard Class: <span class='value data_point searchable' data-search=true></span></p>
+          </div>
+        </div>
+        <div class='abundance section collapsible parent_data_point'>
+          <h2 class='title'>Abundance</h2>
+          <p class='universe type parent_data_point'>The Universe: <span class='value data_point searchable' data-connected-unit='%'></span></p>
+          <p class='meteorites type parent_data_point'>Meteorites: <span class='value data_point searchable' data-connected-unit='%'></span></p>
+          <p class='sun type parent_data_point'>The Sun: <span class='value data_point searchable' data-connected-unit='%'></span></p>
+          <p class='earth_crust type parent_data_point'>Earth's Crust: <span class='value data_point searchable' data-connected-unit='%'></span></p>
+          <p class='oceans type parent_data_point'>Oceans: <span class='value data_point searchable' data-connected-unit='%'></span></p>
+          <p class='humans type parent_data_point'>Humans: <span class='value data_point searchable' data-connected-unit='%'></span></p>
+        </div>
+        <div class='atomic_structure section collapsible parent_data_point'>
+          <h2 class='title'>Atomic Structure</h2>
+          <div class='section parent_data_point'>
+            <h3 class='title'>Structure</h3>
+            <p class='atomic_mass parent_data_point'>Atomic Mass: <span class='value data_point searchable' data-unit='amu'></span></p>
+            <p class='crystal_structure parent_data_point'>Crystal Structure: <span class='value data_point searchable' data-search=true></span></p>
+          </div>
+          <div class='section parent_data_point'>
+            <h3 class='title'>Radius</h3>
+            <p class='atomic_radius radius parent_data_point'>Atomic: <span class='value data_point searchable' data-unit='pm'></span></p>
+            <p class='covalent_radius radius parent_data_point'>Covalent: <span class='value data_point searchable' data-unit='pm'></span></p>
+            <p class='van_der_waals_radius radius parent_data_point'>Van der Waals: <span class='value data_point searchable' data-unit='pm'></span></p>
+          </div>
+          <div class='section parent_data_point'>
+            <h3 class='title'>Lattice</h3>
+            <p class='lattice_angles parent_data_point'>Angles: <span class='array parent_data_point'><span class='lattice_angle value searchable template'></span></span></p>
+            <p class='lattice_constants parent_data_point'>Constants: <span class='array parent_data_point'><span class='lattice_constant value searchable template'></span></span></p>
+          </div>
+          <div class='space_group section parent_data_point'>
+            <h3 class='title'>Space Group</h3>
+            <p class='space_groups_name parent_data_point'>Name: <span class='value data_point searchable' data-search=true></span></p>
+            <p class='space_groups_number parent_data_point'>Number: <span class='value data_point searchable' data-search=true></span></p>
+          </div>
+        </div>
+        <div class='electron section collapsible parent_data_point'>
+          <h2 class='title'>Electron</h2>
+          <div class='section parent_data_point'>
+            <h4 class='title'>Electrons</h4>
+            <p class='number parent_data_point'>Electrons: <span class='value data_point searchable'></span></p>
+            <p class='valence parent_data_point'>Valence Electrons: <span class='value data_point searchable'></span></p>
+          </div>
+          <div class='section parent_data_point'>
+            <h4 class='title'>Shells</h4>
+            <p class='block parent_data_point'>Block: <span class='value data_point searchable'></span></p>
+            <p class='configuration parent_data_point'>Configuration: <span class='value data_point searchable'></span></p>
+            <p class='semantic_configuration parent_data_point'>Semantic Configuration: <span class='value data_point searchable'></span></p>
+            <p class='quantum_numbers parent_data_point'>Quantum Numbers: <span class='value data_point searchable'></span></p>
+            <div class='section parent_data_point'>
+              <h4 class='title'>Electrons per Shell</h4>
+              <p class='electrons_per_shell parent_data_point'><span class='wrap_array parent_data_point'><span class='subshell value searchable template'></span></span></p>
+            </div>
+          </div>
+          <div class='reactivity section parent_data_point'>
+            <h4 class='title'>Electron Reactivity</h4>
+            <p class='electronegativity parent_data_point'>Electronegativity: <span class='value data_point searchable'></span></p>
+            <p class='electron_affinity parent_data_point'>Electron Affinity: <span class='value data_point searchable'></span></p>
+            <div class='section parent_data_point'>
+              <h4 class='title'>Ionization Energies</h4>
+              <p class='ionization_energies parent_data_point'><span class='wrap_array parent_data_point'><span class='ionization_energy value searchable template'></span></span></p>
+            </div>
+          </div>
+          <div class='section parent_data_point'>
+            <h4 class='title'>Oxidation States</h4>
+            <p class='oxidation_states parent_data_point'><span class='wrap_array parent_data_point'><span class='oxidation_state value searchable template'></span></span></p>
+          </div>
+        </div>
+        <div class='properties section collapsible parent_data_point'>
+          <h2 class='title'>Properties</h2>
+          <div class='nuclear section collapsible parent_data_point'>
+            <h3 class='title'>Nuclear</h3>
+            <div class='section parent_data_point'>
+              <h4 class='title'>Decay</h4>
+              <p class='half_life parent_data_point'>Half Life: <span class='value data_point searchable'></span></p>
+              <p class='lifetime parent_data_point'>Lifetime: <span class='value data_point searchable'></span></p>
+              <p class='decay_mode parent_data_point'>Decay Mode: <span class='value data_point searchable'></span></p>
+            </div>
+            <div class='section parent_data_point'>
+              <h4 class='title'>Neutron</h4>
+              <p class='neutron_cross_section parent_data_point'>Cross Section: <span class='value data_point searchable'></span></p>
+              <p class='neutron_mass_absorption parent_data_point'>Mass Absorption: <span class='value data_point searchable'></span></p>
+            </div>
+          </div>
+          <div class='physical section collapsible parent_data_point'>
+            <h3 class='title'>Physical</h3>
+            <div class='section parent_data_point'>
+              <h4 class='title'>Visible Traits</h4>
+              <p class='color parent_data_point'>Color: <span class='value data_point searchable'></span></p>
+              <p class='appearance parent_data_point'>Appearance: <span class='value data_point searchable'></span></p>
+            </div>
+            <div class='section parent_data_point'>
+              <h4 class='title'>Density</h4>
+              <p class='standard_density parent_data_point'>Standard: <span class='value data_point searchable'></span></p>
+              <p class='liquid_density parent_data_point'>Liquid: <span class='value data_point searchable'></span></p>
+              <p class='molar_volume parent_data_point'>Molar Volume: <span class='value data_point searchable'></span></p>
+            </div>
+            <div class='section parent_data_point'>
+              <h4 class='title'>Hardness</h4>
+              <p class='mohs_hardness parent_data_point'>Mohs: <span class='value data_point searchable'></span></p>
+              <p class='brinell_hardness parent_data_point'>Brinell: <span class='value data_point searchable'></span></p>
+              <p class='vickers_hardness parent_data_point'>Vickers: <span class='value data_point searchable'></span></p>
+            </div>
+            <div class='section parent_data_point'>
+              <h4 class='title'>Elasticity</h4>
+              <p class='poisson_ratio parent_data_point'>Poisson Ratio: <span class='value data_point searchable'></span></p>
+              <p class='bulk_modulus parent_data_point'>Bulk Modulus: <span class='value data_point searchable'></span></p>
+              <p class='shear_modulus parent_data_point'>Shear Modulus: <span class='value data_point searchable'></span></p>
+              <p class='yound_modulus parent_data_point'>Young Modulus: <span class='value data_point searchable'></span></p>
+            </div>
+            <div class='section parent_data_point'>
+              <h4 class='title'>Miscellaneous</h4>
+              <p class='refractive_index parent_data_point'>Refractive Index: <span class='value data_point searchable'></span></p>
+              <p class='speed_of_sound parent_data_point'>Speed of Sound: <span class='value data_point searchable'></span></p>
+            </div>
+          </div>
+          <div class='thermal section collapsible parent_data_point'>
+            <h3 class='title'>Thermal</h3>
+            <div class='section parent_data_point'>
+              <h4 class='title'>Type</h4>
+              <p class='conductivity parent_data_point'>Conductivity: <span class='value data_point searchable'></span></p>
+              <p class='thermal_expansion temperature per_temperature parent_data_point' data-selected='k'>
+                <span class='key'>Expansion: </span>
+                <span class='value data_point searchable'>[Temperature]</span>
+                <span class='kelvin button'>K<small><sup>-1</sup></small> / &deg;C<small><sup>-1</sup></small></span>
+                <span class='fahrenheit button'>&deg;F<small><sup>-1</sup></small></span>
+              </p>
+            </div>
+            <div class='section parent_data_point'>
+              <h4 class='title'>Temperature Points</h4>
+              <p class='melting_point temperature parent_data_point' data-selected='k'>
+                <span class='key'>Melting Point: </span>
+                <span class='value data_point searchable'>[Temperature]</span>
+                <span class='kelvin button'>K</span>
+                <span class='celsius button'>&deg;C</span>
+                <span class='fahrenheit button'>&deg;F</span>
+              </p>
+              <p class='boiling_point temperature parent_data_point' data-selected='k'>
+                <span class='key'>Boiling Point: </span>
+                <span class='value data_point searchable'>[Temperature]</span>
+                <span class='kelvin button'>K</span>
+                <span class='celsius button'>&deg;C</span>
+                <span class='fahrenheit button'>&deg;F</span>
+              </p>
+              <p class='neel_point temperature parent_data_point' data-selected='k'>
+                <span class='key'>N&eacute;el Point: </span>
+                <span class='value data_point searchable'>[Temperature]</span>
+                <span class='kelvin button'>K</span>
+                <span class='celsius button'>&deg;C</span>
+                <span class='fahrenheit button'>&deg;F</span>
+              </p>
+            </div>
+            <div class='section parent_data_point'>
+              <h4 class='title'>Critical</h4>
+              <p class='critical_pressure parent_data_point'>Pressure: <span class='value data_point searchable'></span></p>
+              <div class='critical_temperature temperature parent_data_point' data-selected='k'>
+                <span class='key'>Temperature: </span>
+                <span class='value data_point searchable'>[Temperature]</span>
+                <span class='kelvin button'>K</span>
+                <span class='celsius button'>&deg;C</span>
+                <span class='fahrenheit button'>&deg;F</span>
+              </div>
+            </div>
+            <div class='section parent_data_point'>
+              <h4 class='title'>Heat</h4>
+              <p class='specific_heat parent_data_point'>Specific Heat: <span class='value data_point searchable'></span></p>
+              <p class='fusion_heat parent_data_point'>Heat of Fusion: <span class='value data_point searchable'></span></p>
+              <p class='vaporization_heat parent_data_point'>Heat of Vaporization: <span class='value data_point searchable'></span></p>
+              <p class='adiabatic_index parent_data_point'>Adiabatic Index: <span class='value data_point searchable'></span></p>
+            </div>
+          </div>
+          <div class='electrical section collapsible parent_data_point'>
+            <h3 class='title'>Electrical</h3>
+            <div class='top divider parent_data_point'>
+              <p class='type parent_data_point'><span class='value data_point searchable' data-search=true></span></p>
+              <p class='conductivity parent_data_point'>Conductivity: <span class='value data_point searchable'></span></p>
+              <p class='resistivity parent_data_point'>Resistivity: <span class='value data_point searchable'></span></p>
+            </div>
+            <div class='section parent_data_point'>
+              <h4 class='title'>Superconducting</h4>
+              <p class='superconducting_point parent_data_point'>Superconducting Point: <span class='value data_point searchable'></span></p>
+            </div>
+          </div>
+          <div class='magnetic section collapsible parent_data_point'>
+            <h3 class='title'>Magnetic</h3>
+            <div class='top divider parent_data_point'>
+              <p class='type parent_data_point'><span class='value data_point searchable' data-search=true></span></p>
+            </div>
+            <div class='curie_point temperature parent_data_point' data-selected='k'>
+              <span class='key'>Curie Point: </span>
+              <span class='value data_point searchable'>[Temperature]</span>
+              <span class='kelvin button'>K</span>
+              <span class='celsius button'>&deg;C</span>
+              <span class='fahrenheit button'>&deg;F</span>
+            </div>
+            <div class='susceptibility section parent_data_point'>
+              <h4 class='title'>Magnetic Susceptibility</h3>
+              <p class='mass parent_data_point'>Mass: <span class='value data_point searchable'></span></p>
+              <p class='molar parent_data_point'>Molar: <span class='value data_point searchable'></span></p>
+              <p class='volume parent_data_point'>Volume: <span class='value data_point searchable'></span></p>
+            </div>
+          </div>
+        </div>
+        <div class='summary section parent_data_point'>
+          <h3 class='title'>
+            Summary - <i>Wikipedia</i>
+            <br><br>
+            <i style='color: red;font-size: smaller;font-weight: normal;'>May contain incorrect infomation</i>
+          </h3>
+          <div class='text data_point'>[Summary]</div>
+          <div class='citation'>Source: <a target='_blank' class='source'>[Source]</a></div>
+        </div>
+      </div>
+    </div>
+    <div id='nuclide_sidebar' class='sidebar' data-hidden=true>
+      <div class='nuclide template parent_data_point'>
+        <h1 class='title searchable parent_data_point' data-search='true'>
+          <span class='symbol data_point'>[Symbol]</span>
+          <span class='alternate_names data_point'>([Alternate Names])</span>
+        </h1>
+        <div class='nucleons parent_data_point'>
+          <span class='protons searchable parent_data_point'>
+            <span class='value data_point'>#</span> p<sup>+</sup>
+          </span>
+          <span class='neutrons searchable parent_data_point'>
+            <span class='value data_point'>#</span> n<sup>0</sup>
+          </span>
+        </div>
+        <div class='time parent_data_point'>
+          <span class='discovery searchable parent_data_point'>
+            Discovered <span class='value data_point'>yyyy</span>
+          </span>
+          <span class='updated searchable parent_data_point'>
+            Updated <span class='value data_point'>yyyy</span>
+          </span>
+        </div>
+        <div class='information section parent_data_point' data-expanded=false>
+          <h2 class='title'>
+            <span>Information</span>
+            <img src='data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNiIgaGVpZ2h0PSIzNiIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSIjNzc4IiBkPSJNMTEuNjUgMTQuNjVxLjE1LjE1LjM1LjE1dC4zNS0uMTVsMi44LTIuOHEuMjUtLjI1LjEyNS0uNTVUMTQuOCAxMUg5LjJxLS4zNSAwLS40NzUuM3QuMTI1LjU1bDIuOCAyLjhaTTEyIDIycS0yLjA3NSAwLTMuOS0uNzg4dC0zLjE3NS0yLjEzN3EtMS4zNS0xLjM1LTIuMTM3LTMuMTc1VDIgMTJxMC0yLjA3NS43ODgtMy45dDIuMTM3LTMuMTc1cTEuMzUtMS4zNSAzLjE3NS0yLjEzN1QxMiAycTIuMDc1IDAgMy45Ljc4OHQzLjE3NSAyLjEzN3ExLjM1IDEuMzUgMi4xMzggMy4xNzVUMjIgMTJxMCAyLjA3NS0uNzg4IDMuOXQtMi4xMzcgMy4xNzVxLTEuMzUgMS4zNS0zLjE3NSAyLjEzOFQxMiAyMlptMC0ycTMuMzUgMCA1LjY3NS0yLjMyNVQyMCAxMnEwLTMuMzUtMi4zMjUtNS42NzVUMTIgNFE4LjY1IDQgNi4zMjUgNi4zMjVUNCAxMnEwIDMuMzUgMi4zMjUgNS42NzVUMTIgMjBabTAtOFoiLz48L3N2Zz4=' class='collapse_button' />
+          </h2>
+          <div class='mass_excess data_container parent_data_point'>
+            Mass Excess:
+            <span class='value searchable parent_data_point'>
+              <span class='value data_point' data-estimated=false>[Value]</span>
+              <span class='deviation data_point' data-estimated=false>(&pm;[Deviation])</span>
+            </span>
+            <span class='unit searchable data_point'>eV</span>
+          </div>
+          <div class='half_life data_container parent_data_point'>
+            Half Life:
+            <span class='value searchable parent_data_point'>
+              <span class='value data_point' data-estimated=false>[Value]</span>
+              <span class='deviation data_point' data-estimated=false>(&pm;[Deviation])</span>
+            </span>
+            <span class='unit searchable data_point'>[Unit]</span>
+          </div>
+          <div class='abundance data_container parent_data_point'>
+            Abundance:
+            <span class='value searchable parent_data_point'>
+              <span class='value data_point' data-estimated=false>[Value]</span>
+              <span class='deviation data_point' data-estimated=false>(&pm;[Deviation])</span>
+            </span>
+            <span class='unit searchable data_point'>%</span>
+          </div>
+          <div class='spin_parity_isospin data_container parent_data_point'>
+            <h4 class='title'>
+              <span class='value searchable'>Spin, Parity, and Isospin</span>
+            </h4>
+            <div class='spin_parity parent_data_point template'>
+              <div class='spin parent_data_point'>
+                Spin:
+                <span class='value searchable data_point' data-uses-data=false data-uses-trends=false data-estimated=false>[Spin]</span>
+              </div>
+              <div class='parity parent_data_point'>
+                Parity:
+                <span class='value searchable data_point' data-uses-data=false data-uses-trends=false data-estimated=false>[Parity]</span>
+              </div>
+            </div>
+            <div class='isospin parent_data_point'>
+              Isopin:
+              <span class='value searchable data_point' data-estimated=false>[Isospin]</span>
+            </div>
+          </div>
+        </div>
+        <div class='radioactive_decay section parent_data_point' data-expanded=false>
+          <h2 class='title'>
+            <span>Decay</span>
+            <img src='data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNiIgaGVpZ2h0PSIzNiIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSIjNzc4IiBkPSJNMTEuNjUgMTQuNjVxLjE1LjE1LjM1LjE1dC4zNS0uMTVsMi44LTIuOHEuMjUtLjI1LjEyNS0uNTVUMTQuOCAxMUg5LjJxLS4zNSAwLS40NzUuM3QuMTI1LjU1bDIuOCAyLjhaTTEyIDIycS0yLjA3NSAwLTMuOS0uNzg4dC0zLjE3NS0yLjEzN3EtMS4zNS0xLjM1LTIuMTM3LTMuMTc1VDIgMTJxMC0yLjA3NS43ODgtMy45dDIuMTM3LTMuMTc1cTEuMzUtMS4zNSAzLjE3NS0yLjEzN1QxMiAycTIuMDc1IDAgMy45Ljc4OHQzLjE3NSAyLjEzN3ExLjM1IDEuMzUgMi4xMzggMy4xNzVUMjIgMTJxMCAyLjA3NS0uNzg4IDMuOXQtMi4xMzcgMy4xNzVxLTEuMzUgMS4zNS0zLjE3NSAyLjEzOFQxMiAyMlptMC0ycTMuMzUgMCA1LjY3NS0yLjMyNVQyMCAxMnEwLTMuMzUtMi4zMjUtNS42NzVUMTIgNFE4LjY1IDQgNi4zMjUgNi4zMjVUNCAxMnEwIDMuMzUgMi4zMjUgNS42NzVUMTIgMjBabTAtOFoiLz48L3N2Zz4=' class='collapse_button' />
+            <div class='decay_chain_button searchable no_event_update'>Decay Chain</div>
+          </h2>
+          <div class='decays parent_data_point'>
+            <div class='decay parent_data_point template'>
+              <span class='collapse_button'></span>
+              <span class='type searchable data_point'>[Decay]</span>:
+              <span class='chance searchable parent_data_point'>
+                <span class='percent data_point' data-estimated=false>[Value]</span>
+                <span class='deviation data_point' data-estimated=false>(&pm;[Value])</span>%
+              </span>
+              <br>
+              <div class='result parent_data_point template' data-expanded=false>
+                <span class='from searchable data_point'>[From]</span>
+                <span class='arrow searchable no_background'>&rightarrow;</span>
+                <div class='to searchable no_decoration data_point template'>[To]</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class='parents section parent_data_point' data-expanded=false>
+          <h2 class='title'>
+            <span>Parents</span>
+            <img src='data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNiIgaGVpZ2h0PSIzNiIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSIjNzc4IiBkPSJNMTEuNjUgMTQuNjVxLjE1LjE1LjM1LjE1dC4zNS0uMTVsMi44LTIuOHEuMjUtLjI1LjEyNS0uNTVUMTQuOCAxMUg5LjJxLS4zNSAwLS40NzUuM3QuMTI1LjU1bDIuOCAyLjhaTTEyIDIycS0yLjA3NSAwLTMuOS0uNzg4dC0zLjE3NS0yLjEzN3EtMS4zNS0xLjM1LTIuMTM3LTMuMTc1VDIgMTJxMC0yLjA3NS43ODgtMy45dDIuMTM3LTMuMTc1cTEuMzUtMS4zNSAzLjE3NS0yLjEzN1QxMiAycTIuMDc1IDAgMy45Ljc4OHQzLjE3NSAyLjEzN3ExLjM1IDEuMzUgMi4xMzggMy4xNzVUMjIgMTJxMCAyLjA3NS0uNzg4IDMuOXQtMi4xMzcgMy4xNzVxLTEuMzUgMS4zNS0zLjE3NSAyLjEzOFQxMiAyMlptMC0ycTMuMzUgMCA1LjY3NS0yLjMyNVQyMCAxMnEwLTMuMzUtMi4zMjUtNS42NzVUMTIgNFE4LjY1IDQgNi4zMjUgNi4zMjVUNCAxMnEwIDMuMzUgMi4zMjUgNS42NzVUMTIgMjBabTAtOFoiLz48L3N2Zz4=' class='collapse_button' />
+          </h2>
+          <div class='parent parent_data_point template' data-expanded=false>
+            <span class='collapse_button'></span>
+            <span class='from searchable no_decoration data_point' data-search=true>[Parent]</span>
+            <span class='fromText searchable no_background'>from decay</span>
+            <span class='decay searchable data_point template'>([Decay])</span>
+          </div>
+        </div>
+        <div class='isomers section parent_data_point' data-expanded=false>
+          <h2 class='title'>
+            <span>Isomers</span>
+            <img src='data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNiIgaGVpZ2h0PSIzNiIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSIjNzc4IiBkPSJNMTEuNjUgMTQuNjVxLjE1LjE1LjM1LjE1dC4zNS0uMTVsMi44LTIuOHEuMjUtLjI1LjEyNS0uNTVUMTQuOCAxMUg5LjJxLS4zNSAwLS40NzUuM3QuMTI1LjU1bDIuOCAyLjhaTTEyIDIycS0yLjA3NSAwLTMuOS0uNzg4dC0zLjE3NS0yLjEzN3EtMS4zNS0xLjM1LTIuMTM3LTMuMTc1VDIgMTJxMC0yLjA3NS43ODgtMy45dDIuMTM3LTMuMTc1cTEuMzUtMS4zNSAzLjE3NS0yLjEzN1QxMiAycTIuMDc1IDAgMy45Ljc4OHQzLjE3NSAyLjEzN3ExLjM1IDEuMzUgMi4xMzggMy4xNzVUMjIgMTJxMCAyLjA3NS0uNzg4IDMuOXQtMi4xMzcgMy4xNzVxLTEuMzUgMS4zNS0zLjE3NSAyLjEzOFQxMiAyMlptMC0ycTMuMzUgMCA1LjY3NS0yLjMyNVQyMCAxMnEwLTMuMzUtMi4zMjUtNS42NzVUMTIgNFE4LjY1IDQgNi4zMjUgNi4zMjVUNCAxMnEwIDMuMzUgMi4zMjUgNS42NzVUMTIgMjBabTAtOFoiLz48L3N2Zz4=' class='collapse_button' />
+          </h2>
+          <div class='isomer template parent_data_point' data-expanded=false>
+            <h1 class='title searchable parent_data_point no_open_in_new' data-search='true'>
+              <span class='symbol data_point'>[Symbol]</span>
+              <span class='alternate_names data_point'>([Alternate Names])</span>
+              <img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAQElEQVR42qXKwQkAIAxDUUdxtO6/RBQkQZvSi8I/pL4BoGw/XPkh4XigPmsUgh0626AjRsgxHTkUThsG2T/sIlzdTsp52kSS1wAAAABJRU5ErkJggg==' class='open_in_new_image' />
+              <img src='data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNiIgaGVpZ2h0PSIzNiIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSIjNzc4IiBkPSJNMTEuNjUgMTQuNjVxLjE1LjE1LjM1LjE1dC4zNS0uMTVsMi44LTIuOHEuMjUtLjI1LjEyNS0uNTVUMTQuOCAxMUg5LjJxLS4zNSAwLS40NzUuM3QuMTI1LjU1bDIuOCAyLjhaTTEyIDIycS0yLjA3NSAwLTMuOS0uNzg4dC0zLjE3NS0yLjEzN3EtMS4zNS0xLjM1LTIuMTM3LTMuMTc1VDIgMTJxMC0yLjA3NS43ODgtMy45dDIuMTM3LTMuMTc1cTEuMzUtMS4zNSAzLjE3NS0yLjEzN1QxMiAycTIuMDc1IDAgMy45Ljc4OHQzLjE3NSAyLjEzN3ExLjM1IDEuMzUgMi4xMzggMy4xNzVUMjIgMTJxMCAyLjA3NS0uNzg4IDMuOXQtMi4xMzcgMy4xNzVxLTEuMzUgMS4zNS0zLjE3NSAyLjEzOFQxMiAyMlptMC0ycTMuMzUgMCA1LjY3NS0yLjMyNVQyMCAxMnEwLTMuMzUtMi4zMjUtNS42NzVUMTIgNFE4LjY1IDQgNi4zMjUgNi4zMjVUNCAxMnEwIDMuMzUgMi4zMjUgNS42NzVUMTIgMjBabTAtOFoiLz48L3N2Zz4=' class='collapse_button' />
+            </h1>
+            <div class='nucleons parent_data_point'>
+              <span class='protons searchable parent_data_point'>
+                <span class='value data_point'>#</span> p<sup>+</sup>
+              </span>
+              <span class='neutrons searchable parent_data_point'>
+                <span class='value data_point'>#</span> n<sup>0</sup>
+              </span>
+            </div>
+            <div class='time parent_data_point'>
+              <span class='discovery searchable parent_data_point'>
+                Discovered <span class='value data_point'>yyyy</span>
+              </span>
+              <span class='updated searchable parent_data_point'>
+                Updated <span class='value data_point'>yyyy</span>
+              </span>
+            </div>
+            <div class='information section parent_data_point' data-expanded=false>
+              <h2 class='title'>
+                <span>Information</span>
+                <img src='data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNiIgaGVpZ2h0PSIzNiIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSIjNzc4IiBkPSJNMTEuNjUgMTQuNjVxLjE1LjE1LjM1LjE1dC4zNS0uMTVsMi44LTIuOHEuMjUtLjI1LjEyNS0uNTVUMTQuOCAxMUg5LjJxLS4zNSAwLS40NzUuM3QuMTI1LjU1bDIuOCAyLjhaTTEyIDIycS0yLjA3NSAwLTMuOS0uNzg4dC0zLjE3NS0yLjEzN3EtMS4zNS0xLjM1LTIuMTM3LTMuMTc1VDIgMTJxMC0yLjA3NS43ODgtMy45dDIuMTM3LTMuMTc1cTEuMzUtMS4zNSAzLjE3NS0yLjEzN1QxMiAycTIuMDc1IDAgMy45Ljc4OHQzLjE3NSAyLjEzN3ExLjM1IDEuMzUgMi4xMzggMy4xNzVUMjIgMTJxMCAyLjA3NS0uNzg4IDMuOXQtMi4xMzcgMy4xNzVxLTEuMzUgMS4zNS0zLjE3NSAyLjEzOFQxMiAyMlptMC0ycTMuMzUgMCA1LjY3NS0yLjMyNVQyMCAxMnEwLTMuMzUtMi4zMjUtNS42NzVUMTIgNFE4LjY1IDQgNi4zMjUgNi4zMjVUNCAxMnEwIDMuMzUgMi4zMjUgNS42NzVUMTIgMjBabTAtOFoiLz48L3N2Zz4=' class='collapse_button' />
+              </h2>
+              <div class='excitation_energy data_container parent_data_point'>
+                Excitation Energy:
+                <span class='value searchable parent_data_point'>
+                  <span class='value data_point' data-estimated=false>[Value]</span>
+                  <span class='deviation data_point' data-estimated=false>(&pm;[Deviation])</span>
+                </span>
+                <span class='unit searchable data_point'>eV</span>
+              </div>
+              <div class='mass_excess data_container parent_data_point'>
+                Mass Excess:
+                <span class='value searchable parent_data_point'>
+                  <span class='value data_point' data-estimated=false>[Value]</span>
+                  <span class='deviation data_point' data-estimated=false>(&pm;[Deviation])</span>
+                </span>
+                <span class='unit searchable data_point'>eV</span>
+              </div>
+              <div class='half_life data_container parent_data_point'>
+                Half Life:
+                <span class='value searchable parent_data_point'>
+                  <span class='value data_point' data-estimated=false>[Value]</span>
+                  <span class='deviation data_point' data-estimated=false>(&pm;[Deviation])</span>
+                </span>
+                <span class='unit searchable data_point'>[Unit]</span>
+              </div>
+              <div class='abundance data_container parent_data_point'>
+                Abundance:
+                <span class='value searchable parent_data_point'>
+                  <span class='value data_point' data-estimated=false>[Value]</span>
+                  <span class='deviation data_point' data-estimated=false>(&pm;[Deviation])</span>
+                </span>
+                <span class='unit searchable data_point'>%</span>
+              </div>
+              <div class='spin_parity_isospin data_container parent_data_point'>
+                <h4 class='title'>
+                  <span class='value searchable'>Spin, Parity, and Isospin</span>
+                </h4>
+                <div class='spin_parity parent_data_point template'>
+                  <div class='spin parent_data_point'>
+                    Spin:
+                    <span class='value searchable data_point' data-uses-data=false data-uses-trends=false data-estimated=false>[Spin]</span>
+                  </div>
+                  <div class='parity parent_data_point'>
+                    Parity:
+                    <span class='value searchable data_point' data-uses-data=false data-uses-trends=false data-estimated=false>[Parity]</span>
+                  </div>
+                </div>
+                <div class='isospin parent_data_point'>
+                  Isopin:
+                  <span class='value searchable data_point' data-estimated=false>[Isospin]</span>
+                </div>
+              </div>
+            </div>
+            <div class='radioactive_decay section parent_data_point' data-expanded=false>
+              <h2 class='title'>
+                <span>Decay</span>
+                <img src='data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNiIgaGVpZ2h0PSIzNiIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSIjNzc4IiBkPSJNMTEuNjUgMTQuNjVxLjE1LjE1LjM1LjE1dC4zNS0uMTVsMi44LTIuOHEuMjUtLjI1LjEyNS0uNTVUMTQuOCAxMUg5LjJxLS4zNSAwLS40NzUuM3QuMTI1LjU1bDIuOCAyLjhaTTEyIDIycS0yLjA3NSAwLTMuOS0uNzg4dC0zLjE3NS0yLjEzN3EtMS4zNS0xLjM1LTIuMTM3LTMuMTc1VDIgMTJxMC0yLjA3NS43ODgtMy45dDIuMTM3LTMuMTc1cTEuMzUtMS4zNSAzLjE3NS0yLjEzN1QxMiAycTIuMDc1IDAgMy45Ljc4OHQzLjE3NSAyLjEzN3ExLjM1IDEuMzUgMi4xMzggMy4xNzVUMjIgMTJxMCAyLjA3NS0uNzg4IDMuOXQtMi4xMzcgMy4xNzVxLTEuMzUgMS4zNS0zLjE3NSAyLjEzOFQxMiAyMlptMC0ycTMuMzUgMCA1LjY3NS0yLjMyNVQyMCAxMnEwLTMuMzUtMi4zMjUtNS42NzVUMTIgNFE4LjY1IDQgNi4zMjUgNi4zMjVUNCAxMnEwIDMuMzUgMi4zMjUgNS42NzVUMTIgMjBabTAtOFoiLz48L3N2Zz4=' class='collapse_button' />
+                <div class='decay_chain_button searchable no_event_update'>Decay Chain</div>
+              </h2>
+              <div class='decays parent_data_point'>
+                <div class='decay parent_data_point template'>
+                  <span class='collapse_button'></span>
+                  <span class='type searchable data_point'>[Decay]</span>:
+                  <span class='chance searchable parent_data_point'>
+                    <span class='percent data_point' data-estimated=false>[Value]</span>
+                    <span class='deviation data_point' data-estimated=false>(&pm;[Value])</span>%
+                  </span>
+                  <br>
+                  <div class='result parent_data_point template' data-expanded=false>
+                    <span class='from searchable data_point'>[From]</span>
+                    <span class='arrow searchable no_background'>&rightarrow;</span>
+                    <div class='to searchable no_decoration data_point template'>[To]</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class='parents section parent_data_point' data-expanded=false>
+              <h2 class='title'>
+                <span>Parents</span>
+                <img src='data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNiIgaGVpZ2h0PSIzNiIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSIjNzc4IiBkPSJNMTEuNjUgMTQuNjVxLjE1LjE1LjM1LjE1dC4zNS0uMTVsMi44LTIuOHEuMjUtLjI1LjEyNS0uNTVUMTQuOCAxMUg5LjJxLS4zNSAwLS40NzUuM3QuMTI1LjU1bDIuOCAyLjhaTTEyIDIycS0yLjA3NSAwLTMuOS0uNzg4dC0zLjE3NS0yLjEzN3EtMS4zNS0xLjM1LTIuMTM3LTMuMTc1VDIgMTJxMC0yLjA3NS43ODgtMy45dDIuMTM3LTMuMTc1cTEuMzUtMS4zNSAzLjE3NS0yLjEzN1QxMiAycTIuMDc1IDAgMy45Ljc4OHQzLjE3NSAyLjEzN3ExLjM1IDEuMzUgMi4xMzggMy4xNzVUMjIgMTJxMCAyLjA3NS0uNzg4IDMuOXQtMi4xMzcgMy4xNzVxLTEuMzUgMS4zNS0zLjE3NSAyLjEzOFQxMiAyMlptMC0ycTMuMzUgMCA1LjY3NS0yLjMyNVQyMCAxMnEwLTMuMzUtMi4zMjUtNS42NzVUMTIgNFE4LjY1IDQgNi4zMjUgNi4zMjVUNCAxMnEwIDMuMzUgMi4zMjUgNS42NzVUMTIgMjBabTAtOFoiLz48L3N2Zz4=' class='collapse_button' />
+              </h2>
+              <div class='parent parent_data_point template' data-expanded=false>
+                <span class='collapse_button'></span>
+                <span class='from searchable no_decoration data_point' data-search=true>[Parent]</span>
+                <span class='fromText searchable no_background'>from decay</span>
+                <span class='decay searchable data_point template'>([Decay])</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id='abundance_chart'>
+      <h2 class='title'>Natural Abundance</h2>
+      <canvas class='pie_chart'></canvas>
+      <canvas class='pie_chart_key'></canvas>
+    </div>
+    <div id='DPI'></div>
+  </body>
+</html>
