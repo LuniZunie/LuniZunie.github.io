@@ -43,7 +43,7 @@ body {
   user-select: text;
 }
 
-.select .noselect, .select .noselect * {
+.select .noSelect, .select .noSelect * {
   cursor: default;
   -webkit-user-select: none;
   -ms-user-select: none;
@@ -54,10 +54,14 @@ body {
   display: none;
 }
 
-.false_hidden {
+.falseHidden {
   pointer-events: none;
 
   opacity: 0;
+}
+
+.template:not(.noHide) {
+  display: none !important;
 }
 
 .right {

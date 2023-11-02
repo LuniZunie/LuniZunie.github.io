@@ -22,8 +22,8 @@ let menuBarY = 0;
 /**
  * ELEMENT DECLARATION
  */
-const topNav = doc.qs('#top_nav');
-const menuBar = doc.qs('#menu_bar');
+const topNav = doc.qs('#topNav');
+const menuBar = doc.qs('#menuBar');
 
 /**
  * SCRIPT

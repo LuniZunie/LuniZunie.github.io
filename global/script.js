@@ -19,6 +19,7 @@
  */
 
 const { body, documentElement: doc } = document;
+const root = document.querySelector(':root');
 
 /**
  * EVENT LISTENER
@@ -41,7 +42,7 @@ const Update = {
 
 function _looseUpdate() {
   Update.loose.forEach(
-    Function => Function()
+    ({ _function, _this }) => _function.call(_this)
   );
 
   requestIdleCallback(_looseUpdate);
@@ -50,19 +51,19 @@ requestIdleCallback(_looseUpdate);
 
 function _fixedUpdate() {
   Update.fixed.forEach(
-    Function => Function()
+    ({ _function, _this }) => _function.call(_this)
   );
 
   requestAnimationFrame(_fixedUpdate);
 }
 requestAnimationFrame(_fixedUpdate);
 
-function LooseUpdate(Function) {
-  Update.loose.push(Function);
+function LooseUpdate(_function) {
+  Update.loose.push({ _function: _function, _this: this });
 }
 
-function FixedUpdate(Function) {
-  Update.fixed.push(Function);
+function FixedUpdate(_function) {
+  Update.loose.push({ _function: _function, _this: this });
 }
 
 /**
@@ -87,7 +88,7 @@ FixedUpdate(function() {
     element => delete element.dataset.falseHidden
   );
 
-  const hash = doc.qsa('.hash:not(.hidden, .false_hidden)').map(
+  const hash = doc.qsa('.hash:not(.hidden, .falseHidden)').map(
     (element) => element.id
   ).join(',');
 
@@ -97,6 +98,6 @@ FixedUpdate(function() {
 addEventListener('hashchange', function(event) {
   const hashes = event.newURL.replace(location.origin + location.pathname, '').replace('#', '').split(',');
   doc.qsa('.hash').forEach(
-    element => element.classList[hashes.includes(element.id) ? 'remove' : 'add'](element.dataset.falseHidden ? 'false_hidden' : 'hidden')
+    element => element.classList[hashes.includes(element.id) ? 'remove' : 'add'](element.dataset.falseHidden ? 'falseHidden' : 'hidden')
   );
 });

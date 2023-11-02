@@ -51,37 +51,60 @@
     'toString',
     'unshift',
     'valueOf',
+    { prototype: 'array', type: 1 },
   ].forEach(prototype => {
     if (object === Object) {
-      object.prototype[`_${prototype}`] = function(...parameters) {
-        return Object.entries(this)[prototype](...parameters);
-      };
+      if (prototype?.type === 1) {
+        object.prototype[`_${prototype?.prototype}`] = function() {
+          return Object.entries(this);
+        };
 
-      object.prototype[`k_${prototype}`] = function(...parameters) {
-        return Object.key(this)[prototype](...parameters);
-      };
+        object.prototype[`k_${prototype?.prototype}`] = function() {
+          return Object.key(this);
+        };
 
-      object.prototype[`v_${prototype}`] = function(...parameters) {
-        return Object.values(this)[prototype](...parameters);
-      };
+        object.prototype[`v_${prototype?.prototype}`] = function() {
+          return Object.values(this);
+        };
+      } else {
+        object.prototype[`_${prototype}`] = function(...parameters) {
+          return Object.entries(this)[prototype](...parameters);
+        };
 
-      object.prototype[`_$${prototype}`] = function(...parameters) {
-        return Object.fromEntries(Object.entries(this)[prototype](...parameters));
-      };
+        object.prototype[`k_${prototype}`] = function(...parameters) {
+          return Object.key(this)[prototype](...parameters);
+        };
 
-      object.prototype[`k_$${prototype}`] = function(...parameters) {
-        return Object.fromEntries(Object.key(this)[prototype](...parameters));
-      };
+        object.prototype[`v_${prototype}`] = function(...parameters) {
+          return Object.values(this)[prototype](...parameters);
+        };
 
-      object.prototype[`v_$${prototype}`] = function(...parameters) {
-        return Object.fromEntries(Object.values(this)[prototype](...parameters));
+        object.prototype[`_$${prototype}`] = function(...parameters) {
+          return Object.fromEntries(Object.entries(this)[prototype](...parameters));
+        };
+
+        object.prototype[`k_$${prototype}`] = function(...parameters) {
+          return Object.fromEntries(Object.key(this)[prototype](...parameters));
+        };
+
+        object.prototype[`v_$${prototype}`] = function(...parameters) {
+          return Object.fromEntries(Object.values(this)[prototype](...parameters));
+        };
+      }
+    } else if (prototype?.type === 1)
+      object.prototype[prototype?.prototype] = function() {
+        return [ ...this ];
       };
-    } else
+    else
       object.prototype[prototype] = function(...parameters) {
         return [ ...this ][prototype](...parameters);
       };
   });
 });
+
+Object.prototype._length = function() {
+  return Object.keys(this).length;
+};
 
 Math.avg = function(...nums) {
 	return nums.reduce(
@@ -314,21 +337,74 @@ Object.prototype._order = function() {
 	}, {});
 };
 
+Document.prototype.template = function(options, addToParent = true) {
+  const elements = [ options ].flat(Infinity).map(option => {
+    let template;
+    if (options instanceof HTMLElement)
+      return option;
+    else if (typeof options === 'string')
+      return [ ...this.querySelectorAll(`${options}.template`) ];
+    else if (options.id) {
+      template = this.getElementById(options.id);
+      if (template?.classList?.contains('template'))
+        return template;
+    } else if (options.class)
+      return this.getElementsByClassName(`${options.class} template`).array();
+    else if (options.tagName)
+      return this.getElementsByTagName(options.tagName).array().filter(
+        template => template.classList.contains('template')
+      );
+  }).flat(Infinity).filter(
+    template => template instanceof HTMLElement
+  ).map(template => {
+    const element = template.cloneNode(true);
+    element.classList.remove('template');
+
+    if (addToParent)
+      template.parentElement.appendChild(element, template.nextElementSibling);
+
+    return element;
+  });
+
+  return elements.length == 1 ? elements[0] : elements;
+};
+
 [ Element ].forEach(object => {
   object.prototype.qs = Element.prototype.querySelector;
   object.prototype.qsa = Element.prototype.querySelectorAll;
-  object.prototype.template = function() {
-    const newElement = this.cloneNode(true);
-    newElement.classList.remove('template');
+  object.prototype.template = function(options, addToParent = true) {
+    const elements = [ options ].flat(Infinity).map(option => {
+      let template;
+      if (options instanceof HTMLElement)
+        return option;
+      else if (typeof options === 'string')
+        return this.querySelectorAll(`${options}.template`).array();
+      else if (options.id) {
+        template = this.getElementById(options.id);
+        if (template?.classList?.contains('template'))
+          return template;
+      } else if (options.class)
+        return this.getElementsByClassName(`${options.class} template`).array();
+      else if (options.tagName)
+        return this.getElementsByTagName(options.tagName).array().filter(
+          template => template.classList.contains('template')
+        );
+    }).flat(Infinity).filter(
+      template => template instanceof HTMLElement
+    ).map(template => {
+      const element = template.cloneNode(true);
+      element.classList.remove('template');
 
-    if (this.nextElementSibling)
-      this.parentElement.insertBefore(newElement, this.nextElementSibling);
-    else
-      this.parentElement.appendChild(newElement);
+      if (addToParent)
+        this.appendChild(element, template.nextElementSibling);
 
-    return newElement;
+      return element;
+    });
+
+    return elements.length == 1 ? elements[0] : elements;
   };
   object.prototype.prependChild = function(element, target = 0) {
+    target ??= 0;
     if (!(element instanceof HTMLElement)) {
       if (typeof element === 'string')
         element = document.createElement(element);
@@ -351,6 +427,7 @@ Object.prototype._order = function() {
     return element;
   };
   object.prototype.appendChild = function(element, target = Infinity) {
+    target ??= Infinity;
     if (!(element instanceof HTMLElement)) {
       if (typeof element === 'string')
         element = document.createElement(element);
@@ -373,6 +450,7 @@ Object.prototype._order = function() {
     return element;
   };
   object.prototype.insertChild = function(element, target = 0) {
+    target ??= 0;
     if (!(element instanceof HTMLElement)) {
       if (typeof element === 'string')
         element = document.createElement(element);
@@ -403,7 +481,19 @@ Object.prototype._order = function() {
  * OTHER FUNCTIONS
  */
 
-function For(Function, amount, ...parameters) {
-  for (let a = 0;a < amount;a++)
-    Function.call(this, a, ...parameters);
+function For(function_, length, ...parameters) {
+  if (length instanceof Object && !(length instanceof Array || length === null || length === undefined))
+    length = amount._length();
+  else if (typeof length !== 'number')
+    length = amount.length;
+
+  const array = [];
+  for (let a = 0;a < length;a++)
+    try {
+      array.push(function_ instanceof Function ? function_.call(this, a, ...parameters) : function_);
+    } catch(error) {
+      array.push(error);
+    };
+
+  return array;
 }

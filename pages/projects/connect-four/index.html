@@ -1,14 +1,14 @@
 <!--
   Copyright 2023 LuniZunie
 
-  Licensed under the Apache License, Version 2.0 (the "License");
+  Licensed under the Apache License, Version 2.0 (the 'License');
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at
 
       http://www.apache.org/licenses/LICENSE-2.0
 
   Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
+  distributed under the License is distributed on an 'AS IS' BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
   limitations under the License.
@@ -19,15 +19,23 @@
   <head>
     <link rel='stylesheet' href='/global/style.css' />
 
-    <link rel='stylesheet' href='/404/style.css' />
-
     <script src='/global/prototype.js'></script>
     <script src='/global/script.js' defer></script>
 
-    <script src='/404/script.js'></script>
+    <link rel='stylesheet' href='style.css' />
+
+    <script src='script.js' defer></script>
+
+    <title>Connect 4</title>
   </head>
   <body>
-    <!-- <h1>404</h1> -->
-    <icon id='loadingIcon' type='loading' animate height='256'></icon>
+    <div class='board template'>
+      <div class='column template'>
+        <div class='cell template'></div>
+      </div>
+    </div>
+    <div class='playAgain hidden'>
+      <span class='resultText'></span>! Click <span class='click'>here</span> to play again!
+    </div>
   </body>
 </html>

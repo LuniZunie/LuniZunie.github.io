@@ -1,0 +1,81 @@
+/*
+  Copyright 2023 LuniZunie
+
+  Licensed under the Apache License, Version 2.0 (the 'License');
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an 'AS IS' BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+*/
+
+:root {
+  --cellSize: 15vmin;
+}
+
+body {
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), linear-gradient(60deg, rgb(10, 10, 50) 5%, rgb(5, 0, 35) 50%) fixed 0 0 / cover;
+}
+
+.board {
+  position: fixed;
+
+  border-radius: 2vmin;
+
+  background: #000;
+}
+
+.board > .column {
+  display: inline-block;
+}
+
+.board > .column > .cell {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+
+  width: var(--cellSize);
+  height: var(--cellSize);
+
+  border: calc(var(--cellSize) / 15) solid #000;
+  border-radius: 100%;
+
+  background: #111;
+}
+
+.board > .column > .cell[data-piece='1'] {
+  background: #c33 !important;
+}
+
+.board > .column > .cell[data-piece='2'] {
+  background: #cc3 !important;
+}
+
+.playAgain {
+  position: fixed;
+  left: 1vmin;
+  top: 1vmin;
+  width: calc(100vw - 6vmin);
+
+  padding: 2vmin;
+  border-radius: 2vmin;
+
+  text-align: center;
+  font-size: 2em;
+
+  background: #112;
+
+  z-index: 2;
+}
+
+.playAgain > .click {
+  cursor: pointer;
+
+  color: dodgerblue;
+  text-decoration: underline;
+}

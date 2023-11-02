@@ -20,7 +20,7 @@ body {
   background: #001;
 }
 
-#top_nav {
+#topNav {
   position: fixed;
   left: 0px;
   top: 0px;
@@ -38,7 +38,7 @@ body {
   transition: all 250ms;
 }
 
-#top_nav > h1 {
+#topNav > h1 {
   display: inline-block;
   width: 20vw;
 
@@ -50,11 +50,11 @@ body {
   transition: all 250ms;
 }
 
-#top_nav > h1 > span {
+#topNav > h1 > span {
   cursor: pointer;
 }
 
-#menu_bar {
+#menuBar {
   pointer-events: none;
 
   position: fixed;
