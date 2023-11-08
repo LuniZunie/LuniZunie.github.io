@@ -42,8 +42,12 @@ body {
   width: var(--cellSize);
   height: var(--cellSize);
 
+  padding: calc(var(--cellSize) / 2 - 0.8em);
   border: calc(var(--cellSize) / 15) solid #000;
   border-radius: 100%;
+
+  font-size: 2em;
+  text-align: center;
 
   background: #111;
 }
@@ -53,7 +57,7 @@ body {
 }
 
 .board > .column > .cell[data-piece='2'] {
-  background: #cc3 !important;
+  background: #33c !important; /* #cc3 */
 }
 
 .playAgain {

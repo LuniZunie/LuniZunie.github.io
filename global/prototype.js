@@ -114,12 +114,12 @@ Math.avg = function(...nums) {
 
 Math.absMax = function(...numbers) {
   return numbers.reduce(
-    (max, number) => Math.abs(number) > Math.abs(max) ? max : number
+    (max, number) => Math.abs(number) > Math.abs(max) ? number : max
   );
 };
 Math.absMin = function(...numbers) {
   return numbers.reduce(
-    (min, number) => Math.abs(number) < Math.abs(min) ? min : number
+    (min, number) => Math.abs(number) < Math.abs(min) ? number : min
   );
 };
 
