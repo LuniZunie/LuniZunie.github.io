@@ -46,7 +46,7 @@ window.onclick = async function() {
   const freqRange = [ 20, 15000 ];
   const minDB = 108;
   const maxDB = 64;
-  const trueMaxDB = minDB / (minDB / maxDB) ** 0.125;
+  const trueMaxDB = minDB / (minDB / maxDB) ** 1;
 
   let HzMult;
   let freqInRange;
@@ -100,7 +100,7 @@ window.onclick = async function() {
 
       j++;
 
-      dB = (dB.clamp(-minDB, 0) + minDB) / (minDB / maxDB) ** 0.125;
+      dB = (dB.clamp(-minDB, 0) + minDB) / (minDB / maxDB) ** 1;
 
       const [ column, row ] = mapper[j];
 
