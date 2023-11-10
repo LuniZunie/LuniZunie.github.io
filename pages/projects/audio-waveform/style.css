@@ -1,0 +1,26 @@
+body {
+  width: 100vw;
+  height: 100vh;
+
+  overflow: hidden;
+
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), linear-gradient(60deg, rgb(10, 10, 50) 5%, rgb(5, 0, 35) 50%) fixed 0 0 / cover;
+
+  transform: translate(-50%, -50%);
+}
+
+body > .point {
+  position: fixed;
+  width: calc(90vw / var(--columns));
+  height: calc(90vh / var(--rows));
+
+  /* box-shadow: var(--hz-mult) calc(var(--height) * -1) var(--scale) calc(var(--scale) / 10) var(--color); */
+
+  clip-path: circle(calc(min(calc(50vw / var(--columns)), calc(50vh / var(--rows))) * var(--scale)) at center);
+}
+
+body > .table_point {
+  position: fixed;
+
+  box-shadow: calc(100vw / var(--columns)) calc(100vh / var(--rows)) var(--scale) calc(var(--scale) / 10) var(--color);
+}
