@@ -37,7 +37,7 @@ window.onclick = async function() {
   const stream = audio.createMediaStreamSource(await navigator.mediaDevices.getUserMedia({ audio: true }));
   const analyzer = audio.createAnalyser();
 
-  analyzer.fftSize = 2048;
+  analyzer.fftSize = 4096;
   stream.connect(analyzer);
 
   const auidoData = new Float32Array(analyzer.fttSize);
@@ -106,10 +106,6 @@ window.onclick = async function() {
 
       const scale = dB / maxDB;
 
-      const pointScale = `${scale * 50}vmin`;
-      const pointLeft = `${(column + 1) / (columns + 1) * 120 - (100 / columns * scale) + 35}vw`;
-      const pointTop = `${(row + 1) / (rows + 1) * 120 - (100 / rows * scale) + 35}vh`;
-
       let $point = body.qs(`#point_${j}.point`);
       if (!$point) {
         $point = body.appendChild('div');
@@ -117,39 +113,20 @@ window.onclick = async function() {
         $point.classList.add('point');
       }
 
-      $point.style.left = pointLeft;
-      $point.style.top = pointTop;
+      $point.style.left = `${(column + 1) / (columns + 1) * 120 - (100 / columns * scale) + 35}vw`;
+      $point.style.top = `${(row + 1) / (rows + 1) * 120 - (100 / rows * scale) + 35}vh`;
 
-      $point.style.setProperty('--scale', pointScale);
+      $point.style.setProperty('--scale', `${scale * 50}vmin`);
       $point.style.setProperty('--height', `${scale * 20}vh`);
 
       const color = rainbow(scale * 50).replace('1)', `${(scale * 0.75 + 0.25) ** 1.5})`);
-      $point.style.setProperty('--color', color);
 
+      $point.style.setProperty('--color', color);
       $point.style.background = color;
 
       $point.dataset.frame = frame;
 
-      $point = body.qs(`#table_point_${column}_${row}.table_point`);
-      if (!$point) {
-        $point = body.appendChild('div');
-        $point.id = `table_point_${column}_${row}`;
-        $point.classList.add('table_point');
-      }
-
-      $point.style.left = pointLeft;
-      $point.style.top = pointTop;
-
-      $point.style.setProperty('--scale', pointScale);
-      $point.style.setProperty('--color', rainbow(scale * 50));
-
-      $point.dataset.frame = frame;
-
       /* body.qsa(`.point:not([data-frame='${frame}'])`).forEach(
-        point => point.remove()
-      );
-
-      body.qsa(`.table_point:not([data-frame='${frame}'])`).forEach(
         point => point.remove()
       ); */
 

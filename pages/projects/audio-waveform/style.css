@@ -14,13 +14,7 @@ body > .point {
   width: calc(90vw / var(--columns));
   height: calc(90vh / var(--rows));
 
-  /* box-shadow: var(--hz-mult) calc(var(--height) * -1) var(--scale) calc(var(--scale) / 10) var(--color); */
+  box-shadow: var(--hz-mult) calc(var(--height) * -1) var(--scale) calc(var(--scale) / 10) var(--color);
 
   clip-path: circle(calc(min(calc(50vw / var(--columns)), calc(50vh / var(--rows))) * var(--scale)) at center);
-}
-
-body > .table_point {
-  position: fixed;
-
-  box-shadow: calc(100vw / var(--columns)) calc(100vh / var(--rows)) var(--scale) calc(var(--scale) / 10) var(--color);
 }
