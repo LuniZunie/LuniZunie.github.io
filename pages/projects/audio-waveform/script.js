@@ -116,6 +116,7 @@ window.onclick = async function() {
       $point.style.left = `${(column + 1) / (columns + 1) * 120 - (100 / columns * scale) + 35}vw`;
       $point.style.top = `${(row + 1) / (rows + 1) * 120 - (100 / rows * scale) + 35}vh`;
 
+      $point.style.setProperty('--true-scale', scale + 0.9);
       $point.style.setProperty('--scale', `${scale * 50}vmin`);
       $point.style.setProperty('--height', `${scale * 20}vh`);
 
@@ -137,7 +138,7 @@ window.onclick = async function() {
 
     body.style.opacity = (avgDB / trueMaxDB) ** 0.5;
 
-    const scale = (avgDB / trueMaxDB) ** 2 + 0.75;
+    const scale = (avgDB / trueMaxDB) ** 1.5 + 0.75;
     body.style.scale = scale;
   });
 };

@@ -14,7 +14,9 @@ body > .point {
   width: calc(90vw / var(--columns));
   height: calc(90vh / var(--rows));
 
-  box-shadow: var(--hz-mult) calc(var(--height) * -1) var(--scale) calc(var(--scale) / 10) var(--color);
+  box-shadow: 0px 0px var(--scale) calc(var(--scale) / 10) var(--color), calc(20vw / var(--columns)) calc(20vh / var(--rows)) calc(90vh / var(--rows)) 0px var(--color);
 
   clip-path: circle(calc(min(calc(50vw / var(--columns)), calc(50vh / var(--rows))) * var(--scale)) at center);
+
+  /* scale: var(--true-scale); */
 }
