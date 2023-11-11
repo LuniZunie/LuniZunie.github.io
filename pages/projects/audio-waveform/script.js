@@ -5,14 +5,26 @@ let colors = /* [ 'red', 'orange', 'orange', 'yellow', 'yellow', 'green', 'green
 // colors = colors.concat(colors.reverse());
 
 colors = [
+  [ 'red', 'orange' ],
+  [ 'red', 'yellow' ],
+  [ 'orange', 'yellow' ],
+  [ 'yellow', 'lime' ],
+  [ 'yellow', 'green' ],
+  [ 'green', 'lime' ],
+  [ 'green', 'cyan' ],
+  [ 'green', 'blue' ],
+  [ 'cyan', 'lime' ],
+  [ 'cyan', 'blue' ],
+  [ 'blue', 'purple' ],
+  [ 'blue', 'magenta' ],
+  [ 'purple', 'magenta' ],
+  [ 'purple', 'red' ],
+  [ 'magenta', 'red' ],
   [ 'blue', 'purple', 'red', 'orange' ],
-  [ 'red', 'orange', 'orange', 'yellow' ],
+  [ 'red', 'orange', 'yellow' ],
   [ 'blue', 'purple', 'red'],
   [ 'lightblue', 'cyan', 'blue', 'purple' ],
-  [ 'green', 'lime', 'yellow', 'orange' ],
-  [ 'lime', 'green', 'blue', 'purple' ],
   [ 'green', 'lime', 'yellow' ],
-  [ 'purple', 'blue', 'cyan', 'red' ],
   [ 'purple', 'magenta', 'blue' ],
 ];
 
@@ -26,7 +38,14 @@ function CreateGradient() {
   const gradient = pen.createLinearGradient(0, 0, $paper.width, 0);
 
   const step = 1 / (colors.length - 1);
-  colors.random().forEach(
+
+  let theseColors = colors.random();
+  if ([ true, false ].random())
+    theseColors = theseColors.reverse();
+
+  theseColors.unshift(theseColors[0]);
+
+  theseColors.forEach(
     (color, i) => gradient.addColorStop(i * step, color)
   );
 
@@ -45,6 +64,10 @@ function CreateGradient() {
 
   delete $paper;
   delete pen;
+
+  body.style.background = `rgba(${rainbow(0).replace(/(rgba\(|1\)|\s)/g, '').split(',').map(
+    (number, i) => i == 3 ? 1 : +number / 64
+  ).join(', ')})`;
 }
 
 window.onclick = async function() {
