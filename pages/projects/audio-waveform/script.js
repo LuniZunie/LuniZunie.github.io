@@ -4,33 +4,65 @@ let rainbow;
 let colors = /* [ 'red', 'orange', 'orange', 'yellow', 'yellow', 'green', 'green', 'blue', 'blue', 'purple', 'purple' ] */ [ 'blue', 'red', 'orange', 'green' ];
 // colors = colors.concat(colors.reverse());
 
-colors = [
-  [ 'green', 'lime' ],
-  [ 'lime', 'blue' ],
-  [ 'cyan', 'lime' ],
-  [ 'blue', 'purple' ],
-  [ 'blue', 'magenta' ],
-  [ 'purple', 'magenta' ],
-  [ 'purple', 'red' ],
-  [ 'magenta', 'red' ],
-];
-
-function CreateGradient() {
+let oldColors = [];
+async function CreateGradient() {
   const $paper = body.appendChild('canvas');
   $paper.width = 1001;
   $paper.height = 1;
 
-  const pen = $paper.getContext('2d');
+  const pen = $paper.getContext('2d', { willReadFrequently: true });
 
   const gradient = pen.createLinearGradient(0, 0, $paper.width, 0);
 
-  const step = 1 / (colors.length - 1);
+  const primaryColors = [
+    'rgb(255, 0, 0)',
+    'rgb(255, 255, 0)',
+    'rgb(0, 255, 0)',
+    'rgb(0, 255, 255)',
+    'rgb(0, 0, 255)',
+    'rgb(255, 0, 255)',
+  ];
+  const secondaryColors = [
+    'rgb(255, 128, 0)',
+    'rgb(0, 255, 128)',
+    'rgb(128, 0, 255)',
+    'rgb(255, 0, 128)',
+    'rgb(0, 128, 255)',
+    'rgb(128, 255, 0)',
+    'rgb(255, 0, 0)',
+    'rgb(255, 255, 0)',
+    'rgb(0, 255, 0)',
+    'rgb(0, 255, 255)',
+    'rgb(0, 0, 255)',
+    'rgb(255, 0, 255)',
+  ];
 
-  let theseColors = colors.random().shuffle();
-  theseColors.unshift(theseColors[0]);
+  const possibleColors = [
+    primaryColors,
+    secondaryColors,
+    secondaryColors,
+    secondaryColors,
+  ].map(function(colors, i) {
+    const remove = oldColors[i];
+    if (!remove)
+      return colors;
 
+    return colors.filter(
+      color => color != remove
+    );
+  });
+
+  let theseColors = [ ...new Set(possibleColors.map(
+    colors => colors.random()
+  )) ];
+  while (theseColors.length != possibleColors.length)
+    theseColors = [ ...new Set(possibleColors.map(
+      colors => colors.random()
+    )) ];
+
+  oldColors = theseColors;
   theseColors.forEach(
-    (color, i) => gradient.addColorStop((i * step).clamp(0, 1), color)
+    (color, i) => gradient.addColorStop((i / 3), color)
   );
 
   pen.fillStyle = gradient;
