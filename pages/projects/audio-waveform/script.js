@@ -5,27 +5,14 @@ let colors = /* [ 'red', 'orange', 'orange', 'yellow', 'yellow', 'green', 'green
 // colors = colors.concat(colors.reverse());
 
 colors = [
-  [ 'red', 'orange' ],
-  [ 'red', 'yellow' ],
-  [ 'orange', 'yellow' ],
-  [ 'yellow', 'lime' ],
-  [ 'yellow', 'green' ],
   [ 'green', 'lime' ],
-  [ 'green', 'cyan' ],
-  [ 'green', 'blue' ],
+  [ 'lime', 'blue' ],
   [ 'cyan', 'lime' ],
-  [ 'cyan', 'blue' ],
   [ 'blue', 'purple' ],
   [ 'blue', 'magenta' ],
   [ 'purple', 'magenta' ],
   [ 'purple', 'red' ],
   [ 'magenta', 'red' ],
-  [ 'blue', 'purple', 'red', 'orange' ],
-  [ 'red', 'orange', 'yellow' ],
-  [ 'blue', 'purple', 'red'],
-  [ 'lightblue', 'cyan', 'blue', 'purple' ],
-  [ 'green', 'lime', 'yellow' ],
-  [ 'purple', 'magenta', 'blue' ],
 ];
 
 function CreateGradient() {
@@ -39,14 +26,11 @@ function CreateGradient() {
 
   const step = 1 / (colors.length - 1);
 
-  let theseColors = colors.random();
-  if ([ true, false ].random())
-    theseColors = theseColors.reverse();
-
+  let theseColors = colors.random().shuffle();
   theseColors.unshift(theseColors[0]);
 
   theseColors.forEach(
-    (color, i) => gradient.addColorStop(i * step, color)
+    (color, i) => gradient.addColorStop((i * step).clamp(0, 1), color)
   );
 
   pen.fillStyle = gradient;
@@ -66,7 +50,7 @@ function CreateGradient() {
   delete pen;
 
   body.style.background = `rgba(${rainbow(0).replace(/(rgba\(|1\)|\s)/g, '').split(',').map(
-    (number, i) => i == 3 ? 1 : +number / 64
+    (number, i) => i == 3 ? 1 : +number / 16
   ).join(', ')})`;
 }
 
@@ -83,7 +67,7 @@ window.onclick = async function() {
   const auidoData = new Float32Array(analyzer.fttSize);
   const freqData = new Float32Array(analyzer.frequencyBinCount);
 
-  const freqRange = [ 20, 20000 ];
+  const freqRange = [ 20, 30000 ];
   const minDB = 108;
   const maxDB = 64;
   const trueMaxDB = minDB / (minDB / maxDB) ** 0.125;
@@ -183,7 +167,7 @@ window.onclick = async function() {
     const scale = (avgDB / trueMaxDB) ** 1 + 0.9;
     body.style.scale = scale;
 
-    let factor = 10;
+    let factor = 5;
     if (lastAvg / factor >>> 0 < avgDB / factor >>> 0) {
       colors = colors;
 

@@ -20,5 +20,5 @@ body > .point {
 
   /* scale: var(--true-scale); */
 
-  transition: background box-shadow 500ms;
+  /* transition: background box-shadow 5ms; */
 }
