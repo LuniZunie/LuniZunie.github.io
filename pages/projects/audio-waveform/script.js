@@ -6,7 +6,7 @@ let colors = /* [ 'red', 'orange', 'orange', 'yellow', 'yellow', 'green', 'green
 
 colors = [
   [ 'blue', 'red', 'orange', 'green' ],
-  [ 'blue', 'purple', 'red', 'orange' ]
+  [ 'blue', 'purple', 'red', 'orange' ],
   [ 'red', 'orange', 'orange', 'yellow' ],
   [ 'blue', 'purple', 'purple', 'red'],
   [ 'lightblue', 'cyan', 'blue', 'purple' ],
