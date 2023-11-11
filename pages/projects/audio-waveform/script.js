@@ -1,8 +1,22 @@
 let lastMove = Date.now();
 
 let rainbow;
-let colors = /* [ 'red', 'orange', 'orange', 'yellow', 'yellow', 'green', 'green', 'blue', 'blue', 'purple', 'purple' ] */ [ 'red', 'lime', 'blue', 'cyan', 'yellow', 'magenta' ];
+let colors = /* [ 'red', 'orange', 'orange', 'yellow', 'yellow', 'green', 'green', 'blue', 'blue', 'purple', 'purple' ] */ [ 'blue', 'red', 'orange', 'green' ];
 // colors = colors.concat(colors.reverse());
+
+colors = [
+  [ 'blue', 'red', 'orange', 'green' ],
+  [ 'blue', 'purple', 'red', 'orange' ]
+  [ 'red', 'orange', 'orange', 'yellow' ],
+  [ 'blue', 'purple', 'purple', 'red'],
+  [ 'lightblue', 'cyan', 'blue', 'purple' ],
+  [ 'blue', 'purple', 'red', 'orange' ],
+  [ 'green', 'lime', 'yellow', 'orange' ],
+  [ 'lime', 'green', 'blue', 'purple' ],
+  [ 'pink', 'orange', 'yellow', 'green' ],
+  [ 'pink', 'yellow', 'green', 'blue' ],
+  [ 'pink', 'yellow', 'orange', 'red' ],
+];
 
 function CreateGradient() {
   const $paper = body.appendChild('canvas');
@@ -14,7 +28,7 @@ function CreateGradient() {
   const gradient = pen.createLinearGradient(0, 0, $paper.width, 0);
 
   const step = 1 / (colors.length - 1);
-  colors.shuffle().forEach(
+  colors.random().forEach(
     (color, i) => gradient.addColorStop(i * step, color)
   );
 
