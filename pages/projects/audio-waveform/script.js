@@ -67,7 +67,7 @@ window.onclick = async function() {
   const auidoData = new Float32Array(analyzer.fttSize);
   const freqData = new Float32Array(analyzer.frequencyBinCount);
 
-  const freqRange = [ 20, 30000 ];
+  const freqRange = [ 20, 15000 ];
   const minDB = 108;
   const maxDB = 64;
   const trueMaxDB = minDB / (minDB / maxDB) ** 0.125;
@@ -167,7 +167,7 @@ window.onclick = async function() {
     const scale = (avgDB / trueMaxDB) ** 1 + 0.9;
     body.style.scale = scale;
 
-    let factor = 5;
+    let factor = 10;
     if (lastAvg / factor >>> 0 < avgDB / factor >>> 0) {
       colors = colors;
 
