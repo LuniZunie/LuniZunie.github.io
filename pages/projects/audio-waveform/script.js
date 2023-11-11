@@ -83,7 +83,7 @@ window.onclick = async function() {
   let lastAvg = 0;
 
   let frame = 0;
-  LooseUpdate(function() {
+  FixedUpdate(function() {
     frame++;
 
     body.style.cursor = lastMove + 1000 < Date.now() ? 'none' : 'default';
