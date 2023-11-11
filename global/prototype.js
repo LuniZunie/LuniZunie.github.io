@@ -303,7 +303,7 @@ Object.defineProperty(String.prototype, 'toNumber', {
       base ??= trueBase;
 
       if (!validBase || base > maxBase)
-        throw `(String, toNumber) cannot convert string to valid number!`;
+        throw `(String, toNumber) cannot convert string to valid number! ${maxBase} >= ${base}`;
 
       return this.split('').map(
         char => baseChars.indexOf(char)
@@ -326,6 +326,20 @@ Object.defineProperty(String.prototype, 'toNumber', {
 
       return parseInt(this, base ?? trueBase.max(2));
     }
+  }
+});
+Object.defineProperty(String.prototype, 'hashCode', {
+  enumerable: false,
+  value: function() {
+    var hash = 0,
+      i, chr;
+    if (this.length === 0) return hash;
+    for (i = 0; i < this.length; i++) {
+      chr = this.charCodeAt(i);
+      hash = ((hash << 5) - hash) + chr;
+      hash |= 0; // Convert to 32bit integer
+    }
+    return hash;
   }
 });
 Object.defineProperty(String.prototype, 'toLength', {

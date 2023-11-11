@@ -5,7 +5,7 @@ let colors = /* [ 'red', 'orange', 'orange', 'yellow', 'yellow', 'green', 'green
 // colors = colors.concat(colors.reverse());
 
 let oldColors = [];
-async function CreateGradient() {
+async function CreateGradient(soundCode) {
   const $paper = body.appendChild('canvas');
   $paper.width = 1001;
   $paper.height = 1;
@@ -15,12 +15,12 @@ async function CreateGradient() {
   const gradient = pen.createLinearGradient(0, 0, $paper.width, 0);
 
   const primaryColors = [
-    'rgb(255, 0, 0)',
-    'rgb(255, 255, 0)',
-    'rgb(0, 255, 0)',
-    'rgb(0, 255, 255)',
     'rgb(0, 0, 255)',
+    'rgb(256, 0, 128)',
+    'rgb(128, 0, 256)',
     'rgb(255, 0, 255)',
+    'rgb(255, 0, 0)',
+    'rgb(0, 255, 0)'
   ];
   const secondaryColors = [
     'rgb(255, 128, 0)',
@@ -34,10 +34,11 @@ async function CreateGradient() {
     'rgb(0, 255, 0)',
     'rgb(0, 255, 255)',
     'rgb(0, 0, 255)',
-    'rgb(255, 0, 255)',
+    'rgb(255, 0, 255)'
   ];
 
   const possibleColors = [
+    [ 'rgb(0, 0, 0)' ],
     primaryColors,
     secondaryColors,
     secondaryColors,
@@ -47,22 +48,23 @@ async function CreateGradient() {
     if (!remove)
       return colors;
 
-    return colors.filter(
+    return colors.length > 1 ? colors.filter(
       color => color != remove
-    );
+    ) : colors;
   });
 
+  let randomIndex = 0;
   let theseColors = [ ...new Set(possibleColors.map(
-    colors => colors.random()
+    colors => colors[pRandom(soundCode, randomIndex++, colors.length)]
   )) ];
   while (theseColors.length != possibleColors.length)
     theseColors = [ ...new Set(possibleColors.map(
-      colors => colors.random()
+      colors => colors[pRandom(soundCode, randomIndex++, colors.length)]
     )) ];
 
   oldColors = theseColors;
   theseColors.forEach(
-    (color, i) => gradient.addColorStop((i / 3), color)
+    (color, i) => gradient.addColorStop(i / possibleColors.length, color)
   );
 
   pen.fillStyle = gradient;
@@ -87,7 +89,8 @@ async function CreateGradient() {
 }
 
 window.onclick = async function() {
-  CreateGradient();
+  window.onclick = null;
+  CreateGradient('0');
 
   const audio = new (window.AudioContext || window.webkitAudioContext)();
   const stream = audio.createMediaStreamSource(await navigator.mediaDevices.getUserMedia({ audio: true }));
@@ -115,7 +118,9 @@ window.onclick = async function() {
   let lastAvg = 0;
 
   let frame = 0;
-  FixedUpdate(function() {
+
+  let soundCode = '';
+  LooseUpdate(async function() {
     frame++;
 
     body.style.cursor = lastMove + 1000 < Date.now() ? 'none' : 'default';
@@ -151,11 +156,12 @@ window.onclick = async function() {
 
     let j = -1;
     let avgDB = [];
-    freqData.forEach(function(dB, i) {
+    freqData.forEach(async function(dB, i) {
       Hz = (i - freqRange[0]) * HzMult;
       if (Hz < 0 || Hz > freqRange[1] - freqRange[0])
         return;
 
+      soundCode += Number.isFinite(dB) ? (-dB).toString(16).toLength(2, '0') : '00';
       j++;
 
       dB = (dB.clamp(-minDB, 0) + minDB) / (minDB / maxDB) ** 0.125;
@@ -191,7 +197,6 @@ window.onclick = async function() {
 
       avgDB.push(dB);
     });
-
     avgDB = avgDB.avg();
 
     body.style.opacity = (avgDB / trueMaxDB) ** 0.3;
@@ -199,17 +204,23 @@ window.onclick = async function() {
     const scale = (avgDB / trueMaxDB) ** 1 + 0.9;
     body.style.scale = scale;
 
-    let factor = 10;
-    if (lastAvg / factor >>> 0 < avgDB / factor >>> 0) {
-      colors = colors;
-
-      CreateGradient();
-    }
+    avgDB = avgDB / 10 >>> 0;
+    if (lastAvg < avgDB)
+      CreateGradient(soundCode.hashCode());
 
     lastAvg = avgDB;
+
+    soundCode = '';
   });
 };
 
-window.onmousemove = function() {
+function pRandom(seed, index, limit) {
+  const random = (((seed * 0x10003) % 0xFFFFFF2F + (index * 0x10001) % 0xFFFFFA7F) << index % 4.7) % limit;
+  const randomSign = random >> 31;
+
+  return (random ^ randomSign) - randomSign;
+}
+
+window.onmousemove = async function() {
   lastMove = Date.now();
 };
