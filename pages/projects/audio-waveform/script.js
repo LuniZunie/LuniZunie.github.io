@@ -5,17 +5,15 @@ let colors = /* [ 'red', 'orange', 'orange', 'yellow', 'yellow', 'green', 'green
 // colors = colors.concat(colors.reverse());
 
 colors = [
-  [ 'blue', 'red', 'orange', 'green' ],
   [ 'blue', 'purple', 'red', 'orange' ],
   [ 'red', 'orange', 'orange', 'yellow' ],
-  [ 'blue', 'purple', 'purple', 'red'],
+  [ 'blue', 'purple', 'red'],
   [ 'lightblue', 'cyan', 'blue', 'purple' ],
-  [ 'blue', 'purple', 'red', 'orange' ],
   [ 'green', 'lime', 'yellow', 'orange' ],
   [ 'lime', 'green', 'blue', 'purple' ],
-  [ 'pink', 'orange', 'yellow', 'green' ],
-  [ 'pink', 'yellow', 'green', 'blue' ],
-  [ 'pink', 'yellow', 'orange', 'red' ],
+  [ 'green', 'lime', 'yellow' ],
+  [ 'purple', 'blue', 'cyan', 'red' ],
+  [ 'purple', 'magenta', 'blue' ],
 ];
 
 function CreateGradient() {
