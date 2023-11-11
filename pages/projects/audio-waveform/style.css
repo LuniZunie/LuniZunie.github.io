@@ -4,7 +4,7 @@ body {
 
   overflow: hidden;
 
-  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), linear-gradient(60deg, rgb(10, 10, 50) 5%, rgb(5, 0, 35) 50%) fixed 0 0 / cover;
+  background: black;
 
   transform: translate(-50%, -50%);
 }
