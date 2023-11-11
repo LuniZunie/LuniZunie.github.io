@@ -1,6 +1,10 @@
 let lastMove = Date.now();
 
-window.onclick = async function() {
+let rainbow;
+let colors = /* [ 'red', 'orange', 'orange', 'yellow', 'yellow', 'green', 'green', 'blue', 'blue', 'purple', 'purple' ] */ [ 'red', 'lime', 'blue', 'cyan', 'yellow', 'magenta' ];
+// colors = colors.concat(colors.reverse());
+
+function CreateGradient() {
   const $paper = body.appendChild('canvas');
   $paper.width = 1001;
   $paper.height = 1;
@@ -9,11 +13,8 @@ window.onclick = async function() {
 
   const gradient = pen.createLinearGradient(0, 0, $paper.width, 0);
 
-  let colors = /* [ 'red', 'orange', 'orange', 'yellow', 'yellow', 'green', 'green', 'blue', 'blue', 'purple', 'purple' ] */ [ 'blue', 'red', 'yellow', 'green' ];
-  // colors = colors.concat(colors.reverse());
-
   const step = 1 / (colors.length - 1);
-  colors.forEach(
+  colors.shuffle().forEach(
     (color, i) => gradient.addColorStop(i * step, color)
   );
 
@@ -22,7 +23,7 @@ window.onclick = async function() {
 
   delete colors;
 
-  const rainbow = function(percent) {
+  rainbow = function(percent) {
     const color = pen.getImageData(percent / 100 * $paper.width, 0, 1, 1).data;
 
     return `rgba(${color[0]}, ${color[1]}, ${color[2]}, 1)`;
@@ -32,21 +33,25 @@ window.onclick = async function() {
 
   delete $paper;
   delete pen;
+}
+
+window.onclick = async function() {
+  CreateGradient();
 
   const audio = new (window.AudioContext || window.webkitAudioContext)();
   const stream = audio.createMediaStreamSource(await navigator.mediaDevices.getUserMedia({ audio: true }));
   const analyzer = audio.createAnalyser();
 
-  analyzer.fftSize = 4096;
+  analyzer.fftSize = 2048;
   stream.connect(analyzer);
 
   const auidoData = new Float32Array(analyzer.fttSize);
   const freqData = new Float32Array(analyzer.frequencyBinCount);
 
-  const freqRange = [ 20, 15000 ];
+  const freqRange = [ 20, 20000 ];
   const minDB = 108;
   const maxDB = 64;
-  const trueMaxDB = minDB / (minDB / maxDB) ** 1;
+  const trueMaxDB = minDB / (minDB / maxDB) ** 0.125;
 
   let HzMult;
   let freqInRange;
@@ -55,6 +60,8 @@ window.onclick = async function() {
   let rowsCenter, columnsCenter;
 
   let mapper;
+
+  let lastAvg = 0;
 
   let frame = 0;
   LooseUpdate(function() {
@@ -100,7 +107,7 @@ window.onclick = async function() {
 
       j++;
 
-      dB = (dB.clamp(-minDB, 0) + minDB) / (minDB / maxDB) ** 1;
+      dB = (dB.clamp(-minDB, 0) + minDB) / (minDB / maxDB) ** 0.125;
 
       const [ column, row ] = mapper[j];
 
@@ -120,7 +127,7 @@ window.onclick = async function() {
       $point.style.setProperty('--scale', `${scale * 50}vmin`);
       $point.style.setProperty('--height', `${scale * 20}vh`);
 
-      const color = rainbow(scale * 50).replace('1)', `${(scale * 0.75 + 0.25) ** 1.5})`);
+      let color = rainbow(scale * 50).replace('1)', `${(scale * 0.75 + 0.25) ** 1.5})`);
 
       $point.style.setProperty('--color', color);
       $point.style.background = color;
@@ -136,10 +143,19 @@ window.onclick = async function() {
 
     avgDB = avgDB.avg();
 
-    body.style.opacity = (avgDB / trueMaxDB) ** 0.5;
+    body.style.opacity = (avgDB / trueMaxDB) ** 0.3;
 
-    const scale = (avgDB / trueMaxDB) ** 1.5 + 0.75;
+    const scale = (avgDB / trueMaxDB) ** 1 + 0.9;
     body.style.scale = scale;
+
+    let factor = 10;
+    if (lastAvg / factor >>> 0 < avgDB / factor >>> 0) {
+      colors = colors;
+
+      CreateGradient();
+    }
+
+    lastAvg = avgDB;
   });
 };
 
