@@ -15,7 +15,7 @@
 */
 
 /**
- * PAGESa
+ * PAGES
 */
 
 const pages = {
