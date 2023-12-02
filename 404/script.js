@@ -27,6 +27,10 @@ const pages = {
     '/pd',
     '/pt',
   ],
+  '/pages/projects/RDOPERON/': [
+    '/rdop',
+    '/rdo',
+  ],
 };
 
 const pageReference = {};

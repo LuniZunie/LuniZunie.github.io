@@ -4,6 +4,10 @@ let rainbow;
 let colors = /* [ 'red', 'orange', 'orange', 'yellow', 'yellow', 'green', 'green', 'blue', 'blue', 'purple', 'purple' ] */ [ 'blue', 'red', 'orange', 'green' ];
 // colors = colors.concat(colors.reverse());
 
+let colorScore = 0;
+let lastColorScore = 0;
+let lastDColorScore = 0;
+
 let oldColors = [];
 async function CreateGradient(soundCode) {
   const $paper = body.appendChild('canvas');
@@ -74,6 +78,9 @@ async function CreateGradient(soundCode) {
 
   rainbow = function(percent) {
     const color = pen.getImageData(percent / 100 * $paper.width, 0, 1, 1).data;
+
+    if (percent / (100 / possibleColors.length) >>> 0)
+      colorScore++;
 
     return `rgba(${color[0]}, ${color[1]}, ${color[2]}, 1)`;
   };
@@ -156,6 +163,8 @@ window.onclick = async function() {
 
     let j = -1;
     let avgDB = [];
+
+    colorScore = 0;
     freqData.forEach(async function(dB, i) {
       Hz = (i - freqRange[0]) * HzMult;
       if (Hz < 0 || Hz > freqRange[1] - freqRange[0])
@@ -175,6 +184,7 @@ window.onclick = async function() {
         $point = body.appendChild('div');
         $point.id = `point_${j}`;
         $point.classList.add('point');
+        $point.style.zIndex = freqData.length - i;
       }
 
       $point.style.left = `${(column + 1) / (columns + 1) * 120 - (100 / columns * scale) + 35}vw`;
@@ -197,18 +207,24 @@ window.onclick = async function() {
 
       avgDB.push(dB);
     });
+    colorScore = colorScore / j * 100;
+    let dColorScore = colorScore - lastColorScore;
+    console.log(dColorScore);
+
     avgDB = avgDB.avg();
 
     body.style.opacity = (avgDB / trueMaxDB) ** 0.3;
 
-    const scale = (avgDB / trueMaxDB) ** 1 + 0.9;
+    const scale = (avgDB / trueMaxDB) + 0.9;
     body.style.scale = scale;
 
     avgDB = avgDB / 10 >>> 0;
-    if (lastAvg < avgDB)
+    if (dColorScore > 2.5)
       CreateGradient(soundCode.hashCode());
 
     lastAvg = avgDB;
+    lastDColorScore = dColorScore;
+    lastColorScore = colorScore;
 
     soundCode = '';
   });
